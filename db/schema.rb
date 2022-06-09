@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_06_07_091610) do
+ActiveRecord::Schema.define(version: 2022_06_09_111027) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -45,6 +45,13 @@ ActiveRecord::Schema.define(version: 2022_06_07_091610) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "ingredients", force: :cascade do |t|
+    t.string "name"
+    t.string "icon"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "order_items", force: :cascade do |t|
     t.integer "product_id"
     t.integer "quantity", default: 1
@@ -71,6 +78,15 @@ ActiveRecord::Schema.define(version: 2022_06_07_091610) do
     t.boolean "paid"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "product_ingredients", force: :cascade do |t|
+    t.bigint "product_id", null: false
+    t.bigint "ingredient_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["ingredient_id"], name: "index_product_ingredients_on_ingredient_id"
+    t.index ["product_id"], name: "index_product_ingredients_on_product_id"
   end
 
   create_table "products", force: :cascade do |t|
@@ -102,4 +118,6 @@ ActiveRecord::Schema.define(version: 2022_06_07_091610) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  add_foreign_key "product_ingredients", "ingredients"
+  add_foreign_key "product_ingredients", "products"
 end

@@ -1,7 +1,7 @@
 class Payment < ApplicationRecord
   belongs_to :order
   belongs_to :user
-  has_one :voucher, optional: true
+  # has_one :voucher, optional: true
 
   def discount
     if voucher.present?
