@@ -56,8 +56,10 @@ end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
-gem 'jwt'
-gem 'forest_liana'
-gem "carrierwave"
+
+# Custom Gems
+gem 'carrierwave'
 gem 'cloudinary'
-gem 'dotenv'
+gem 'dotenv-rails', groups: [:development, :test]
+gem 'forest_liana'
+gem 'jwt'
