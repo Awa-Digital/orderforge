@@ -63,3 +63,5 @@ gem 'cloudinary'
 gem 'dotenv-rails', groups: [:development, :test]
 gem 'forest_liana'
 gem 'jwt'
+gem 'kaminari'
+gem 'ransack', github: 'activerecord-hackery/ransack'

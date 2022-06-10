@@ -15,4 +15,18 @@ class Product < ApplicationRecord
     options[:except] = %i[created_at updated_at user_id]
     super
   end
+
+  def like(user)
+    user.favourite.favourite_items.find_or_create_by(
+      product_id: id
+    )
+  end
+
+  def unlike(user)
+    user.favourite.favourite_items.find_by(product_id: id).destroy
+  end
+
+  def liked?(user)
+    user.favourite.favourite_items.find_by(product_id: id).present?
+  end
 end

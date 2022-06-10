@@ -1,5 +1,6 @@
 # User Managment
 class Api::V1::UsersController < Api::V1::BaseController
+  skip_before_action :authenticate_user
   def signup
     user = User.new(user_params)
     user.password = params[:password]
