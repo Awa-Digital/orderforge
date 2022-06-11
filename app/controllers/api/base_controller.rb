@@ -1,3 +1,5 @@
+# API base controller
+
 class Api::BaseController < ApplicationController
   def generate_auth_token(user)
     secret = ENV['SECRET_KEY_BASE'] || Rails.application.secrets.secret_key_base

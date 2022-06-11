@@ -2,6 +2,7 @@ class User < ApplicationRecord
   has_many :orders
   has_many :payments
   has_one :favourite
+  has_many :addresses
 
   has_secure_password
 

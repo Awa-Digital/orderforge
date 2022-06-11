@@ -18,6 +18,15 @@ Rails.application.routes.draw do
         post 'product/unlike', to: 'products#unlike'
         get 'search', to: 'products#search'
       end
+
+      namespace :profile do
+        scope 'addresses' do
+          post 'add', to: 'addresses#new_address'
+          get 'all', to: 'addresses#index'
+          get 'show', to: 'addresses#show'
+          delete 'remove', to: 'addresses#remove'
+        end
+      end
     end
   end
 end
