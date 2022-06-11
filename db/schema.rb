@@ -10,117 +10,116 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_06_10_173121) do
-
+ActiveRecord::Schema.define(version: 20_220_610_173_121) do
   # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
+  enable_extension 'plpgsql'
 
-  create_table "categories", force: :cascade do |t|
-    t.string "title"
-    t.text "description"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+  create_table 'categories', force: :cascade do |t|
+    t.string 'title'
+    t.text 'description'
+    t.datetime 'created_at', precision: 6, null: false
+    t.datetime 'updated_at', precision: 6, null: false
   end
 
-  create_table "favourite_items", force: :cascade do |t|
-    t.integer "favourite_id"
-    t.integer "product_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+  create_table 'favourite_items', force: :cascade do |t|
+    t.integer 'favourite_id'
+    t.integer 'product_id'
+    t.datetime 'created_at', precision: 6, null: false
+    t.datetime 'updated_at', precision: 6, null: false
   end
 
-  create_table "favourites", force: :cascade do |t|
-    t.integer "user_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+  create_table 'favourites', force: :cascade do |t|
+    t.integer 'user_id'
+    t.datetime 'created_at', precision: 6, null: false
+    t.datetime 'updated_at', precision: 6, null: false
   end
 
-  create_table "influencers", force: :cascade do |t|
-    t.string "name"
-    t.string "instagram_handle"
-    t.string "twitter_handle"
-    t.string "email"
-    t.string "password_digest"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+  create_table 'influencers', force: :cascade do |t|
+    t.string 'name'
+    t.string 'instagram_handle'
+    t.string 'twitter_handle'
+    t.string 'email'
+    t.string 'password_digest'
+    t.datetime 'created_at', precision: 6, null: false
+    t.datetime 'updated_at', precision: 6, null: false
   end
 
-  create_table "ingredients", force: :cascade do |t|
-    t.string "name"
-    t.string "icon"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+  create_table 'ingredients', force: :cascade do |t|
+    t.string 'name'
+    t.string 'icon'
+    t.datetime 'created_at', precision: 6, null: false
+    t.datetime 'updated_at', precision: 6, null: false
   end
 
-  create_table "order_items", force: :cascade do |t|
-    t.integer "product_id"
-    t.integer "quantity", default: 1
-    t.integer "order_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+  create_table 'order_items', force: :cascade do |t|
+    t.integer 'product_id'
+    t.integer 'quantity', default: 1
+    t.integer 'order_id'
+    t.datetime 'created_at', precision: 6, null: false
+    t.datetime 'updated_at', precision: 6, null: false
   end
 
-  create_table "orders", force: :cascade do |t|
-    t.integer "address_id"
-    t.integer "user_id"
-    t.string "status"
-    t.boolean "completed"
-    t.boolean "paid"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+  create_table 'orders', force: :cascade do |t|
+    t.integer 'address_id'
+    t.integer 'user_id'
+    t.string 'status'
+    t.boolean 'completed'
+    t.boolean 'paid'
+    t.datetime 'created_at', precision: 6, null: false
+    t.datetime 'updated_at', precision: 6, null: false
   end
 
-  create_table "payments", force: :cascade do |t|
-    t.decimal "total", precision: 8, scale: 2
-    t.decimal "payment_charges", precision: 8, scale: 2
-    t.integer "discount_id"
-    t.integer "order_id"
-    t.boolean "paid"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.integer "user_id"
+  create_table 'payments', force: :cascade do |t|
+    t.decimal 'total', precision: 8, scale: 2
+    t.decimal 'payment_charges', precision: 8, scale: 2
+    t.integer 'discount_id'
+    t.integer 'order_id'
+    t.boolean 'paid'
+    t.datetime 'created_at', precision: 6, null: false
+    t.datetime 'updated_at', precision: 6, null: false
+    t.integer 'user_id'
   end
 
-  create_table "product_ingredients", force: :cascade do |t|
-    t.bigint "product_id", null: false
-    t.bigint "ingredient_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["ingredient_id"], name: "index_product_ingredients_on_ingredient_id"
-    t.index ["product_id"], name: "index_product_ingredients_on_product_id"
+  create_table 'product_ingredients', force: :cascade do |t|
+    t.bigint 'product_id', null: false
+    t.bigint 'ingredient_id', null: false
+    t.datetime 'created_at', precision: 6, null: false
+    t.datetime 'updated_at', precision: 6, null: false
+    t.index ['ingredient_id'], name: 'index_product_ingredients_on_ingredient_id'
+    t.index ['product_id'], name: 'index_product_ingredients_on_product_id'
   end
 
-  create_table "products", force: :cascade do |t|
-    t.string "title"
-    t.text "description"
-    t.string "image"
-    t.integer "category_id"
-    t.decimal "amount", precision: 8, scale: 2
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.integer "user_id"
-    t.boolean "liked"
+  create_table 'products', force: :cascade do |t|
+    t.string 'title'
+    t.text 'description'
+    t.string 'image'
+    t.integer 'category_id'
+    t.decimal 'amount', precision: 8, scale: 2
+    t.datetime 'created_at', precision: 6, null: false
+    t.datetime 'updated_at', precision: 6, null: false
+    t.integer 'user_id'
+    t.boolean 'liked'
   end
 
-  create_table "users", force: :cascade do |t|
-    t.string "first_name"
-    t.string "last_name"
-    t.string "email"
-    t.string "phone_number"
-    t.string "password_digest"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+  create_table 'users', force: :cascade do |t|
+    t.string 'first_name'
+    t.string 'last_name'
+    t.string 'email'
+    t.string 'phone_number'
+    t.string 'password_digest'
+    t.datetime 'created_at', precision: 6, null: false
+    t.datetime 'updated_at', precision: 6, null: false
   end
 
-  create_table "vouchers", force: :cascade do |t|
-    t.string "title"
-    t.string "discount_code"
-    t.integer "influencer_id"
-    t.decimal "discount_rate", precision: 4, scale: 2
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+  create_table 'vouchers', force: :cascade do |t|
+    t.string 'title'
+    t.string 'discount_code'
+    t.integer 'influencer_id'
+    t.decimal 'discount_rate', precision: 4, scale: 2
+    t.datetime 'created_at', precision: 6, null: false
+    t.datetime 'updated_at', precision: 6, null: false
   end
 
-  add_foreign_key "product_ingredients", "ingredients"
-  add_foreign_key "product_ingredients", "products"
+  add_foreign_key 'product_ingredients', 'ingredients'
+  add_foreign_key 'product_ingredients', 'products'
 end

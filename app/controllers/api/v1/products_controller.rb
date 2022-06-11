@@ -14,6 +14,11 @@ class Api::V1::ProductsController < Api::V1::BaseController
     success({ message: 'liked!', data: @mobile_user.product(@product.id) })
   end
 
+  def favourites
+    @products = @mobile_user.favourites
+    success({ message: 'favorites fetched successfully', data: @products })
+  end
+
   def unlike
     @product.unlike(@mobile_user)
     success({ message: 'disliked!', data: @mobile_user.product(@product.id) })
@@ -22,12 +27,8 @@ class Api::V1::ProductsController < Api::V1::BaseController
   def search
     @products = @mobile_user.products.ransack(params[:q]).result(distinct: true).page(params[:page]).per(params[:per_page])
     results = {
-      products: @products,
-      total_results: @products.count,
-      results_per_page: @products.limit_value,
-      total_pages: @products.total_pages,
-      next_page: @products.next_page,
-      last_page: @products.last_page?
+      products: @products, total_results: @products.count, results_per_page: @products.limit_value, total_pages: @products.total_pages,
+      next_page: @products.next_page, last_page: @products.last_page?
     }
     success({ message: 'products found', data: results })
   end

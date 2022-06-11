@@ -17,7 +17,9 @@ class User < ApplicationRecord
   validates :phone_number, length: { is: 13 }
   validates :password, length: { minimum: 8 }
 
-  after_save :generate_favourites
+  after_create :generate_favourites
+
+  # scope :favourites, -> (user) { where(products.liked:  true)}
 
   def as_json(options = {})
     # options[:methods] = %i[total]
@@ -35,6 +37,10 @@ class User < ApplicationRecord
       p.liked = p.liked?(self)
     end
     prods
+  end
+
+  def favourites
+    products.select { |p| p.liked == true }
   end
 
   def product(id)

@@ -14,6 +14,7 @@ Rails.application.routes.draw do
         get 'all', to: 'products#index'
         get 'product', to: 'products#show'
         post 'product/like', to: 'products#like'
+        get 'favourites', to: 'products#favourites'
         post 'product/unlike', to: 'products#unlike'
         get 'search', to: 'products#search'
       end
