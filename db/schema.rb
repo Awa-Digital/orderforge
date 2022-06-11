@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_06_11_035542) do
+ActiveRecord::Schema.define(version: 2022_06_11_045212) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -61,6 +61,18 @@ ActiveRecord::Schema.define(version: 2022_06_11_035542) do
     t.string "icon"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "notification_settings", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.boolean "push_notifications", default: true
+    t.boolean "app_updates", default: true
+    t.boolean "promotions", default: true
+    t.boolean "receipts", default: true
+    t.boolean "newsletter", default: true
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_notification_settings_on_user_id"
   end
 
   create_table "order_items", force: :cascade do |t|
@@ -132,6 +144,7 @@ ActiveRecord::Schema.define(version: 2022_06_11_035542) do
   end
 
   add_foreign_key "addresses", "users"
+  add_foreign_key "notification_settings", "users"
   add_foreign_key "product_ingredients", "ingredients"
   add_foreign_key "product_ingredients", "products"
 end

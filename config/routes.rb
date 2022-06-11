@@ -26,6 +26,11 @@ Rails.application.routes.draw do
           get 'show', to: 'addresses#show'
           delete 'remove', to: 'addresses#remove'
         end
+
+        scope 'notification' do
+          get 'settings', to: 'notification#settings'
+          get 'settings/update', to: 'notification#update_settings'
+        end
       end
     end
   end
