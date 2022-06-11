@@ -19,6 +19,10 @@ Rails.application.routes.draw do
         get 'search', to: 'products#search'
       end
 
+      scope 'cart' do
+        get '', to: 'orders#cart'
+      end
+
       namespace :profile do
         scope 'addresses' do
           post 'add', to: 'addresses#new_address'

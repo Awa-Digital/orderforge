@@ -51,4 +51,12 @@ class User < ApplicationRecord
     p.liked = p.liked?(self)
     p
   end
+
+  def cart
+    orders.find_by(status: 'initiated')
+  end
+
+  def start_cart
+   orders.find_or_create_by!(status: 'initiated')
+  end
 end

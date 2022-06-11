@@ -986,6 +986,21 @@
       "widget": null,
       "validations": []
     }, {
+      "field": "reference",
+      "type": "String",
+      "default_value": null,
+      "enums": null,
+      "integration": null,
+      "is_filterable": true,
+      "is_read_only": false,
+      "is_required": false,
+      "is_sortable": true,
+      "is_virtual": false,
+      "reference": null,
+      "inverse_of": null,
+      "widget": null,
+      "validations": []
+    }, {
       "field": "order_items",
       "type": ["Number"],
       "default_value": null,
@@ -1045,7 +1060,7 @@
       "widget": null,
       "validations": []
     }, {
-      "field": "product_id",
+      "field": "product",
       "type": "Number",
       "default_value": null,
       "enums": null,
@@ -1055,8 +1070,9 @@
       "is_required": false,
       "is_sortable": true,
       "is_virtual": false,
-      "reference": null,
-      "inverse_of": null,
+      "reference": "Product.id",
+      "inverse_of": "order_items",
+      "relationship": "BelongsTo",
       "widget": null,
       "validations": []
     }, {
@@ -1109,6 +1125,21 @@
       "field": "updated_at",
       "type": "Date",
       "default_value": null,
+      "enums": null,
+      "integration": null,
+      "is_filterable": true,
+      "is_read_only": false,
+      "is_required": false,
+      "is_sortable": true,
+      "is_virtual": false,
+      "reference": null,
+      "inverse_of": null,
+      "widget": null,
+      "validations": []
+    }, {
+      "field": "subtotal",
+      "type": "Number",
+      "default_value": "0.0",
       "enums": null,
       "integration": null,
       "is_filterable": true,
@@ -1473,6 +1504,22 @@
       "is_sortable": true,
       "is_virtual": false,
       "reference": "FavouriteItem.id",
+      "inverse_of": "product",
+      "relationship": "HasMany",
+      "widget": null,
+      "validations": []
+    }, {
+      "field": "order_items",
+      "type": ["Number"],
+      "default_value": null,
+      "enums": null,
+      "integration": null,
+      "is_filterable": false,
+      "is_read_only": false,
+      "is_required": false,
+      "is_sortable": true,
+      "is_virtual": false,
+      "reference": "OrderItem.id",
       "inverse_of": "product",
       "relationship": "HasMany",
       "widget": null,
