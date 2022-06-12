@@ -5,12 +5,16 @@ class OrderItem < ApplicationRecord
   before_save :calculate_subtotal
 
   def as_json(options = {})
-    options[:methods] = %i[subtotal]
-    # options[:except] = %i[created_at place_id recipient_id]
+    options[:methods] = %i[subtotal base_price]
+    options[:except] = %i[created_at updated_at order_id]
     super
   end
 
   def calculate_subtotal
     self.subtotal = (quantity * product.amount)
+  end
+
+  def base_price
+    product.amount
   end
 end

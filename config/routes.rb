@@ -21,6 +21,9 @@ Rails.application.routes.draw do
 
       scope 'cart' do
         get '', to: 'orders#cart'
+        post 'add', to: 'orders#add'
+        post 'update', to: 'orders#update'
+        delete 'remove', to: 'orders#remove'
       end
 
       namespace :profile do

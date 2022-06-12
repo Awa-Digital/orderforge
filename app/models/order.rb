@@ -34,6 +34,4 @@ class Order < ApplicationRecord
   def delivery_address
     Address.find_by(address_id)
   end
-
-  # def method_name; end
 end

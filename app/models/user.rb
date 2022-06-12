@@ -53,10 +53,15 @@ class User < ApplicationRecord
   end
 
   def cart
-    orders.find_by(status: 'initiated')
+    @cart = orders.find_by(status: 'initiated')
+    if @cart.present?
+      @cart
+    else
+      start_cart
+    end
   end
 
   def start_cart
-   orders.find_or_create_by!(status: 'initiated')
+    orders.find_or_create_by!(status: 'initiated')
   end
 end

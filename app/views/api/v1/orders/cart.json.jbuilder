@@ -13,7 +13,7 @@ json.data do
       json.subtotal item.subtotal
       json.product do
         json.id item.product.id
-        json.name item.product.name
+        json.title item.product.title
         json.amount item.product.amount
         json.image item.product.image
       end
