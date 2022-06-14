@@ -3,10 +3,12 @@ class Order < ApplicationRecord
   has_many :order_items
   has_one :payment
 
+  validates :status, inclusion: { in: %w[initiated completed], message: '%{value} is not a valid status' }
+
   before_save :generate_reference_id
 
   def as_json(options = {})
-    options[:methods] = %i[total]
+    options[:methods] = %i[total delivery_charge vat_charge delivery_address]
     # options[:except] = %i[created_at place_id recipient_id]
     super
   end
@@ -19,7 +21,7 @@ class Order < ApplicationRecord
     order_items.sum(:subtotal)
   end
 
-  def delivery_charges
+  def delivery_charge
     0.00
   end
 

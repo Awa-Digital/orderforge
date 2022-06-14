@@ -26,6 +26,11 @@ Rails.application.routes.draw do
         delete 'remove', to: 'orders#remove'
       end
 
+      scope 'payment' do
+        post 'initiate', to: 'payment#new'
+        post 'verify', to: 'payment#confirm'
+      end
+
       namespace :profile do
         scope 'addresses' do
           post 'add', to: 'addresses#new_address'

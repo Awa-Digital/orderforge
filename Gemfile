@@ -65,3 +65,8 @@ gem 'forest_liana'
 gem 'jwt'
 gem 'kaminari'
 gem 'ransack', github: 'activerecord-hackery/ransack'
+gem 'sendgrid-ruby'
+gem 'paystack'
+gem 'httparty'
+gem "faraday-detailed_logger"
+gem "typhoeus"
