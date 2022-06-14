@@ -10,7 +10,7 @@ namespace :export do
     end
 
     Ingredient.all.each do |ing|
-      excluded_keys = %w[created_at updated_at id]
+      excluded_keys = %w[created_at updated_at id icon]
       serialized = ing
                    .serializable_hash
                    .delete_if { |key, _value| excluded_keys.include?(key) }
@@ -18,7 +18,7 @@ namespace :export do
     end
 
     Product.all.each do |pro|
-      excluded_keys = %w[created_at updated_at id]
+      excluded_keys = %w[created_at updated_at id image]
       serialized = pro
                    .serializable_hash
                    .delete_if { |key, _value| excluded_keys.include?(key) }
