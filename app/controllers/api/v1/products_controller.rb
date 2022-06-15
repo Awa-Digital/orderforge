@@ -1,7 +1,14 @@
 class Api::V1::ProductsController < Api::V1::BaseController
   before_action :set_product, only: %i[show like unlike]
+  skip_before_action :authenticate_user, only: %i[index show search]
+  before_action :authenticate_guest, only: %i[index show search]
+
   def index
-    @products = @mobile_user.products
+    @products = if @mobile_user.present?
+                  @mobile_user.products
+                else
+                  Product.all
+                end
     success({ message: 'products fetched successfully', data: @products })
   end
 
@@ -38,7 +45,11 @@ class Api::V1::ProductsController < Api::V1::BaseController
   def set_product
     @product = Product.find_by(id: params[:id])
     if @product.present?
-      @product = @mobile_user.product(@product.id)
+      if @mobile_user.present?
+        @product = @mobile_user.product(@product.id)
+      else
+        @product
+      end
     else
       notfound({ message: 'No product found with this id' })
     end
