@@ -6,6 +6,7 @@ class Product < ApplicationRecord
   has_many :ingredients, through: :product_ingredients
   has_many :favourite_items
   has_many :order_items
+  has_many :ratings
 
   validates :title,
             :description,
@@ -13,7 +14,7 @@ class Product < ApplicationRecord
             :amount, presence: true
 
   def as_json(options = {})
-    options[:methods] = %i[category]
+    options[:methods] = %i[category review_rating review_count]
     options[:except] = %i[created_at updated_at user_id]
     super
   end
@@ -30,5 +31,17 @@ class Product < ApplicationRecord
 
   def liked?(user)
     user.favourite.favourite_items.find_by(product_id: id).present?
+  end
+
+  def review_rating
+    if review_count > 0
+      (ratings.sum(:rating) / ratings.count)
+    else
+      0
+    end
+  end
+
+  def review_count
+    ratings.count
   end
 end

@@ -4,6 +4,7 @@ class User < ApplicationRecord
   has_one :favourite
   has_one :notification_setting
   has_many :addresses
+  has_many :ratings
 
   has_secure_password
 
