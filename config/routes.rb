@@ -22,6 +22,7 @@ Rails.application.routes.draw do
       scope 'cart' do
         get '', to: 'orders#cart'
         post 'add', to: 'orders#add'
+        post 'create-and-add-to-cart', to: 'orders#add_multi'
         post 'update', to: 'orders#update'
         delete 'remove', to: 'orders#remove'
       end

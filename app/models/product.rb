@@ -14,7 +14,7 @@ class Product < ApplicationRecord
             :amount, presence: true
 
   def as_json(options = {})
-    options[:methods] = %i[category product_ingredients review_rating review_count]
+    options[:methods] = %i[category ingredients review_rating review_count]
     options[:except] = %i[created_at updated_at user_id]
     super
   end
