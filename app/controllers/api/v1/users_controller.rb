@@ -1,6 +1,6 @@
 # User Managment
 class Api::V1::UsersController < Api::V1::BaseController
-  skip_before_action :authenticate_user
+  skip_before_action :authenticate_user, except: [:show]
 
   def signup
     user = User.new(user_params)
@@ -11,7 +11,8 @@ class Api::V1::UsersController < Api::V1::BaseController
     rescue StandardError => e
       unprocessable({ message: e.message, data: user.errors })
     else
-      success({ message: 'user successfully signed up', data: user })
+      @token = generate_auth_token(user)
+      success({ message: 'user successfully signed up', data: { user: user, auth: { token: @token } } })
     end
   end
 
@@ -31,6 +32,10 @@ class Api::V1::UsersController < Api::V1::BaseController
     else
       unauthorized({ message: 'invalid username, email or password' })
     end
+  end
+
+  def show
+    success({ message: 'user details fetched successfully', data: @mobile_user })
   end
 
   private
