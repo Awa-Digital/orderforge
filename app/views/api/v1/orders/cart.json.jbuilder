@@ -5,7 +5,8 @@ json.data do
   json.order_id @cart.id
   json.order_status @cart.status
   json.order_reference @cart.reference
-  json.order_total @cart.total
+  json.order_total @cart.order_total
+  json.products_total @cart.total
   json.vat_charge @cart.vat_charge.to_s
   json.delivery_charge @cart.delivery_charge.to_s
   json.items do

@@ -29,6 +29,10 @@ class Order < ApplicationRecord
     (total.to_i * 0.075)
   end
 
+  def order_total
+    total + vat_charge + delivery_charge
+  end
+
   def items
     order_items
   end
