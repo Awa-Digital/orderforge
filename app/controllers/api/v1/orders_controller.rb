@@ -16,7 +16,7 @@ class Api::V1::OrdersController < Api::V1::BaseController
 
   def add_to_cart(product_id, quantity, cart)
     @item = cart.items.find_or_create_by(product_id: product_id)
-    @item.quantity = @item.quantity + quantity.to_i
+    @item.quantity = quantity.to_i
     begin
       @item.save
     rescue StandardError => e
