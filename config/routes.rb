@@ -43,7 +43,7 @@ Rails.application.routes.draw do
 
         scope 'notification' do
           get 'settings', to: 'notification#settings'
-          get 'settings/update', to: 'notification#update_settings'
+          post 'settings/update', to: 'notification#update_settings'
         end
       end
     end
