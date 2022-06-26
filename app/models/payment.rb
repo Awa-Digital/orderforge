@@ -12,7 +12,7 @@ class Payment < ApplicationRecord
   end
 
   def set_paid
-    paid = false
+    self.paid = false
   end
 
   def discount

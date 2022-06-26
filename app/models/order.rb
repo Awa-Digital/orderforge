@@ -5,7 +5,7 @@ class Order < ApplicationRecord
   belongs_to :address, optional: true
   belongs_to :user
 
-  validates :status, inclusion: { in: %w[initiated paid completed], message: '%{value} is not a valid status' }
+  validates :status, inclusion: { in: %w[initiated paid completed], message: "'%{value}' is not a valid status" }
 
   before_create :set_recipient, :generate_reference_id
   after_create :generate_payment
@@ -23,7 +23,7 @@ class Order < ApplicationRecord
   def set_recipient
     self.recipient_name = user.full_name
     self.recipient_phone = user.phone_number
-    completed = false
+    self.completed = false
   end
 
   def generate_payment
