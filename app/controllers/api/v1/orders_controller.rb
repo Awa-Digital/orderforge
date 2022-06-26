@@ -60,6 +60,16 @@ class Api::V1::OrdersController < Api::V1::BaseController
     end
   end
 
+  def attach_address
+    @address = @mobile_user.addresses.find_by(id: params[:address_id])
+    if @address.present?
+      @mobile_user.cart.update(address_id: @address.id)
+      success({ message: 'Address has been assigned successfully', data: @address })
+    else
+      notfound({ message: 'No address found with this id for this user' })
+    end
+  end
+
   private
 
   def set_product

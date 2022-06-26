@@ -9,6 +9,10 @@ json.data do
   json.products_total @cart.total
   json.vat_charge @cart.vat_charge.to_s
   json.delivery_charge @cart.delivery_charge.to_s
+  json.recipient do
+    json.name @cart.recipient_name
+    json.phone @cart.recipient_phone
+  end
   json.items do
     json.array! @items do |item|
       json.id item.id

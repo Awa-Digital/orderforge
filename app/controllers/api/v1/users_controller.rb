@@ -11,9 +11,13 @@ class Api::V1::UsersController < Api::V1::BaseController
     rescue StandardError => e
       unprocessable({ message: e.message, data: user.errors })
     else
-      @token = generate_auth_token(user)
-      success({ message: 'user successfully signed up', data: { user: user, auth: { token: @token } } })
+      assign_token_to_user(user)
     end
+  end
+
+  def assign_token_to_user(user)
+    @token = generate_auth_token(user)
+    success({ message: 'user successfully signed up', data: { user: user, auth: { token: @token } } })
   end
 
   def login
@@ -27,8 +31,7 @@ class Api::V1::UsersController < Api::V1::BaseController
 
   def log_user_in(_user)
     if @user.authenticate(params[:password])
-      @token = generate_auth_token(@user)
-      success({ message: 'authorized!', data: { auth: { token: @token } } })
+      assign_token_to_user(@user)
     else
       unauthorized({ message: 'invalid username, email or password' })
     end

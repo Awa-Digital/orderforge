@@ -2,10 +2,12 @@
 class Order < ApplicationRecord
   has_many :order_items
   has_one :payment
+  belongs_to :address
+  belongs_to :user
 
   validates :status, inclusion: { in: %w[initiated completed], message: '%{value} is not a valid status' }
 
-  before_save :generate_reference_id
+  before_create :set_recipient, :generate_reference_id
 
   def as_json(options = {})
     options[:methods] = %i[total delivery_charge vat_charge delivery_address]
@@ -15,6 +17,11 @@ class Order < ApplicationRecord
 
   def generate_reference_id
     self.reference = "JAZ#{DateTime.now.to_i}"
+  end
+
+  def set_recipient
+    self.recipient_name = user.full_name
+    self.recipient_phone = user.phone_number
   end
 
   def total
@@ -38,6 +45,6 @@ class Order < ApplicationRecord
   end
 
   def delivery_address
-    Address.find_by(address_id)
+    address
   end
 end

@@ -26,6 +26,7 @@ Rails.application.routes.draw do
         post 'create-and-add-to-cart', to: 'orders#add_multi'
         post 'update', to: 'orders#update'
         delete 'remove', to: 'orders#remove'
+        post 'add/address', to: 'orders#attach_address'
       end
 
       scope 'payment' do

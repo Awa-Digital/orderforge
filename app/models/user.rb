@@ -65,4 +65,8 @@ class User < ApplicationRecord
   def start_cart
     orders.find_or_create_by!(status: 'initiated')
   end
+
+  def full_name
+    "#{first_name} #{last_name}"
+  end
 end
