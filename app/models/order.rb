@@ -11,7 +11,7 @@ class Order < ApplicationRecord
   after_create :generate_payment
 
   def as_json(options = {})
-    options[:methods] = %i[delivery_charge vat_charge delivery_address]
+    options[:methods] = %i[delivery_charge vat_charge delivery_address discount_amount discounted_price order_items]
     # options[:except] = %i[created_at place_id recipient_id]
     super
   end
@@ -45,6 +45,18 @@ class Order < ApplicationRecord
 
   def order_total
     (total + vat_charge + delivery_charge).to_f
+  end
+
+  def discounted_price
+    order_total - discount_amount
+  end
+
+  def discount_amount
+    if payment.voucher.present?
+      (order_total * (payment.voucher.discount_rate / 100))
+    else
+      0.00
+    end
   end
 
   def items

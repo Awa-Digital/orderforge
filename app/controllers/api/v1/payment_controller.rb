@@ -9,6 +9,22 @@ class Api::V1::PaymentController < Api::V1::BaseController
     end
   end
 
+  def attach_discount
+    @voucher = Voucher.find_by(discount_code: params[:discount_code])
+    if @voucher.present?
+      @mobile_user.cart.payment.update(voucher_id: @voucher.id)
+      show_cart
+    else
+      notfound({ message: 'This voucher is not available' })
+    end
+  end
+
+  def show_cart
+    @cart_render = @mobile_user.cart
+    @message = 'Discount Applied'
+    render 'api/v1/orders/cart'
+  end
+
   def initialize_payment_request(cart)
     payment = cart.payment
     if payment.present? && payment.paid == true

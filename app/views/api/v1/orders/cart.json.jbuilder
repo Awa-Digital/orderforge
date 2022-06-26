@@ -8,6 +8,8 @@ json.data do
   json.order_reference @cart.reference
   json.order_total @cart.order_total
   json.products_total @cart.total
+  json.discount @cart.discount_amount
+  json.discounted_price @cart.discounted_price
   json.vat_charge @cart.vat_charge.to_s
   json.delivery_charge @cart.delivery_charge.to_s
   json.recipient do

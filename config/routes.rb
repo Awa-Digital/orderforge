@@ -31,6 +31,7 @@ Rails.application.routes.draw do
 
       scope 'payment' do
         post 'initiate', to: 'payment#new'
+        post 'add/discount', to: 'payment#attach_discount'
         post 'verify', to: 'payment#confirm'
       end
 
@@ -45,6 +46,11 @@ Rails.application.routes.draw do
         scope 'notification' do
           get 'settings', to: 'notification#settings'
           post 'settings/update', to: 'notification#update_settings'
+        end
+
+        scope 'transactions' do
+          get 'all', to: 'transactions#index'
+          get 'show', to: 'transactions#show'
         end
       end
     end

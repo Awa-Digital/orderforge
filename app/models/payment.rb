@@ -6,7 +6,7 @@ class Payment < ApplicationRecord
   before_create :set_paid
 
   def as_json(options = {})
-    # options[:methods] = %i[delivery_charge vat_charge delivery_address]
+    options[:methods] = %i[voucher]
     options[:except] = %i[created_at updated_at user_id]
     super
   end
