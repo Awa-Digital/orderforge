@@ -1,6 +1,7 @@
 json.status 'success'
 json.message @message
-
+@cart = @cart_render
+@items = @cart.items.order(created_at: :desc)
 json.data do
   json.order_id @cart.id
   json.order_status @cart.status
@@ -27,4 +28,5 @@ json.data do
     end
   end
   json.delivery_address @cart.delivery_address
+  json.payment @cart.payment
 end

@@ -3,6 +3,7 @@ class OrderItem < ApplicationRecord
   belongs_to :product
 
   before_save :calculate_subtotal
+  after_save :update_parents
 
   def as_json(options = {})
     options[:methods] = %i[subtotal base_price]
@@ -12,6 +13,10 @@ class OrderItem < ApplicationRecord
 
   def calculate_subtotal
     self.subtotal = (quantity * product.amount)
+  end
+
+  def update_parents
+    order.update_totals
   end
 
   def base_price
