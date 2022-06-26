@@ -15,7 +15,7 @@ json.data do
     json.phone @transaction.recipient_phone
   end
   json.items do
-    json.array! @items do |item|
+    json.array! @transaction.items do |item|
       json.id item.id
       json.quantity item.quantity
       json.subtotal item.subtotal
