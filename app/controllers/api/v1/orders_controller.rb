@@ -14,7 +14,8 @@ class Api::V1::OrdersController < Api::V1::BaseController
     begin
       @item.save
     rescue StandardError => e
-      unprocessable({ message: e.message, data: @item.errors })
+      puts e.message
+      puts 'PRODUCT DID NOT SAVE'
     end
   end
 
