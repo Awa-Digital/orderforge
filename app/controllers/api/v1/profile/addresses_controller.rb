@@ -39,6 +39,6 @@ class Api::V1::Profile::AddressesController < Api::V1::Profile::BaseController
 
   # Only allow a list of trusted parameters through.
   def address_params
-    params.require(:address).permit(:street, :city, :state, :country)
+    params.require(:address).permit(:street, :city, :state, :country, :house_number)
   end
 end
