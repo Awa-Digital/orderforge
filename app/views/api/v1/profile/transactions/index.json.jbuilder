@@ -4,6 +4,7 @@ json.transactions do
   json.array! @transactions do |transaction|
     json.order_id transaction.id
     json.order_status transaction.status
+    json.date transaction.updated_at
     json.order_reference transaction.reference
     json.order_total transaction.order_total
     json.products_total transaction.total
