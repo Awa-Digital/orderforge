@@ -60,8 +60,8 @@ class Api::V1::OrdersController < Api::V1::BaseController
     )
     success({ message: 'Recipient has been updated', data: {
               recipient: {
-                recipient_name: @mobile_user.cart.recipient_name,
-                recipient_phone: @mobile_user.cart.recipient_phone
+                name: @mobile_user.cart.recipient_name,
+                phone: @mobile_user.cart.recipient_phone
               }
             } })
   end
