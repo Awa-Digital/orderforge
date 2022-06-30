@@ -27,6 +27,7 @@ Rails.application.routes.draw do
         post 'update', to: 'orders#update'
         delete 'remove', to: 'orders#remove'
         post 'add/address', to: 'orders#attach_address'
+        post 'add/recipient', to: 'orders#attach_recipient'
       end
 
       scope 'payment' do

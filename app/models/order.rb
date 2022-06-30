@@ -2,17 +2,18 @@
 class Order < ApplicationRecord
   has_many :order_items
   has_one :payment
-  has_one :order_address
+  has_one :order_address, dependent: :destroy
   # belongs_to :address, optional: true
   belongs_to :user
 
   validates :status, inclusion: { in: %w[initiated paid completed], message: "'%{value}' is not a valid status" }
 
-  before_create :set_recipient, :generate_reference_id
-  after_create :generate_payment, :generate_cart_address
+  before_create :generate_reference_id
+  after_create :generate_payment, :generate_cart_address, :set_recipient
 
   def as_json(options = {})
-    options[:methods] = %i[delivery_charge vat_charge delivery_address discount_amount discounted_price order_items]
+    options[:methods] =
+      %i[delivery_charge vat_charge delivery_address discount_amount discounted_price order_items payment]
     # options[:except] = %i[created_at place_id recipient_id]
     super
   end
@@ -22,9 +23,7 @@ class Order < ApplicationRecord
   end
 
   def set_recipient
-    self.recipient_name = user.full_name
-    self.recipient_phone = user.phone_number
-    self.completed = false
+    update(recipient_name: user.full_name, recipient_phone: user.phone_number)
   end
 
   def generate_cart_address
