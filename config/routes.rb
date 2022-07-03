@@ -24,6 +24,8 @@ Rails.application.routes.draw do
         get '', to: 'orders#cart'
         post 'add', to: 'orders#add'
         post 'create-and-add-to-cart', to: 'orders#add_multi'
+        post 'guest/create-and-add-to-cart', to: 'orders#create_guest_cart'
+        post 'guest/update-address', to: 'orders#update_address'
         post 'update', to: 'orders#update'
         delete 'remove', to: 'orders#remove'
         post 'add/address', to: 'orders#attach_address'

@@ -4,7 +4,7 @@ class Order < ApplicationRecord
   has_one :payment
   has_one :order_address, dependent: :destroy
   # belongs_to :address, optional: true
-  belongs_to :user
+  belongs_to :user, optional: true
 
   validates :status, inclusion: { in: %w[initiated paid completed], message: "'%{value}' is not a valid status" }
 
@@ -23,7 +23,7 @@ class Order < ApplicationRecord
   end
 
   def set_recipient
-    update(recipient_name: user.full_name, recipient_phone: user.phone_number)
+    update(recipient_name: user.full_name, recipient_phone: user.phone_number, recipient_email: user.email) unless guest?
   end
 
   def generate_cart_address
@@ -31,7 +31,11 @@ class Order < ApplicationRecord
   end
 
   def generate_payment
-    create_payment(user_id: user.id, total: order_total)
+    if guest?
+      create_payment(total: order_total)
+    else
+      create_payment(user_id: user.id, total: order_total)
+    end
   end
 
   def update_totals
@@ -69,5 +73,17 @@ class Order < ApplicationRecord
 
   def delivery_address
     order_address
+  end
+
+  def recipient
+    {
+      "name": recipient_name,
+      "phone": recipient_phone,
+      "email": recipient_email
+    }
+  end
+
+  def guest?
+    !user.present?
   end
 end

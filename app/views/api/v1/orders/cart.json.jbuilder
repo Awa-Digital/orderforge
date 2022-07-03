@@ -15,6 +15,7 @@ json.data do
   json.recipient do
     json.name @cart.recipient_name
     json.phone @cart.recipient_phone
+    json.email @cart.recipient_email
   end
   json.items do
     json.array! @items do |item|

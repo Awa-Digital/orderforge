@@ -9,7 +9,7 @@ class Paystacky
     result = transactions.initializeTransaction(
       reference: trans.reference,
       amount: trans.in_kobo.round(0).to_s,
-      email: trans.user.email
+      email: trans.order.recipient_email
     )
     trans.update(gateway_reference: result['data']['access_code'], checkout_url: result['data']['authorization_url'],
                  gateway: 'Paystack')

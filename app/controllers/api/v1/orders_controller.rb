@@ -1,4 +1,6 @@
 class Api::V1::OrdersController < Api::V1::BaseController
+  skip_before_action :authenticate_user, only: %i[cart create_guest_cart update_address remove attach_recipient]
+  before_action :authenticate_guest, only: %i[cart create_guest_cart update_address remove attach_recipient]
   before_action :set_product, only: %i[add update remove]
   before_action :set_cart
 
@@ -30,8 +32,26 @@ class Api::V1::OrdersController < Api::V1::BaseController
     render 'cart'
   end
 
+  def create_guest_cart
+    items = params[:items]
+    items.each do |item|
+      @product = Product.find_by(id: item[:product_id])
+      add_to_cart(item[:product_id], item[:quantity], @cart) if @product.present?
+    end
+    @cart_render = Order.find(@cart.id)
+    @message = 'Items have been added to cart'
+    render 'cart'
+  end
+
+  def update_address
+    @cart = Order.find_by(id: params[:order_id])
+    @cart.order_address.update(
+      JSON.parse(params.to_json).slice('house_number', 'street', 'city', 'state', 'country')
+    )
+    success({ message: 'Address has been updated successfully', data: @cart.order_address })
+  end
+
   def remove
-    @cart = @mobile_user.cart
     @item = @cart.items.find_by(product_id: @product.id)
     if @item.present?
       @item.destroy
@@ -54,14 +74,19 @@ class Api::V1::OrdersController < Api::V1::BaseController
   end
 
   def attach_recipient
-    @mobile_user.cart.update(
+    recipient = {
       recipient_name: params[:recipient]['name'],
       recipient_phone: params[:recipient]['phone']
+    }
+    recipient[:recipient_email] = params[:recipient]['email'] unless @mobile_user.present?
+    @cart.update(
+      recipient
     )
     success({ message: 'Recipient has been updated', data: {
               recipient: {
-                name: @mobile_user.cart.recipient_name,
-                phone: @mobile_user.cart.recipient_phone
+                name: @cart.recipient_name,
+                phone: @cart.recipient_phone,
+                email: @cart.recipient_email
               }
             } })
   end
@@ -78,7 +103,24 @@ class Api::V1::OrdersController < Api::V1::BaseController
   end
 
   def set_cart
-    @cart = @mobile_user.cart
+    @cart = if @mobile_user.present?
+              @mobile_user.cart
+            else
+              @order = Order.find_by(id: params[:order_id])
+              create_or_find_order(@order)
+            end
+  end
+
+  def create_or_find_order(order)
+    if order.present?
+      if order.status == 'initiated'
+        order
+      else
+        Order.create(status: 'initiated')
+      end
+    else
+      Order.create(status: 'initiated')
+    end
   end
 end
 

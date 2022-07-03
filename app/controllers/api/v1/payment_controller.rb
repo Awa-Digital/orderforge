@@ -1,7 +1,10 @@
 # to handle payment request
 class Api::V1::PaymentController < Api::V1::BaseController
+  skip_before_action :authenticate_user, only: %i[new confirm]
+  before_action :authenticate_guest, only: %i[new confirm]
+  before_action :set_cart
+
   def new
-    @cart = @mobile_user.cart
     if @cart.present?
       initialize_payment_request(@cart)
     else
@@ -55,7 +58,11 @@ class Api::V1::PaymentController < Api::V1::BaseController
   end
 
   def generate_payment(cart)
-    cart.create_payment(user_id: @mobile_user.id, total: cart.order_total)
+    if @mobile_user.present?
+      cart.create_payment(user_id: @mobile_user.id, total: cart.order_total)
+    else
+      cart.create_payment(total: cart.order_total)
+    end
   end
 
   # Confirm Payment
@@ -102,5 +109,28 @@ class Api::V1::PaymentController < Api::V1::BaseController
         cart: cart
       }
     }, status: 200
+  end
+
+  private
+
+  def set_cart
+    @cart = if @mobile_user.present?
+              @mobile_user.cart
+            else
+              @order = Order.find_by(id: params[:order_id])
+              create_or_find_order(@order)
+            end
+  end
+
+  def create_or_find_order(order)
+    if order.present?
+      if order.status == 'initiated'
+        order
+      else
+        Order.create(status: 'initiated')
+      end
+    else
+      Order.create(status: 'initiated')
+    end
   end
 end
