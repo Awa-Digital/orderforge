@@ -9,6 +9,7 @@ Rails.application.routes.draw do
         post 'signup', to: 'users#signup'
         post 'login', to: 'users#login'
         get 'show', to: 'users#show'
+        put 'update', to: 'users#update'
       end
 
       scope 'products' do

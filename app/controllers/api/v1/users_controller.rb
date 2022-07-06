@@ -1,6 +1,6 @@
 # User Managment
 class Api::V1::UsersController < Api::V1::BaseController
-  skip_before_action :authenticate_user, except: [:show]
+  skip_before_action :authenticate_user, except: %i[show update]
 
   def signup
     user = User.new(user_params)
@@ -40,6 +40,11 @@ class Api::V1::UsersController < Api::V1::BaseController
 
   def show
     success({ message: 'user details fetched successfully', data: @mobile_user })
+  end
+
+  def update
+    @mobile_user.update(user_params)
+    success({ message: 'Profile has been updated successfully', data: @mobile_user })
   end
 
   private
