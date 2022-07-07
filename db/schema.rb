@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_07_07_085320) do
+ActiveRecord::Schema.define(version: 2022_07_07_092633) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -166,6 +166,8 @@ ActiveRecord::Schema.define(version: 2022_07_07_085320) do
     t.string "title"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "category_id"
+    t.index ["category_id"], name: "index_subcategories_on_category_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -195,4 +197,5 @@ ActiveRecord::Schema.define(version: 2022_07_07_085320) do
   add_foreign_key "products", "subcategories"
   add_foreign_key "ratings", "products"
   add_foreign_key "ratings", "users"
+  add_foreign_key "subcategories", "categories"
 end
