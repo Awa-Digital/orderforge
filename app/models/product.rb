@@ -7,6 +7,7 @@ class Product < ApplicationRecord
   has_many :favourite_items
   has_many :order_items
   has_many :ratings
+  belongs_to :subcategories
 
   validates :title,
             :description,

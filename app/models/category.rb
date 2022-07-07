@@ -1,4 +1,6 @@
 class Category < ApplicationRecord
+  mount_uploader :image, CatUploader
+
   has_many :products
 
   def as_json(options = {})

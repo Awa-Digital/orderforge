@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_07_03_003054) do
+ActiveRecord::Schema.define(version: 2022_07_07_084930) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -147,6 +147,8 @@ ActiveRecord::Schema.define(version: 2022_07_03_003054) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.boolean "liked"
+    t.bigint "subcategory_id"
+    t.index ["subcategory_id"], name: "index_products_on_subcategory_id"
   end
 
   create_table "ratings", force: :cascade do |t|
@@ -157,6 +159,12 @@ ActiveRecord::Schema.define(version: 2022_07_03_003054) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["product_id"], name: "index_ratings_on_product_id"
     t.index ["user_id"], name: "index_ratings_on_user_id"
+  end
+
+  create_table "subcategories", force: :cascade do |t|
+    t.string "title"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "users", force: :cascade do |t|
@@ -183,6 +191,7 @@ ActiveRecord::Schema.define(version: 2022_07_03_003054) do
   add_foreign_key "order_addresses", "orders"
   add_foreign_key "product_ingredients", "ingredients"
   add_foreign_key "product_ingredients", "products"
+  add_foreign_key "products", "subcategories"
   add_foreign_key "ratings", "products"
   add_foreign_key "ratings", "users"
 end
