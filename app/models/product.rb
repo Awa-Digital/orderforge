@@ -2,12 +2,12 @@ class Product < ApplicationRecord
   mount_uploader :image, ProductUploader
 
   belongs_to :category
+  belongs_to :subcategory, optional: true
   has_many :product_ingredients
   has_many :ingredients, through: :product_ingredients
   has_many :favourite_items
   has_many :order_items
   has_many :ratings
-  belongs_to :subcategories
 
   validates :title,
             :description,
@@ -15,8 +15,8 @@ class Product < ApplicationRecord
             :amount, presence: true
 
   def as_json(options = {})
-    options[:methods] = %i[category ingredients review_rating review_count]
-    options[:except] = %i[created_at updated_at user_id]
+    options[:methods] = %i[category subcategory ingredients review_rating review_count]
+    options[:except] = %i[created_at updated_at user_id subcategory_id category_id]
     super
   end
 
