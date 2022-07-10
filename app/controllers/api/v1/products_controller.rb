@@ -1,15 +1,20 @@
 class Api::V1::ProductsController < Api::V1::BaseController
   before_action :set_product, only: %i[show like unlike]
+  before_action :set_products, only: %i[index grouped search]
   skip_before_action :authenticate_user, only: %i[index show search]
   before_action :authenticate_guest, only: %i[index show search]
 
   def index
+    success({ message: 'products fetched successfully', data: @products })
+  end
+
+  def grouped
     @products = if @mobile_user.present?
                   @mobile_user.products
                 else
                   Product.all
                 end
-    success({ message: 'products fetched successfully', data: @products })
+    render 'grouped'
   end
 
   def show
@@ -32,7 +37,7 @@ class Api::V1::ProductsController < Api::V1::BaseController
   end
 
   def search
-    @products = @mobile_user.products.ransack(params[:q]).result(distinct: true).page(params[:page]).per(params[:per_page])
+    @products = @products.ransack(params[:q]).result(distinct: true).page(params[:page]).per(params[:per_page])
     results = {
       products: @products, total_results: @products.count, results_per_page: @products.limit_value, total_pages: @products.total_pages,
       next_page: @products.next_page, last_page: @products.last_page?
@@ -53,5 +58,13 @@ class Api::V1::ProductsController < Api::V1::BaseController
     else
       notfound({ message: 'No product found with this id' })
     end
+  end
+
+  def set_products
+    @products = if @mobile_user.present?
+                  @mobile_user.products
+                else
+                  Product.all
+                end
   end
 end
