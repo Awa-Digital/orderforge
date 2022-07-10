@@ -1,8 +1,8 @@
 class Api::V1::ProductsController < Api::V1::BaseController
   before_action :set_product, only: %i[show like unlike]
   before_action :set_products, only: %i[index grouped search]
-  skip_before_action :authenticate_user, only: %i[index show search]
-  before_action :authenticate_guest, only: %i[index show search]
+  skip_before_action :authenticate_user, only: %i[index grouped show search]
+  before_action :authenticate_guest, only: %i[index grouped show search]
 
   def index
     success({ message: 'products fetched successfully', data: @products })
