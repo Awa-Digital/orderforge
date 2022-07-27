@@ -46,7 +46,7 @@ class Api::V1::OrdersController < Api::V1::BaseController
   def update_address
     @cart = Order.find_by(id: params[:order_id])
     @cart.order_address.update!(
-      JSON.parse(params.to_json).slice('house_number', 'street', 'city', 'state', 'country')
+      JSON.parse(params.to_json).except('id')
     )
     success({ message: 'Address has been updated successfully', data: @cart.order_address })
   end
@@ -65,7 +65,7 @@ class Api::V1::OrdersController < Api::V1::BaseController
     @address = @mobile_user.addresses.find_by(id: params[:address_id])
     if @address.present?
       @mobile_user.cart.order_address.update!(
-        JSON.parse(@address.to_json)
+        JSON.parse(@address.to_json).except('id')
       )
       success({ message: 'Address has been assigned successfully', data: @address })
     else

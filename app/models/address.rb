@@ -8,7 +8,7 @@ class Address < ApplicationRecord
 
   def as_json(options = {})
     # options[:methods] = %i[total]
-    options[:except] = %i[created_at updated_at user_id id]
+    options[:except] = %i[created_at updated_at user_id]
     super
   end
 end
