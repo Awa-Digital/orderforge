@@ -31,8 +31,8 @@ class User < ApplicationRecord
   end
 
   def generate_attributes
-    create_favourite
-    create_notification_setting
+    create_favourite unless favourite.present?
+    create_notification_setting unless notification_setting.present?
   end
 
   def products
