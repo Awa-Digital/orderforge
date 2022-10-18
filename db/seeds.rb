@@ -1,7 +1,24 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
-#   Character.create(name: 'Luke', movie: movies.first)
+Category.create({ 'title' => '🥩 Beef', 'description' => 'Beef inspired Burgers' })
+Category.create({ 'title' => '🍔 Regular', 'description' => 'Regular Burgers' })
+Category.create({ 'title' => '🍗 Chicken', 'description' => 'Chicken inspired burgers' })
+Category.create({ 'title' => '🐟 Fish', 'description' => 'Fish inspired burgers' })
+Category.create({ 'title' => '🥬 Veggie', 'description' => 'Vegetables inspired burgers' })
+Ingredient.create({ 'name' => 'Bell Pepper' })
+Ingredient.create({ 'name' => 'Pepper' })
+Ingredient.create({ 'name' => 'Lettuce' })
+Ingredient.create({ 'name' => 'Bread' })
+Ingredient.create({ 'name' => 'Cheese' })
+Ingredient.create({ 'name' => 'Egg' })
+Ingredient.create({ 'name' => 'Garlic' })
+Ingredient.create({ 'name' => 'Onions' })
+Ingredient.create({ 'name' => 'Tomato' })
+Ingredient.create({ 'name' => 'Beef' })
+Ingredient.create({ 'name' => 'Chicken' })
+Ingredient.create({ 'name' => 'Potato' })
+Ingredient.create({ 'name' => 'Cucumber' })
+Ingredient.create({ 'name' => 'Broccoli' })
+Ingredient.create({ 'name' => 'Fries' })
+Product.create({ 'title' => 'Beef Cheese Burger', 'description' => nil, 'category_id' => 1, 'amount' => 0.253e4,
+                 'liked' => nil })
+Product.create({ 'title' => 'Tuna Fish Sandwich', 'description' => 'Fish bread sandwich with tuna', 'category_id' => 4,
+                 'amount' => 0.35e4, 'liked' => nil })

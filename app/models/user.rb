@@ -2,7 +2,9 @@ class User < ApplicationRecord
   has_many :orders
   has_many :payments
   has_one :favourite
+  has_one :notification_setting
   has_many :addresses
+  has_many :ratings
 
   has_secure_password
 
@@ -18,7 +20,7 @@ class User < ApplicationRecord
   validates :phone_number, length: { is: 13 }
   validates :password, length: { minimum: 8 }
 
-  after_create :generate_favourites
+  after_create :generate_attributes
 
   # scope :favourites, -> (user) { where(products.liked:  true)}
 
@@ -28,8 +30,9 @@ class User < ApplicationRecord
     super
   end
 
-  def generate_favourites
+  def generate_attributes
     create_favourite
+    create_notification_setting
   end
 
   def products
@@ -48,5 +51,22 @@ class User < ApplicationRecord
     p = Product.find(id)
     p.liked = p.liked?(self)
     p
+  end
+
+  def cart
+    @cart = orders.find_by(status: 'initiated')
+    if @cart.present?
+      @cart
+    else
+      start_cart
+    end
+  end
+
+  def start_cart
+    orders.find_or_create_by!(status: 'initiated')
+  end
+
+  def full_name
+    "#{first_name} #{last_name}"
   end
 end

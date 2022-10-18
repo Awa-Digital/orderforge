@@ -8,15 +8,36 @@ Rails.application.routes.draw do
       scope 'auth' do
         post 'signup', to: 'users#signup'
         post 'login', to: 'users#login'
+        get 'show', to: 'users#show'
+        put 'update', to: 'users#update'
       end
 
       scope 'products' do
         get 'all', to: 'products#index'
+        get 'grouped', to: 'products#grouped'
         get 'product', to: 'products#show'
         post 'product/like', to: 'products#like'
         get 'favourites', to: 'products#favourites'
         post 'product/unlike', to: 'products#unlike'
         get 'search', to: 'products#search'
+      end
+
+      scope 'cart' do
+        get '', to: 'orders#cart'
+        post 'add', to: 'orders#add'
+        post 'create-and-add-to-cart', to: 'orders#add_multi'
+        post 'guest/create-and-add-to-cart', to: 'orders#create_guest_cart'
+        post 'guest/update-address', to: 'orders#update_address'
+        post 'update', to: 'orders#update'
+        delete 'remove', to: 'orders#remove'
+        post 'add/address', to: 'orders#attach_address'
+        post 'add/recipient', to: 'orders#attach_recipient'
+      end
+
+      scope 'payment' do
+        post 'initiate', to: 'payment#new'
+        post 'add/discount', to: 'payment#attach_discount'
+        post 'verify', to: 'payment#confirm'
       end
 
       namespace :profile do
@@ -25,6 +46,16 @@ Rails.application.routes.draw do
           get 'all', to: 'addresses#index'
           get 'show', to: 'addresses#show'
           delete 'remove', to: 'addresses#remove'
+        end
+
+        scope 'notification' do
+          get 'settings', to: 'notification#settings'
+          post 'settings/update', to: 'notification#update_settings'
+        end
+
+        scope 'transactions' do
+          get 'all', to: 'transactions#index'
+          get 'show', to: 'transactions#show'
         end
       end
     end

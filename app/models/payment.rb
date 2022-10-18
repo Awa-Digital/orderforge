@@ -1,21 +1,62 @@
 class Payment < ApplicationRecord
   belongs_to :order
-  belongs_to :user
-  # has_one :voucher, optional: true
+  belongs_to :user, optional: true
+  belongs_to :voucher, optional: true
+
+  before_create :set_paid
+
+  def as_json(options = {})
+    options[:methods] = %i[voucher]
+    options[:except] = %i[created_at updated_at user_id]
+    super
+  end
+
+  def set_paid
+    self.paid = false
+  end
 
   def discount
     if voucher.present?
-      0.00
+      (payment_total * (voucher.disount_rate / 100))
     else
-      (total * (voucher.disount_rate / 100))
+      0.00
     end
   end
 
-  def total
-    order.total - discount
+  def update_reference
+    self.reference = "#{order.reference}.T#{DateTime.now.to_i}"
+    save
+  end
+
+  def update_total(amount)
+    update(total: amount)
+  end
+
+  def initiate
+    update_reference
+    update_total(order.order_total)
+    Paystacky.new.init(self)
+  end
+
+  def payment_total
+    (order.order_total - discount).to_f
+  end
+
+  def in_kobo
+    (payment_total * 100).to_f
   end
 
   def charges
-    ((order.total * 0.0125) + 100)
+    order.delivery_charge + order.vat_charge
+  end
+
+  def complete
+    update(paid: true)
+    order.update(status: 'paid', paid: true)
+  end
+
+  def verify
+    payment_status = Paystacky.new.verify(self)['data']['status']
+    payment_status == 'success'
   end
 end

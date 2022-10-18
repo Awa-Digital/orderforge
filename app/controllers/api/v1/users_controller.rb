@@ -1,6 +1,7 @@
 # User Managment
 class Api::V1::UsersController < Api::V1::BaseController
-  skip_before_action :authenticate_user
+  skip_before_action :authenticate_user, except: %i[show update]
+
   def signup
     user = User.new(user_params)
     user.password = params[:password]
@@ -10,8 +11,14 @@ class Api::V1::UsersController < Api::V1::BaseController
     rescue StandardError => e
       unprocessable({ message: e.message, data: user.errors })
     else
-      success({ message: 'user successfully signed up', data: user })
+      assign_token_to_user(user)
     end
+  end
+
+  def assign_token_to_user(user)
+    @token = generate_auth_token(user)
+    success({ message: "#{user.first_name}, welcome to Jazzy's Juicy Burger!",
+              data: { user: user, auth: { token: @token } } })
   end
 
   def login
@@ -25,11 +32,19 @@ class Api::V1::UsersController < Api::V1::BaseController
 
   def log_user_in(_user)
     if @user.authenticate(params[:password])
-      @token = generate_auth_token(@user)
-      success({ message: 'authorized!', data: { auth: { token: @token } } })
+      assign_token_to_user(@user)
     else
       unauthorized({ message: 'invalid username, email or password' })
     end
+  end
+
+  def show
+    success({ message: 'user details fetched successfully', data: @mobile_user })
+  end
+
+  def update
+    @mobile_user.update(user_params)
+    success({ message: 'Profile has been updated successfully', data: @mobile_user })
   end
 
   private

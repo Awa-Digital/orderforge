@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  push_notifications: false
+  app_updates: false
+  promotions: false
+  receipts: false
+  newsletter: false
+
+two:
+  user: two
+  push_notifications: false
+  app_updates: false
+  promotions: false
+  receipts: false
+  newsletter: false

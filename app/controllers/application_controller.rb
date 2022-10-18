@@ -42,6 +42,13 @@ class ApplicationController < ActionController::Base
     }, status: 404
   end
 
+  def server_error(data)
+    render json: {
+      status: 'Server error',
+      message: data[:message],
+      data: data[:data]
+    }, status: 500
+  end
 
   def authenticate_user
     authorization_header = request.headers[:authorization]
@@ -63,6 +70,15 @@ class ApplicationController < ActionController::Base
       rescue StandardError
         unauthorized({ message: 'Invalid token' })
       end
+    end
+  end
+
+  def authenticate_guest
+    authorization_header = request.headers[:authorization]
+    if !authorization_header
+      @mobile_user = nil
+    else
+      authenticate_user
     end
   end
 end
