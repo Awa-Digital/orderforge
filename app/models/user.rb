@@ -5,6 +5,7 @@ class User < ApplicationRecord
   has_one :notification_setting
   has_many :addresses
   has_many :ratings
+  has_one :password_reset_token
 
   has_secure_password
 
@@ -68,5 +69,9 @@ class User < ApplicationRecord
 
   def full_name
     "#{first_name} #{last_name}"
+  end
+
+  def update_password_reset_token
+    password_reset_token.update_token
   end
 end

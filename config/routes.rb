@@ -10,6 +10,8 @@ Rails.application.routes.draw do
         post 'login', to: 'users#login'
         get 'show', to: 'users#show'
         put 'update', to: 'users#update'
+        post 'reset/request', to: 'users#request_password_reset'
+        post 'reset/update', to: 'users#reset_password'
       end
 
       scope 'products' do

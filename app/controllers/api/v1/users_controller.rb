@@ -47,6 +47,33 @@ class Api::V1::UsersController < Api::V1::BaseController
     success({ message: 'Profile has been updated successfully', data: @mobile_user })
   end
 
+  def request_password_reset
+    @user = User.find_by(email: params[:email])
+    if @user
+      @user.create_password_reset_token unless @user.password_reset_token.present?
+      @user.update_password_reset_token if @user.password_reset_token.present?
+      success({
+                message: 'if you are a registered user, you will get an email with instructions on how to reset your password'
+              })
+    end
+  end
+
+  def reset_password
+    @token = PasswordResetToken.find_by(token: params[:token])
+    if @token
+      if @token.valid! && @token.user.update(password: params[:password],
+                                             password_confirmation: params[:password_confirmation])
+        @token.expire
+        success({ message: 'Password reset complete' })
+      else
+        @token.expire unless @token.valid?
+        unprocessable({ message: "Password's don't match" })
+      end
+    else
+      unauthorized({ message: 'Password reset token not found or expired, request reset again' })
+    end
+  end
+
   private
 
   # Use callbacks to share common setup or constraints between actions.
