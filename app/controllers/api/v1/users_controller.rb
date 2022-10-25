@@ -19,7 +19,7 @@ class Api::V1::UsersController < Api::V1::BaseController
     account = AccountVerification.find_or_initialize_by(email: params[:email], phone: params[:phone_number])
     if account.valid_account?
       if account.save
-        success({ message: "OTP has been sent to the phone number '#{params[:phone_number]}'"})
+        success({ message: "OTP has been sent to the phone number '+#{params[:phone_number]}'"})
       else
         unprocessable({ message: "Something went wrong", data: account.errors })
       end
@@ -117,6 +117,6 @@ class Api::V1::UsersController < Api::V1::BaseController
 
   # Only allow a list of trusted parameters through.
   def user_params
-    params.require(:user).permit(:first_name, :last_name, :email, :phone_number, :password, :password_confirmation, :phone_otp)
+    params.require(:user).permit(:first_name, :last_name, :email, :phone_number, :password, :password_confirmation, :phone_otp, :avatar)
   end
 end
