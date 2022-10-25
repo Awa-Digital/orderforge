@@ -19,6 +19,9 @@ module JazzyBackend
     # in config/environments, which are processed later.
     #
     config.time_zone = 'Africa/Lagos'
+
+    config.autoload_paths += Dir[Rails.root / 'app/packages/*/app/*']
+    config.autoload_paths += Dir[Rails.root / 'app/packages/*/spec/*']
     # config.eager_load_paths << Rails.root.join("extras")
   end
 end

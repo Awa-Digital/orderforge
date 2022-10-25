@@ -10,10 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_22_093946) do
+ActiveRecord::Schema.define(version: 2022_10_25_083256) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "account_verifications", force: :cascade do |t|
+    t.string "phone"
+    t.string "otp"
+    t.string "email"
+    t.string "email_token"
+    t.boolean "email_verified"
+    t.boolean "phone_verified"
+    t.integer "user_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
 
   create_table "addresses", force: :cascade do |t|
     t.bigint "user_id", null: false
@@ -185,6 +197,7 @@ ActiveRecord::Schema.define(version: 2022_10_22_093946) do
     t.string "password_digest"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "phone_otp"
   end
 
   create_table "vouchers", force: :cascade do |t|

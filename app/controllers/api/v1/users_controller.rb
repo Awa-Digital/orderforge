@@ -15,6 +15,26 @@ class Api::V1::UsersController < Api::V1::BaseController
     end
   end
 
+  def verify_account
+    account = AccountVerification.find_or_initialize_by(email: params[:email], phone: params[:phone_number])
+    if account.valid_account?
+      if account.save
+        success({ message: "OTP has been sent to the phone number '#{params[:phone_number]}'"})
+      else
+        unprocessable({ message: "Something went wrong", data: account.errors })
+      end
+    else
+      compose_verification_taken_error(account) 
+    end
+  end
+
+  def compose_verification_taken_error(account)
+    email_issue = 'Email' unless account.valid_email?
+    phone_issue = 'Phone' unless account.valid_phone?
+    error = [email_issue, phone_issue].compact.join(", ")
+    duplicate({ message: "#{error} is already taken"})
+  end
+
   def assign_token_to_user(user)
     @token = generate_auth_token(user)
     success({ message: "#{user.first_name}, welcome to Jazzy's Juicy Burger!",
@@ -83,6 +103,6 @@ class Api::V1::UsersController < Api::V1::BaseController
 
   # Only allow a list of trusted parameters through.
   def user_params
-    params.require(:user).permit(:first_name, :last_name, :email, :phone_number, :password, :password_confirmation)
+    params.require(:user).permit(:first_name, :last_name, :email, :phone_number, :password, :password_confirmation, :phone_otp)
   end
 end

@@ -66,7 +66,9 @@ gem 'jwt'
 gem 'kaminari'
 gem 'ransack', github: 'activerecord-hackery/ransack'
 gem 'sendgrid-ruby'
+gem 'packwerk'
 gem 'paystack'
+gem 'phone'
 gem 'httparty'
 gem "faraday-detailed_logger"
 gem "typhoeus"
