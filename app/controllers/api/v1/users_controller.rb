@@ -1,6 +1,6 @@
 # User Managment
 class Api::V1::UsersController < Api::V1::BaseController
-  skip_before_action :authenticate_user, except: %i[show update disable]
+  skip_before_action :authenticate_user, except: %i[show update disable update_avatar]
 
   def signup
     user = User.new(user_params)
@@ -65,6 +65,15 @@ class Api::V1::UsersController < Api::V1::BaseController
   def update
     @mobile_user.update(user_params)
     success({ message: 'Profile has been updated successfully', data: @mobile_user })
+  end
+
+  def update_avatar
+    shout('updating avatar')
+    if @mobile_user.update_attribute :avatar, make_image(params[:avatar])
+      success({message: 'Avatar updated successfully', data: @mobile_user})
+    else
+      unprocessable({message: "Avatar did not update"})
+    end
   end
 
   def request_password_reset

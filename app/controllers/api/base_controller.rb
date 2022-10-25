@@ -13,4 +13,11 @@ class Api::BaseController < ApplicationController
                           exp: (Time.now + 1.month).to_i
                         }, secret)
   end
+
+  def make_image(imagex)
+    image_data = imagex.sub(/.*?,/, '')
+    new_file = File.open('ximage.png', 'wb')
+    new_file.write(Base64.decode64(image_data))
+    return new_file
+  end
 end

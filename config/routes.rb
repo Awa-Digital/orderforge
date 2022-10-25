@@ -14,6 +14,7 @@ Rails.application.routes.draw do
         post 'reset/request', to: 'users#request_password_reset'
         post 'reset/update', to: 'users#reset_password'
         delete 'disable', to: 'users#disable'
+        put 'avatar/update', to: 'users#update_avatar'
       end
 
       scope 'products' do
@@ -45,6 +46,7 @@ Rails.application.routes.draw do
       end
 
       namespace :profile do
+
         scope 'addresses' do
           post 'add', to: 'addresses#new_address'
           get 'all', to: 'addresses#index'
