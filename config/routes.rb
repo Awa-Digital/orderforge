@@ -13,6 +13,7 @@ Rails.application.routes.draw do
         put 'update', to: 'users#update'
         post 'reset/request', to: 'users#request_password_reset'
         post 'reset/update', to: 'users#reset_password'
+        delete 'disable', to: 'users#disable'
       end
 
       scope 'products' do
