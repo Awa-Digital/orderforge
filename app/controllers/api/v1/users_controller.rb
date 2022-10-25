@@ -1,6 +1,6 @@
 # User Managment
 class Api::V1::UsersController < Api::V1::BaseController
-  skip_before_action :authenticate_user, except: %i[show update]
+  skip_before_action :authenticate_user, except: %i[show update disable]
 
   def signup
     user = User.new(user_params)
@@ -92,6 +92,11 @@ class Api::V1::UsersController < Api::V1::BaseController
     else
       unauthorized({ message: 'Password reset token not found or expired, request reset again' })
     end
+  end
+
+  def disable
+    @mobile_user.update(active: false)
+    success({ message: 'Account had been disabled'})
   end
 
   private

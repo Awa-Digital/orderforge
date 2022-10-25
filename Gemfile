@@ -72,3 +72,4 @@ gem 'phone'
 gem 'httparty'
 gem "faraday-detailed_logger"
 gem "typhoeus"
+gem 'fcm'

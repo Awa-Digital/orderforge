@@ -13,6 +13,7 @@ Rails.application.routes.draw do
         put 'update', to: 'users#update'
         post 'reset/request', to: 'users#request_password_reset'
         post 'reset/update', to: 'users#reset_password'
+        delete 'disable', to: 'users#disable'
       end
 
       scope 'products' do
@@ -54,6 +55,7 @@ Rails.application.routes.draw do
         scope 'notification' do
           get 'settings', to: 'notification#settings'
           post 'settings/update', to: 'notification#update_settings'
+          post 'devices/new', to: 'notification#register_device'
         end
 
         scope 'transactions' do

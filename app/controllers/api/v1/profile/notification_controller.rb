@@ -17,6 +17,19 @@ class Api::V1::Profile::NotificationController < Api::V1::Profile::BaseControlle
     end
   end
 
+  def register_device
+    device = Device.find_or_initialize_by(device_token: params[:device_token])
+    device.user_id = @mobile_user.id
+    device.device_name = params[:device_name]
+    device.serial_number = params[:serial_number]
+    if device.save
+      success({ message: 'Device Registered', data: device })
+    else
+      @errors = @user.errors
+      unprocessable({ message: 'Something went wrong', data: @errors })
+    end
+  end
+
   private
 
   def notification_params

@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user_id: 1
+  build_number: MyString
+  device_token: MyString
+  device_name: MyString
+  serial_number: MyString
+
+two:
+  user_id: 1
+  build_number: MyString
+  device_token: MyString
+  device_name: MyString
+  serial_number: MyString
