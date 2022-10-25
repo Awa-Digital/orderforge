@@ -10,10 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_07_07_092633) do
+ActiveRecord::Schema.define(version: 2022_10_25_083256) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "account_verifications", force: :cascade do |t|
+    t.string "phone"
+    t.string "otp"
+    t.string "email"
+    t.string "email_token"
+    t.boolean "email_verified"
+    t.boolean "phone_verified"
+    t.integer "user_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
 
   create_table "addresses", force: :cascade do |t|
     t.bigint "user_id", null: false
@@ -113,6 +125,13 @@ ActiveRecord::Schema.define(version: 2022_07_07_092633) do
     t.string "recipient_email"
   end
 
+  create_table "password_reset_tokens", force: :cascade do |t|
+    t.integer "user_id"
+    t.string "token"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "payments", force: :cascade do |t|
     t.decimal "total", precision: 8, scale: 2
     t.decimal "payment_charges", precision: 8, scale: 2
@@ -178,6 +197,7 @@ ActiveRecord::Schema.define(version: 2022_07_07_092633) do
     t.string "password_digest"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "phone_otp"
   end
 
   create_table "vouchers", force: :cascade do |t|

@@ -7,9 +7,12 @@ Rails.application.routes.draw do
     namespace :v1, path: 'v1' do
       scope 'auth' do
         post 'signup', to: 'users#signup'
+        post 'signup/otp', to: 'users#verify_account'
         post 'login', to: 'users#login'
         get 'show', to: 'users#show'
         put 'update', to: 'users#update'
+        post 'reset/request', to: 'users#request_password_reset'
+        post 'reset/update', to: 'users#reset_password'
       end
 
       scope 'products' do
