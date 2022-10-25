@@ -4,6 +4,7 @@ class User < ApplicationRecord
   has_one :favourite, dependent: :destroy
   has_one :notification_setting, dependent: :destroy
   has_many :addresses, dependent: :destroy
+  has_many :devices, dependent: :destroy
   has_many :ratings, dependent: :destroy
   has_one :password_reset_token, dependent: :destroy
 

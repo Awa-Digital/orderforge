@@ -54,6 +54,7 @@ Rails.application.routes.draw do
         scope 'notification' do
           get 'settings', to: 'notification#settings'
           post 'settings/update', to: 'notification#update_settings'
+          post 'devices/new', to: 'notification#register_device'
         end
 
         scope 'transactions' do
