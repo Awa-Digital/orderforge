@@ -426,6 +426,7 @@ DEPENDENCIES
   pg
   phone
   puma (~> 5.0)
+  rack-cors
   rack-mini-profiler (~> 2.0)
   rails (~> 6.1.4, >= 6.1.4.6)
   ransack!
