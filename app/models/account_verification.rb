@@ -3,7 +3,7 @@ class AccountVerification < ApplicationRecord
   validates :phone, :email, presence: true
   validates :phone, :email, uniqueness: true
 
-  after_save :deliver_otp
+  # after_save :deliver_otp
   before_create :develop_otp
 
   def develop_otp
