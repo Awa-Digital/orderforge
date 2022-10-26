@@ -28,6 +28,7 @@ class User < ApplicationRecord
 
 
   after_create :generate_attributes, :update_account_verification
+  before_destroy :remove_account_verification
 
   # scope :favourites, -> (user) { where(products.liked:  true)}
 
@@ -48,6 +49,11 @@ class User < ApplicationRecord
     account = AccountVerification.find_by(phone: phone_number)
     account.update(phone_verified: true, user_id: id)
     account.process_email_verification
+  end
+
+  def remove_account_verification
+    @account = AccountVerification.find_by(user_id: id)
+    @account.destroy if @account
   end
 
   def products
