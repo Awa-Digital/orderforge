@@ -33,7 +33,7 @@ class User < ApplicationRecord
 
   def as_json(options = {})
     # options[:methods] = %i[total]
-    options[:except] = %i[created_at updated_at password_digest]
+    options[:except] = %i[created_at updated_at password_digest phone_otp]
     super
   end
   
@@ -91,7 +91,6 @@ class User < ApplicationRecord
 
   def save_to_sendgrid
     # make this asynchronous with retries
-    byebug
     Sendgrid.new.add_contacts(self)
     puts '------ Contact saved to Sendgrid!'
   rescue StandardError

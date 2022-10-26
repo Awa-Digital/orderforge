@@ -6,7 +6,6 @@ class Api::V1::Profile::NotificationController < Api::V1::Profile::BaseControlle
   end
 
   def update_settings
-    # byebug
     settings = @mobile_user.notification_setting
     begin
       settings.update(notification_params)
