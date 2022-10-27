@@ -17,6 +17,10 @@ Rails.application.routes.draw do
         put 'avatar/update', to: 'users#update_avatar'
       end
 
+      scope 'ads' do
+        get '', to: 'ads#ads'
+      end
+
       scope 'products' do
         get 'all', to: 'products#index'
         get 'grouped', to: 'products#grouped'
