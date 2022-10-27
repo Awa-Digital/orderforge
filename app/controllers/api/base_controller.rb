@@ -10,6 +10,7 @@ class Api::BaseController < ApplicationController
                           last_name: user.last_name,
                           email: user.email,
                           phone: user.phone_number,
+                          avatar: user.avatar,
                           exp: (Time.now + 1.month).to_i
                         }, secret)
   end

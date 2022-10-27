@@ -28,12 +28,13 @@ class User < ApplicationRecord
 
 
   after_create :generate_attributes, :update_account_verification
+  before_destroy :remove_account_verification
 
   # scope :favourites, -> (user) { where(products.liked:  true)}
 
   def as_json(options = {})
     # options[:methods] = %i[total]
-    options[:except] = %i[created_at updated_at password_digest]
+    options[:except] = %i[created_at updated_at password_digest phone_otp]
     super
   end
   
@@ -48,6 +49,11 @@ class User < ApplicationRecord
     account = AccountVerification.find_by(phone: phone_number)
     account.update(phone_verified: true, user_id: id)
     account.process_email_verification
+  end
+
+  def remove_account_verification
+    @account = AccountVerification.find_by(user_id: id)
+    @account.destroy if @account
   end
 
   def products
@@ -91,7 +97,6 @@ class User < ApplicationRecord
 
   def save_to_sendgrid
     # make this asynchronous with retries
-    byebug
     Sendgrid.new.add_contacts(self)
     puts '------ Contact saved to Sendgrid!'
   rescue StandardError

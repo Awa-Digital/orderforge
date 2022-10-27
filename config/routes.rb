@@ -17,6 +17,10 @@ Rails.application.routes.draw do
         put 'avatar/update', to: 'users#update_avatar'
       end
 
+      scope 'ads' do
+        get '', to: 'ads#ads'
+      end
+
       scope 'products' do
         get 'all', to: 'products#index'
         get 'grouped', to: 'products#grouped'
@@ -37,6 +41,7 @@ Rails.application.routes.draw do
         delete 'remove', to: 'orders#remove'
         post 'add/address', to: 'orders#attach_address'
         post 'add/recipient', to: 'orders#attach_recipient'
+        get 'address/areas', to: 'orders#address_areas'
       end
 
       scope 'payment' do

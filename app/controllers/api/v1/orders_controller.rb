@@ -1,5 +1,5 @@
 class Api::V1::OrdersController < Api::V1::BaseController
-  skip_before_action :authenticate_user, only: %i[cart create_guest_cart update_address remove attach_recipient]
+  skip_before_action :authenticate_user, only: %i[cart create_guest_cart update_address remove attach_recipient address_areas]
   before_action :authenticate_guest, only: %i[cart create_guest_cart update_address remove attach_recipient]
   before_action :set_product, only: %i[add update remove]
   before_action :set_cart
@@ -89,6 +89,11 @@ class Api::V1::OrdersController < Api::V1::BaseController
                 email: @cart.recipient_email
               }
             } })
+  end
+
+  def address_areas
+    areas = DeliveryArea.all
+    success({ message: "Areas Fetched", data: areas })
   end
 
   private
