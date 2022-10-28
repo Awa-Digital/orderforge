@@ -103,6 +103,10 @@ class User < ApplicationRecord
     puts "Couldn't save user details to sendgrid"
   end
 
+  def inactive
+    self.active == false
+  end
+
   private
 
     def otp_validation

@@ -62,6 +62,11 @@ class ApplicationController < ActionController::Base
         current_user = User.find(decoded_token[0]['user_id'])
         if !current_user
           unauthorized({ message: 'User not found' })
+        elsif current_user.active
+          @mobile_user = current_user
+        elsif current_user.inactive
+          shout("deleted account")
+          unauthorized({ message: 'User not found' })
         else
           @mobile_user = current_user
         end
