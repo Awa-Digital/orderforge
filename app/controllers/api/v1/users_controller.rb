@@ -51,9 +51,14 @@ class Api::V1::UsersController < Api::V1::BaseController
     end
   end
 
-  def log_user_in(_user)
-    if @user.authenticate(params[:password])
-      assign_token_to_user(@user)
+  def log_user_in(user)
+    if user.authenticate(params[:password])
+      if user.inactive
+        shout('Deleted Account')
+        unauthorized({ message: 'invalid username, email or password' })
+      else
+        assign_token_to_user(user)
+      end
     else
       unauthorized({ message: 'invalid username, email or password' })
     end
@@ -105,7 +110,7 @@ class Api::V1::UsersController < Api::V1::BaseController
   end
 
   def disable
-    @mobile_user.update(active: false)
+    @mobile_user.update_attribute :active, false
     success({ message: 'Account had been disabled'})
   end
 
