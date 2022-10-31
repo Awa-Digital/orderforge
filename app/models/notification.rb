@@ -9,7 +9,7 @@ class Notification < ApplicationRecord
   end
 
   def run_deliveries
-    deliver_sms
+    # deliver_sms
     deliver_email
     deliver_push
   end
@@ -23,10 +23,9 @@ class Notification < ApplicationRecord
   end
 
   def deliver_push
-    if user.notification_setting.push == true
-
+    if user.notification_setting.push_notifications == true
       begin
-        token = user.user_devices.last.registration_token
+        token = user.devices.last.device_token
         FirePush.new.push(token, construct)
       rescue StandardError
         puts '########### NOTIFICATION DELIVERY FAILING ###########'
@@ -47,74 +46,62 @@ class Notification < ApplicationRecord
   end
 
   def title
-    case notification_type
-    when 'gift'
-      "Hurray! #{user.first_name}"
-    when 'following'
-      'Yaaaga!'
-    when 'redeemed_recipient'
-      "Hurray! #{user.first_name}"
-    when 'redeemed_sender'
-      'Hey, Chief!'
-    else
-      'Yaaaga! Notification'
-    end
+    "Order Status from Jazzy's Juicy Burger"
+    # case notification_type
+    # when 'gift'
+    #   "Hurray! #{user.first_name}"
+    # when 'following'
+    #   'Yaaaga!'
+    # when 'redeemed_recipient'
+    #   "Hurray! #{user.first_name}"
+    # when 'redeemed_sender'
+    #   'Hey, Chief!'
+    # else
+    #   'Yaaaga! Notification'
+    # end
   end
 
   def analytics_label
-    case notification_type
-    when 'gift'
-      'yaaaga_gifts'
-    when 'following'
-      'yaaaga_followings'
-    when 'redeemed_recipient'
-      'yaaaga_transactions'
-    when 'redeemed_sender'
-      'yaaaga_transactions'
-    else
-      'yaaaga_notificatons'
-    end
+    'burger_purchase'
+    # case notification_type
+    # when 'gift'
+    #   'yaaaga_gifts'
+    # when 'following'
+    #   'yaaaga_followings'
+    # when 'redeemed_recipient'
+    #   'yaaaga_transactions'
+    # when 'redeemed_sender'
+    #   'yaaaga_transactions'
+    # else
+    #   'yaaaga_notificatons'
+    # end
   end
 
   def body
-    case notification_type
-    when 'gift'
-      "🔔 @#{sender.username} just sent you #{ActionController::Base.helpers.pluralize(
-        order.product_items.sum(:quantity), 'bottle'
-      )} from #{order.place.name}! Open the app to redeem it before it expires"
-    when 'following'
-      "⚡#{follower.full_name}(@#{follower.username}) just followed you on Yaaaga! Open the app to view their profile and follow them back"
-    when 'redeemed_recipient'
-      "⚡You have successfully redeemed your gift from @#{sender.username} at #{order.place.name}"
-    when 'redeemed_sender'
-      "⚡@#{order.recipient.user.username} just redeemed your gift of #{ActionController::Base.helpers.pluralize(
-        order.product_items.sum(:quantity), 'bottle'
-      )} from #{order.place.name}"
-    else
-      "📣You have a new notification #{user.first_name}, open the app to find out what's new"
-    end
+    "🔔 Uchenna just sent you 10 bottles from jazzy juicy burger Open the app to redeem it before it expires"
+    # case notification_type
+    # when 'gift'
+    #   "🔔 @#{sender.username} just sent you #{ActionController::Base.helpers.pluralize(
+    #     order.product_items.sum(:quantity), 'bottle'
+    #   )} from #{order.place.name}! Open the app to redeem it before it expires"
+    # when 'following'
+    #   "⚡#{follower.full_name}(@#{follower.username}) just followed you on Yaaaga! Open the app to view their profile and follow them back"
+    # when 'redeemed_recipient'
+    #   "⚡You have successfully redeemed your gift from @#{sender.username} at #{order.place.name}"
+    # when 'redeemed_sender'
+    #   "⚡@#{order.recipient.user.username} just redeemed your gift of #{ActionController::Base.helpers.pluralize(
+    #     order.product_items.sum(:quantity), 'bottle'
+    #   )} from #{order.place.name}"
+    # else
+    #   "📣You have a new notification #{user.first_name}, open the app to find out what's new"
+    # end
   end
 
   def order
     Order.find_by(reference: order_reference)
   end
 
-  def sender
-    User.find_by(id: sender_id)
-  end
-
-  def follower
-    User.find_by(id: follower_id)
-  end
-
   def image
-    case notification_type
-    when 'gift'
-      order.place.logo_url
-    when 'following'
-      follower.avatar_url
-    else
       'https://res.cloudinary.com/awadigital/image/upload/v1647464460/yaaaga/Yaaaga-Default.jpg'
-    end
   end
 end

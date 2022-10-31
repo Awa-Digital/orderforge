@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_27_145301) do
+ActiveRecord::Schema.define(version: 2022_10_28_224500) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -122,6 +122,8 @@ ActiveRecord::Schema.define(version: 2022_10_27_145301) do
     t.boolean "seen", default: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "order_reference"
+    t.string "notification_type"
   end
 
   create_table "order_addresses", force: :cascade do |t|
@@ -146,7 +148,7 @@ ActiveRecord::Schema.define(version: 2022_10_27_145301) do
   end
 
   create_table "orders", force: :cascade do |t|
-    t.integer "address_id"
+    t.integer "address_id"  
     t.integer "user_id"
     t.string "status"
     t.boolean "completed"

@@ -5,6 +5,7 @@ class User < ApplicationRecord
   has_many :payments, dependent: :destroy
   has_one :favourite, dependent: :destroy
   has_one :notification_setting, dependent: :destroy
+  has_many :notifications
   has_many :addresses, dependent: :destroy
   has_many :devices, dependent: :destroy
   has_many :ratings, dependent: :destroy
