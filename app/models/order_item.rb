@@ -1,6 +1,7 @@
 class OrderItem < ApplicationRecord
   belongs_to :order
   belongs_to :product
+  has_many :removables, dependent: :destroy
 
   before_save :calculate_subtotal
   after_save :update_parents
