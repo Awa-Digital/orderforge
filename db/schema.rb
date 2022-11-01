@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_27_145301) do
+ActiveRecord::Schema.define(version: 2022_11_01_184615) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -122,6 +122,8 @@ ActiveRecord::Schema.define(version: 2022_10_27_145301) do
     t.boolean "seen", default: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "order_reference"
+    t.string "notification_type"
   end
 
   create_table "order_addresses", force: :cascade do |t|
@@ -216,6 +218,15 @@ ActiveRecord::Schema.define(version: 2022_10_27_145301) do
     t.index ["user_id"], name: "index_ratings_on_user_id"
   end
 
+  create_table "removables", force: :cascade do |t|
+    t.bigint "order_item_id", null: false
+    t.bigint "ingredient_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["ingredient_id"], name: "index_removables_on_ingredient_id"
+    t.index ["order_item_id"], name: "index_removables_on_order_item_id"
+  end
+
   create_table "subcategories", force: :cascade do |t|
     t.string "title"
     t.datetime "created_at", precision: 6, null: false
@@ -254,5 +265,7 @@ ActiveRecord::Schema.define(version: 2022_10_27_145301) do
   add_foreign_key "products", "subcategories"
   add_foreign_key "ratings", "products"
   add_foreign_key "ratings", "users"
+  add_foreign_key "removables", "ingredients"
+  add_foreign_key "removables", "order_items"
   add_foreign_key "subcategories", "categories"
 end

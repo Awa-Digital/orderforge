@@ -9,7 +9,7 @@ class Ingredient < ApplicationRecord
 
   def as_json(options = {})
     # options[:methods] = %i[category ingredients review_rating review_count]
-    options[:except] = %i[created_at updated_at id]
+    options[:except] = %i[created_at updated_at]
     super
   end
 end
