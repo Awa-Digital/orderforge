@@ -1,5 +1,6 @@
 class Api::V1::OrdersController < Api::V1::BaseController
-  skip_before_action :authenticate_user, only: %i[cart create_guest_cart update_address remove attach_recipient address_areas]
+  skip_before_action :authenticate_user,
+                     only: %i[cart create_guest_cart update_address remove attach_recipient address_areas]
   before_action :authenticate_guest, only: %i[cart create_guest_cart update_address remove attach_recipient]
   before_action :set_product, only: %i[add update remove]
   before_action :set_cart
@@ -10,22 +11,12 @@ class Api::V1::OrdersController < Api::V1::BaseController
     render 'cart'
   end
 
-  def add_to_cart(product_id, quantity, cart)
-    @item = cart.items.find_or_create_by(product_id: product_id)
-    @item.quantity = quantity.to_i
-    begin
-      @item.save
-    rescue StandardError => e
-      puts e.message
-      puts 'PRODUCT DID NOT SAVE'
-    end
-  end
-
   def add_multi
     items = params[:items]
     items.each do |item|
       @product = Product.find_by(id: item[:product_id])
-      add_to_cart(item[:product_id], item[:quantity], @cart) if @product.present?
+
+      add_to_cart(item[:product_id], item[:quantity], @cart, item[:removables]) if @product.present?
     end
     @cart_render = Order.find(@cart.id)
     @message = 'Items have been added to cart'
@@ -36,11 +27,32 @@ class Api::V1::OrdersController < Api::V1::BaseController
     items = params[:items]
     items.each do |item|
       @product = Product.find_by(id: item[:product_id])
-      add_to_cart(item[:product_id], item[:quantity], @cart) if @product.present?
+      add_to_cart(item[:product_id], item[:quantity], @cart, item[:removables]) if @product.present?
     end
     @cart_render = Order.find(@cart.id)
     @message = 'Items have been added to cart'
     render 'cart'
+  end
+
+  def add_to_cart(product_id, quantity, cart, removables)
+    @item = cart.items.find_or_create_by(product_id: product_id)
+    @item.quantity = quantity.to_i
+    begin
+      @item.save!
+      add_removables(@item, removables)
+    rescue StandardError => e
+      puts e.message
+      puts 'PRODUCT DID NOT SAVE'
+    end
+  end
+
+  def add_removables(item, removables)
+    return if removables.empty?
+
+    removables.map do |rem|
+      @ingredient = Product.find_by(id: item.product_id).ingredients.where(id: rem['ingredient_id']).present?
+      Removable.create!(order_item_id: item.id, ingredient_id: rem['ingredient_id']) if @ingredient
+    end
   end
 
   def update_address
@@ -93,7 +105,7 @@ class Api::V1::OrdersController < Api::V1::BaseController
 
   def address_areas
     areas = DeliveryArea.all
-    success({ message: "Areas Fetched", data: areas })
+    success({ message: 'Areas Fetched', data: areas })
   end
 
   private
