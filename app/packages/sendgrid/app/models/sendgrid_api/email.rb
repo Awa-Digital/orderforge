@@ -7,28 +7,28 @@ module SendgridApi
   class Email
     def initialize
       @sg = SendGrid::API.new(api_key: ENV['SENDGRID_API_KEY'])
+      set_senders
     end
 
-    def verify_email(user, url)
+    def verify_email(user, _url)
       mail = SendGrid::Mail.new
-      mail.template_id = 'd-3c17f4bf236a4fb7b8eb036660027630'
-      mail.from = SendGrid::Email.new(email: 'no-reply@mystem.ng', name: 'Lynk Email Verification')
-      subject = 'Important: Verify Your Email on Lynk'
+      mail.template_id = 'd-899ad334cbc542c7b85810afd9ee509d'
+      mail.from = SendGrid::Email.new(email: @noreply, name: @noreply_title)
+      subject = "Important: Verify Your Email #{user.first_name}"
       mail.subject = subject
-      personalization = make_personalization(user, url, subject)
+      data = SendgridApi::EmailBuilder.verification_email_data(user)
+      personalization = make_personalization(user, subject, data)
       mail.add_personalization(personalization)
       response = @sg.client.mail._('send').post(request_body: mail.to_json)
       print response
     end
 
-    def make_personalization(user, url, subject)
+    def make_personalization(user, subject, data)
       personalization = SendGrid::Personalization.new
       personalization.add_to(SendGrid::Email.new(email: user.email, name: user.name))
       personalization.add_dynamic_template_data({
                                                   'subject' => subject,
-                                                  'first_name' => user.first_name,
-                                                  'email' => user.email,
-                                                  'confirm_url' => url
+                                                  'data' => data
                                                 })
     end
 
@@ -47,6 +47,11 @@ module SendgridApi
       subject = subject_var
       content = SendGrid::Content.new(type: email_type, value: content)
       SendGrid::Mail.new(from, subject, to, content)
+    end
+
+    def set_senders
+      @noreply = 'noreply@jazzysjuicyburgers.com'
+      @noreply_title = "Jazzy's Juicy Burgers"
     end
   end
 end
