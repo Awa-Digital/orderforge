@@ -1,6 +1,6 @@
 class OrderAddress < ApplicationRecord
   belongs_to :order
-  belongs_to :delivery_area
+  belongs_to :delivery_area, optional: true
 
   def as_json(options = {})
     # options[:methods] = %i[delivery_charge]

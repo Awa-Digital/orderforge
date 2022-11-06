@@ -23,7 +23,10 @@ class Order < ApplicationRecord
   end
 
   def set_recipient
-    update(recipient_name: user.full_name, recipient_phone: user.phone_number, recipient_email: user.email) unless guest?
+    unless guest?
+      update(recipient_name: user.full_name, recipient_phone: user.phone_number,
+             recipient_email: user.email)
+    end
   end
 
   def generate_cart_address
