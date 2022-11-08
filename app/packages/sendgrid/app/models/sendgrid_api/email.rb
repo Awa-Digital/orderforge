@@ -5,31 +5,40 @@ require 'sendgrid-ruby'
 module SendgridApi
   # Sending Emails
   class Email
+    include ActionView::Helpers::NumberHelper
     def initialize
       @sg = SendGrid::API.new(api_key: ENV['SENDGRID_API_KEY'])
+      @mail = SendGrid::Mail.new
       set_senders
     end
 
     def verify_email(user, _url)
-      mail = SendGrid::Mail.new
-      mail.template_id = 'd-899ad334cbc542c7b85810afd9ee509d'
-      mail.from = SendGrid::Email.new(email: @noreply, name: @noreply_title)
+      @mail.template_id = 'd-899ad334cbc542c7b85810afd9ee509d'
+      @mail.from = SendGrid::Email.new(email: @noreply, name: @noreply_title)
       subject = "Important: Verify Your Email #{user.first_name}"
-      mail.subject = subject
+      @mail.subject = subject
       data = SendgridApi::EmailBuilder.verification_email_data(user)
       personalization = make_personalization(user, subject, data)
-      mail.add_personalization(personalization)
-      response = @sg.client.mail._('send').post(request_body: mail.to_json)
-      print response
+      @mail.add_personalization(personalization)
+      @sg.client.mail._('send').post(request_body: @mail.to_json)
+    end
+
+    def order_receipt_email(order)
+      @mail.template_id = 'd-5c23e94785584498835113282036cbb2'
+      @mail.from = SendGrid::Email.new(email: @noreply, name: @noreply_title)
+      subject = "Important: Your order receipt #{order.user.first_name}"
+      @mail.subject = subject
+      data = SendgridApi::EmailBuilder.order_receipt_email_data(order, subject)
+      personalization = make_personalization(order.user, subject, data)
+      @mail.add_personalization(personalization)
+      @sg.client.mail._('send').post(request_body: @mail.to_json)
     end
 
     def make_personalization(user, subject, data)
       personalization = SendGrid::Personalization.new
-      personalization.add_to(SendGrid::Email.new(email: user.email, name: user.name))
-      personalization.add_dynamic_template_data({
-                                                  'subject' => subject,
-                                                  'data' => data
-                                                })
+      personalization.add_to(SendGrid::Email.new(email: user.email, name: user.full_name))
+      personalization.add_dynamic_template_data(JSON.parse(data.to_json))
+      personalization
     end
 
     def sendmail(template_id, sender_email, sender_name, subject)

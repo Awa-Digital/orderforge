@@ -145,7 +145,7 @@ class Api::V1::OrdersController < Api::V1::BaseController
       if order.status == 'initiated'
         order
       else
-        order = Order.create(status: 'initiated')
+        Order.create(status: 'initiated')
       end
     else
       Order.create(status: 'initiated')

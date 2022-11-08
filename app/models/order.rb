@@ -11,6 +11,9 @@ class Order < ApplicationRecord
   before_create :generate_reference_id
   after_create :generate_payment, :generate_cart_address, :set_recipient
 
+  NLABEL = "#{self.class.name}_notification"
+  NTYPE = "#{self.class.name}_notification"
+
   def as_json(options = {})
     options[:methods] =
       %i[delivery_charge vat_charge delivery_address discount_amount discounted_price order_items payment]
@@ -88,5 +91,31 @@ class Order < ApplicationRecord
 
   def guest?
     !user.present?
+  end
+
+  def generate_completion_notification
+    @title = "Thank you for your order #{user.first_name}!"
+    @body = '⚡️ Your payment has been received and your order is being processed, sit back, relax and we would deliver in no time'
+    order_notification(@title, @body)
+    send_order_receipt_email
+  end
+
+  def order_notification(title, body)
+    Notification.create(
+      user_id: user_id,
+      title: title,
+      body: body,
+      analytics_label: NLABEL,
+      order_reference: reference,
+      notification_type: NTYPE
+    )
+  end
+
+  def order_tracking_url
+    "#{ENV['BASE_URL']}/orders/#{reference}"
+  end
+
+  def send_order_receipt_email
+    SendgridApi::Email.new.order_receipt_email(self)
   end
 end
