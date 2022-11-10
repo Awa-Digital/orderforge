@@ -112,7 +112,7 @@ class Order < ApplicationRecord
   end
 
   def order_tracking_url
-    "#{ENV['BASE_URL']}/orders/#{reference}"
+    "#{ENV['APP_BASE_URL']}/order-details/#{reference}"
   end
 
   def send_order_receipt_email
