@@ -20,20 +20,32 @@ class Api::V1::UsersController < Api::V1::BaseController
     if account.valid_account?
       if account.save
         account.deliver_otp
-        success({ message: "OTP has been sent to the phone number '+#{params[:phone_number]}'"})
+        success({ message: "OTP has been sent to the phone number '+#{params[:phone_number]}'" })
       else
-        unprocessable({ message: "Something went wrong", data: account.errors })
+        unprocessable({ message: 'Something went wrong', data: account.errors })
       end
     else
-      compose_verification_taken_error(account) 
+      compose_verification_taken_error(account)
+    end
+  end
+
+  def verify_email
+    account = AccountVerification.find_by(email_token: params[:token])
+    return unless account.user.present? && account.user.email == account.email
+
+    if account.email_verified
+      success({ message: 'Your email has already been verified' })
+    else
+      account.update_attribute :email_verified, true
+      success({ message: 'Your email has been verified' })
     end
   end
 
   def compose_verification_taken_error(account)
     email_issue = 'Email' unless account.valid_email?
     phone_issue = 'Phone' unless account.valid_phone?
-    error = [email_issue, phone_issue].compact.join(", ")
-    duplicate({ message: "#{error} is already taken"})
+    error = [email_issue, phone_issue].compact.join(', ')
+    duplicate({ message: "#{error} is already taken" })
   end
 
   def assign_token_to_user(user)
@@ -76,9 +88,9 @@ class Api::V1::UsersController < Api::V1::BaseController
   def update_avatar
     shout('updating avatar')
     if @mobile_user.update_attribute :avatar, make_image(params[:avatar])
-      success({message: 'Avatar updated successfully', data: @mobile_user})
+      success({ message: 'Avatar updated successfully', data: @mobile_user })
     else
-      unprocessable({message: "Avatar did not update"})
+      unprocessable({ message: 'Avatar did not update' })
     end
   end
 
@@ -111,7 +123,7 @@ class Api::V1::UsersController < Api::V1::BaseController
 
   def disable
     @mobile_user.update_attribute :active, false
-    success({ message: 'Account had been disabled'})
+    success({ message: 'Account had been disabled' })
   end
 
   private
@@ -123,6 +135,7 @@ class Api::V1::UsersController < Api::V1::BaseController
 
   # Only allow a list of trusted parameters through.
   def user_params
-    params.require(:user).permit(:first_name, :last_name, :email, :phone_number, :password, :password_confirmation, :phone_otp, :avatar)
+    params.require(:user).permit(:first_name, :last_name, :email, :phone_number, :password, :password_confirmation,
+                                 :phone_otp, :avatar)
   end
 end

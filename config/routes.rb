@@ -8,6 +8,7 @@ Rails.application.routes.draw do
       scope 'auth' do
         post 'signup', to: 'users#signup'
         post 'signup/otp', to: 'users#verify_account'
+        post 'verify', to: 'users#verify_email'
         post 'login', to: 'users#login'
         get 'show', to: 'users#show'
         put 'update', to: 'users#update'

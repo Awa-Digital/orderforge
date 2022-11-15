@@ -12,7 +12,7 @@ class User < ApplicationRecord
   has_one :password_reset_token, dependent: :destroy
 
   has_secure_password
-  
+
   validate :otp_validation
 
   validates :first_name,
@@ -27,7 +27,6 @@ class User < ApplicationRecord
   validates :phone_number, length: { is: 13 }
   validates :password, length: { minimum: 8 }
 
-
   after_create :generate_attributes, :update_account_verification
   before_destroy :remove_account_verification
 
@@ -38,7 +37,6 @@ class User < ApplicationRecord
     options[:except] = %i[created_at updated_at password_digest phone_otp]
     super
   end
-  
 
   def generate_attributes
     create_favourite unless favourite.present?
@@ -105,18 +103,22 @@ class User < ApplicationRecord
   end
 
   def inactive
-    self.active == false
+    active == false
+  end
+
+  def verification_url
+    "#{ENV['APP_BASE_URL']}/user/verify/#{AccountVerification.find_by(email: email).email_token}"
   end
 
   private
 
-    def otp_validation
-      account = AccountVerification.find_by(phone: phone_number)
-      if account
-        self.errors[:phone_number] << "is not valid" if !account.valid_phone?
-        self.errors[:otp] << "is invalid. Resend new OTP or try again" if account.otp != phone_otp
-      else
-        self.errors[:account] << "verification not processed yet" if account.otp != phone_otp
-      end
+  def otp_validation
+    account = AccountVerification.find_by(phone: phone_number)
+    if account
+      errors[:phone_number] << 'is not valid' unless account.valid_phone?
+      errors[:otp] << 'is invalid. Resend new OTP or try again' if account.otp != phone_otp
+    elsif account.otp != phone_otp
+      errors[:account] << 'verification not processed yet'
     end
+  end
 end

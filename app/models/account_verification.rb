@@ -1,5 +1,4 @@
 class AccountVerification < ApplicationRecord
-
   validates :phone, :email, presence: true
   validates :phone, :email, uniqueness: true
 
@@ -30,12 +29,16 @@ class AccountVerification < ApplicationRecord
     !User.find_by(email: email).present?
   end
 
+  def user
+    User.find_by(id: user_id)
+  end
+
   def process_email_verification
     generate_email_token
     send_email_verification
   end
 
   def send_email_verification
-    puts "Email for account verification has been sent! ---- "
+    puts 'Email for account verification has been sent! ---- '
   end
 end

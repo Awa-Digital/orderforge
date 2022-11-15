@@ -57,10 +57,22 @@ class Api::V1::OrdersController < Api::V1::BaseController
 
   def update_address
     @cart = Order.find_by(id: params[:order_id])
+    address = guest_address_obj(params)
     @cart.order_address.update!(
-      JSON.parse(params.to_json).except('id')
+      JSON.parse(address.to_json)
     )
     success({ message: 'Address has been updated successfully', data: @cart.order_address })
+  end
+
+  # to avoid mobile app breaking
+  def guest_address_obj(params)
+    {
+      "house_number": params['house_number'],
+      "street": params['street'],
+      "state": params['state'],
+      "delivery_area_id": params['delivery_area_id'],
+      "country": params['country']
+    }
   end
 
   def remove
