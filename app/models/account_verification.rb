@@ -39,6 +39,7 @@ class AccountVerification < ApplicationRecord
   end
 
   def send_email_verification
+    SendgridApi::Email.new.verify_email(account.user)
     puts 'Email for account verification has been sent! ---- '
   end
 end

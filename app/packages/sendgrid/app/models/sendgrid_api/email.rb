@@ -12,7 +12,7 @@ module SendgridApi
       set_senders
     end
 
-    def verify_email(user, _url)
+    def verify_email(user)
       @mail.template_id = 'd-899ad334cbc542c7b85810afd9ee509d'
       @mail.from = SendGrid::Email.new(email: @noreply, name: @noreply_title)
       subject = "Important: Verify Your Email #{user.first_name}"
