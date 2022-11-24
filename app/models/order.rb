@@ -46,7 +46,6 @@ class Order < ApplicationRecord
 
   def available_date
     launch_date = LAUNCH_DATE
-    date_filled = false
     loop do
       date_filled = Order.all.select { |o| o.processing_date.to_date == launch_date.to_date }.count >= 500
       break if date_filled == false
