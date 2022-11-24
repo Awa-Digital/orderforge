@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Model for User Cart
 class Order < ApplicationRecord
   has_many :order_items
@@ -8,11 +10,12 @@ class Order < ApplicationRecord
 
   validates :status, inclusion: { in: %w[initiated paid completed], message: "'%{value}' is not a valid status" }
 
-  before_create :generate_reference_id
+  before_create :generate_reference_id, :set_processing_date
   after_create :generate_payment, :generate_cart_address, :set_recipient
 
   NLABEL = "#{self.class.name}_notification"
   NTYPE = "#{self.class.name}_notification"
+  LAUNCH_DATE = DateTime.new(2022, 11, 30)
 
   def as_json(options = {})
     options[:methods] =
@@ -23,6 +26,34 @@ class Order < ApplicationRecord
 
   def generate_reference_id
     self.reference = "JAZ#{DateTime.now.to_i}"
+  end
+
+  def set_processing_date
+    self.processing_date = calculate_processing_date
+  end
+
+  def order_type
+    return 'preorder' if LAUNCH_DATE > DateTime.now
+
+    'order'
+  end
+
+  def calculate_processing_date
+    return DateTime.now unless order_type == 'preorder'
+
+    available_date
+  end
+
+  def available_date
+    launch_date = LAUNCH_DATE
+    date_filled = false
+    loop do
+      date_filled = Order.all.select { |o| o.processing_date.to_date == launch_date.to_date }.count >= 500
+      break if date_filled == false
+
+      launch_date += 1.day
+    end
+    launch_date
   end
 
   def set_recipient
