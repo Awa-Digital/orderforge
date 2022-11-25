@@ -1718,6 +1718,36 @@
       "widget": null,
       "validations": []
     }, {
+      "field": "pdf_receipt",
+      "type": "File",
+      "default_value": null,
+      "enums": null,
+      "integration": null,
+      "is_filterable": true,
+      "is_read_only": false,
+      "is_required": false,
+      "is_sortable": true,
+      "is_virtual": false,
+      "reference": null,
+      "inverse_of": null,
+      "widget": null,
+      "validations": []
+    }, {
+      "field": "processing_date",
+      "type": "Date",
+      "default_value": null,
+      "enums": null,
+      "integration": null,
+      "is_filterable": true,
+      "is_read_only": false,
+      "is_required": false,
+      "is_sortable": true,
+      "is_virtual": false,
+      "reference": null,
+      "inverse_of": null,
+      "widget": null,
+      "validations": []
+    }, {
       "field": "recipient_email",
       "type": "String",
       "default_value": null,
@@ -1840,7 +1870,20 @@
       "validations": []
     }],
     "segments": [],
-    "actions": []
+    "actions": [{
+      "name": "Print Receipt",
+      "type": "bulk",
+      "base_url": null,
+      "endpoint": "forest/actions/print-receipt",
+      "http_method": "POST",
+      "redirect": null,
+      "download": true,
+      "fields": [],
+      "hooks": {
+        "load": false,
+        "change": []
+      }
+    }]
   }, {
     "name": "OrderAddress",
     "name_old": "order_addresses",
