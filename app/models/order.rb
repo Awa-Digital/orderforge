@@ -2,6 +2,8 @@
 
 # Model for User Cart
 class Order < ApplicationRecord
+  mount_uploader :pdf_receipt, PdfUploader
+
   has_many :order_items
   has_one :payment
   has_one :order_address, dependent: :destroy
@@ -147,5 +149,20 @@ class Order < ApplicationRecord
 
   def send_order_receipt_email
     SendgridApi::Email.new.order_receipt_email(self)
+  end
+
+  def generate_pdf_receipt
+    file = make_pdf
+    update!(pdf_receipt: file)
+    # File.delete(file) if File.exist?(file)
+    # pdf_receipt
+    file
+  end
+
+  def make_pdf
+    pdf_data = Receipt.new(self).generate_file
+    new_file = File.open('receipt.pdf', 'wb')
+    new_file.write(pdf_data)
+    new_file
   end
 end
