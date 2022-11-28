@@ -49,7 +49,9 @@ class Order < ApplicationRecord
   def available_date
     launch_date = LAUNCH_DATE
     loop do
-      date_filled = Order.where.not(processing_date: nil).select { |o| o.processing_date.to_date == launch_date.to_date }.count >= 500
+      date_filled = Order.where.not(processing_date: nil).select do |o|
+        o.processing_date.to_date == launch_date.to_date
+      end.count >= 500
       break if date_filled == false
 
       launch_date += 1.day
@@ -126,12 +128,12 @@ class Order < ApplicationRecord
   end
 
   def generate_completion_notification
-    if order.user.present?
-      @title = "Thank you for your order #{user.first_name}!"
-      @body = '⚡️ Your payment has been received and your order is being processed, sit back, relax and we would deliver in no time'
-      order_notification(@title, @body)
-      send_order_receipt_email
-    end
+    return if order.user_id.nil?
+
+    @title = "Thank you for your order #{user.first_name}!"
+    @body = '⚡️ Your payment has been received and your order is being processed, sit back, relax and we would deliver in no time'
+    order_notification(@title, @body)
+    send_order_receipt_email
   end
 
   def order_notification(title, body)

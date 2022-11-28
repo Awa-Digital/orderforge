@@ -54,7 +54,9 @@ class Payment < ApplicationRecord
   def complete
     update(paid: true)
     order.update(status: 'paid', paid: true)
+    shout("Payment Completed")
     order.set_processing_date
+    shout("Processing Date Set")
   end
 
   def verify
