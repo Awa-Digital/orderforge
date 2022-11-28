@@ -3,7 +3,7 @@ class Api::V1::OrdersController < Api::V1::BaseController
                      only: %i[cart create_guest_cart update_address remove attach_recipient address_areas]
   before_action :authenticate_guest, only: %i[cart create_guest_cart update_address remove attach_recipient]
   before_action :set_product, only: %i[add update remove]
-  before_action :set_cart
+  before_action :set_cart, except: [:address_areas]
 
   def cart
     @cart_render = @cart
