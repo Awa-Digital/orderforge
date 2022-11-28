@@ -1,6 +1,8 @@
 class Ad < ApplicationRecord
   mount_uploader :image, AdUploader
 
+  belongs_to :product, optional: true
+
   scope :active_ads, -> { select {|ad| ad.active_status} }
 
   def as_json(options = {})
@@ -10,6 +12,6 @@ class Ad < ApplicationRecord
   end
 
   def active_status
-    expiration_date >= Date.today 
+    expiration_date >= Date.today
   end
 end
