@@ -6,11 +6,15 @@ class Paystacky
 
   def init(trans)
     transactions = PaystackTransactions.new(@paystack_obj)
+    puts trans.reference
+    puts trans.in_kobo.round(0).to_s
+    puts trans.order.recipient_email
     result = transactions.initializeTransaction(
       reference: trans.reference,
       amount: trans.in_kobo.round(0).to_s,
       email: trans.order.recipient_email
     )
+    puts result
     trans.update(gateway_reference: result['data']['access_code'], checkout_url: result['data']['authorization_url'],
                  gateway: 'Paystack')
   end

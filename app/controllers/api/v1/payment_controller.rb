@@ -51,7 +51,7 @@ class Api::V1::PaymentController < Api::V1::BaseController
   def generate_payment_data(payment)
     payment.initiate
   rescue StandardError
-    server_error({ message: 'Something went wrong, contact support' })
+    server_error({ message: 'contact support' })
   else
     @pay_obj = Payment.find(payment.id)
     render 'initpay'
@@ -81,7 +81,7 @@ class Api::V1::PaymentController < Api::V1::BaseController
   def verify_payment(payment)
     paid = payment.verify
   rescue StandardError
-    server_error({ message: 'Something went wrong, contact support' })
+    server_error({ message: 'contact support' })
   else
     if paid == true
       complete_payment(payment)
