@@ -237,6 +237,22 @@
       "widget": null,
       "validations": []
     }, {
+      "field": "product",
+      "type": "Number",
+      "default_value": null,
+      "enums": null,
+      "integration": null,
+      "is_filterable": true,
+      "is_read_only": false,
+      "is_required": false,
+      "is_sortable": true,
+      "is_virtual": false,
+      "reference": "Product.id",
+      "inverse_of": null,
+      "relationship": "BelongsTo",
+      "widget": null,
+      "validations": []
+    }, {
       "field": "title",
       "type": "String",
       "default_value": null,
@@ -254,6 +270,21 @@
     }, {
       "field": "updated_at",
       "type": "Date",
+      "default_value": null,
+      "enums": null,
+      "integration": null,
+      "is_filterable": true,
+      "is_read_only": false,
+      "is_required": false,
+      "is_sortable": true,
+      "is_virtual": false,
+      "reference": null,
+      "inverse_of": null,
+      "widget": null,
+      "validations": []
+    }, {
+      "field": "url",
+      "type": "String",
       "default_value": null,
       "enums": null,
       "integration": null,

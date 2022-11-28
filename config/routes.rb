@@ -29,6 +29,7 @@ Rails.application.routes.draw do
 
       scope 'products' do
         get 'all', to: 'products#index'
+        get 'hot-deals', to: 'products#hot_deals'
         get 'grouped', to: 'products#grouped'
         get 'product', to: 'products#show'
         post 'product/like', to: 'products#like'
