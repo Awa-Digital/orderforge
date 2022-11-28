@@ -49,7 +49,7 @@ class Order < ApplicationRecord
   def available_date
     launch_date = LAUNCH_DATE
     loop do
-      date_filled = Order.all.select { |o| o.processing_date.to_date == launch_date.to_date }.count >= 500
+      date_filled = Order.where.not(processing_date: nil).select { |o| o.processing_date.to_date == launch_date.to_date }.count >= 500
       break if date_filled == false
 
       launch_date += 1.day
