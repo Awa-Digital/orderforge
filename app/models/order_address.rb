@@ -9,7 +9,8 @@ class OrderAddress < ApplicationRecord
   end
 
   def city
-    return nil unless self.delivery_area.present?
+    return nil unless delivery_area.present?
+
     delivery_area.name
   end
 end

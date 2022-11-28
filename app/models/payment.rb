@@ -24,8 +24,7 @@ class Payment < ApplicationRecord
   end
 
   def update_reference
-    self.reference = "#{order.reference}.T#{DateTime.now.to_i}"
-    save
+    update!(reference: "#{order.reference}.T#{DateTime.now.to_i}")
   end
 
   def update_total(amount)
