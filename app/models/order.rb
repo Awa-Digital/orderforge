@@ -12,7 +12,7 @@ class Order < ApplicationRecord
 
   validates :status, inclusion: { in: %w[initiated paid completed], message: "'%{value}' is not a valid status" }
 
-  before_create :generate_reference_id, :set_processing_date
+  before_create :generate_reference_id
   after_create :generate_payment, :generate_cart_address, :set_recipient
 
   NLABEL = "#{self.class.name}_notification"
@@ -31,7 +31,7 @@ class Order < ApplicationRecord
   end
 
   def set_processing_date
-    self.processing_date = calculate_processing_date
+    update(processing_date: calculate_processing_date)
   end
 
   def order_type
