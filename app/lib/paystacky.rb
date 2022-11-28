@@ -6,7 +6,9 @@ class Paystacky
 
   def init(trans)
     transactions = PaystackTransactions.new(@paystack_obj)
-    puts transactions
+    puts trans.reference
+    puts trans.in_kobo.round(0).to_s
+    puts trans.order.recipient_email
     result = transactions.initializeTransaction(
       reference: trans.reference,
       amount: trans.in_kobo.round(0).to_s,
