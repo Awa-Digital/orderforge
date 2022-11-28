@@ -25,10 +25,12 @@ class Payment < ApplicationRecord
 
   def update_reference
     update!(reference: "#{order.reference}.T#{DateTime.now.to_i}")
+    shout("Reference Updated #{reference}")
   end
 
   def update_total(amount)
     update(total: amount)
+    shout("Total Updated #{total}")
   end
 
   def initiate
