@@ -128,7 +128,7 @@ class Order < ApplicationRecord
   end
 
   def generate_completion_notification
-    return if order.user_id.nil?
+    return if user_id.nil?
 
     @title = "Thank you for your order #{user.first_name}!"
     @body = '⚡️ Your payment has been received and your order is being processed, sit back, relax and we would deliver in no time'
