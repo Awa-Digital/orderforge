@@ -126,10 +126,12 @@ class Order < ApplicationRecord
   end
 
   def generate_completion_notification
-    @title = "Thank you for your order #{user.first_name}!"
-    @body = '⚡️ Your payment has been received and your order is being processed, sit back, relax and we would deliver in no time'
-    order_notification(@title, @body)
-    send_order_receipt_email
+    if order.user.present?
+      @title = "Thank you for your order #{user.first_name}!"
+      @body = '⚡️ Your payment has been received and your order is being processed, sit back, relax and we would deliver in no time'
+      order_notification(@title, @body)
+      send_order_receipt_email
+    end
   end
 
   def order_notification(title, body)
