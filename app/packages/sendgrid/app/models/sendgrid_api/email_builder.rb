@@ -14,7 +14,7 @@ module SendgridApi
     def self.order_receipt_email_data(order, subject)
       {
         subject: subject,
-        preheader: subject,
+        preheader: '⚡️ Your payment has been received and your order is being processed, sit back, relax and we would deliver in no time',
         customer_name: order.user.first_name,
         order_tracking_url: order.order_tracking_url,
         vat_charge: ActionController::Base.helpers.number_to_currency(order.vat_charge, unit: "₦"),

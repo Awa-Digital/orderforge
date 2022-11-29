@@ -26,7 +26,7 @@ module SendgridApi
     def order_receipt_email(order)
       @mail.template_id = 'd-5c23e94785584498835113282036cbb2'
       @mail.from = SendGrid::Email.new(email: @noreply, name: @noreply_title)
-      subject = "Important: Your order receipt #{order.user.first_name}"
+      subject = "Your Order Receipt ##{order.reference}"
       @mail.subject = subject
       data = SendgridApi::EmailBuilder.order_receipt_email_data(order, subject)
       personalization = make_personalization(order.user, subject, data)
@@ -60,7 +60,7 @@ module SendgridApi
 
     def set_senders
       @noreply = 'noreply@jazzysjuicyburgers.com'
-      @noreply_title = "Jazzy's Juicy Burgers"
+      @noreply_title = "Jazzy's Burger"
     end
   end
 end
