@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_11_28_102550) do
+ActiveRecord::Schema.define(version: 2022_11_29_002520) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -61,6 +61,10 @@ ActiveRecord::Schema.define(version: 2022_11_28_102550) do
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.decimal "day_rate", precision: 8, scale: 2
+    t.decimal "dusk_rate", precision: 8, scale: 2
+    t.decimal "night_rate", precision: 8, scale: 2
+    t.decimal "dawn_rate", precision: 8, scale: 2
   end
 
   create_table "devices", force: :cascade do |t|
