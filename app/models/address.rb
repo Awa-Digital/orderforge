@@ -14,6 +14,6 @@ class Address < ApplicationRecord
 
   def city
     delivery_area.name
-  end 
+  end
 
 end
