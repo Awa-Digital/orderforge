@@ -17,7 +17,7 @@ class Payment < ApplicationRecord
 
   def discount
     if voucher.present?
-      (order.order_total * (voucher.disount_rate / 100))
+      (order.order_total * (voucher.discount_rate / 100))
     else
       0.00
     end
