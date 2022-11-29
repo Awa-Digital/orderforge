@@ -95,7 +95,8 @@ class Order < ApplicationRecord
   end
 
   def vat_charge
-    (total.to_i * 0.075).to_f
+    # (total.to_i * 0.075).to_f
+    0.00
   end
 
   def order_total
