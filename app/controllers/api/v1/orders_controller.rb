@@ -117,7 +117,7 @@ class Api::V1::OrdersController < Api::V1::BaseController
   end
 
   def address_areas
-    areas = DeliveryArea.all.select{|x| !x.day_rate.nil?}
+    areas = DeliveryArea.all.select{|x| !x.day_rate.nil?}.sort_by(&:name)
     success({ message: 'Areas Fetched', data: areas })
   end
 
