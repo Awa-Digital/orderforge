@@ -22,7 +22,7 @@ class Api::V1::UsersController < Api::V1::BaseController
         account.deliver_otp
         success({ message: "OTP has been sent to the phone number '+#{params[:phone_number]}'" })
       else
-        unprocessable({ message: 'Something went wrong', data: account.errors })
+        unprocessable({ message: 'phone number or email has already been taken', data: account.errors })
       end
     else
       compose_verification_taken_error(account)

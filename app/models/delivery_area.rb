@@ -8,4 +8,8 @@ class DeliveryArea < ApplicationRecord
     options[:except] = %i[created_at updated_at]
     super
   end
+  # DAY = []
+  def price
+    day_rate
+  end
 end
