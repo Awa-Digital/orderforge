@@ -6,5 +6,5 @@ class AdUploader < CarrierWave::Uploader::Base
   end
 
 
-  process resize_to_fit: [368, 157]
+  process resize_to_fit: [1840, 785]
 end
