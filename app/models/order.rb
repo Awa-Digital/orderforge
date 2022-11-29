@@ -86,8 +86,9 @@ class Order < ApplicationRecord
   def delivery_charge
     @addr = order_address
     if @addr.present?
-      return 0.00 if @addr.delivery_area_id.present?
-      return @addr.delivery_area.price if @addr.delivery_area_id.present?
+      return 0.00 unless @addr.delivery_area_id.present?
+
+      delivery_address.delivery_area.price
     else
       0.00
     end

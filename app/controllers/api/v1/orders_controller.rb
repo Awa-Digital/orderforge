@@ -79,6 +79,7 @@ class Api::V1::OrdersController < Api::V1::BaseController
     @item = @cart.items.find_by(product_id: @product.id)
     if @item.present?
       @item.destroy
+      @cart.update_totals
       success({ message: 'item has been removed from cart', data: @item })
     else
       notfound({ message: 'No product found with this id' })
