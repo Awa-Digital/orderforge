@@ -1,7 +1,7 @@
 # to handle payment request
 class Api::V1::PaymentController < Api::V1::BaseController
-  skip_before_action :authenticate_user, only: %i[new confirm]
-  before_action :authenticate_guest, only: %i[new confirm]
+  skip_before_action :authenticate_user, only: %i[new confirm attach_discount]
+  before_action :authenticate_guest, only: %i[new confirm attach_discount]
   before_action :set_cart
 
   def new
@@ -15,6 +15,7 @@ class Api::V1::PaymentController < Api::V1::BaseController
   def attach_discount
     @voucher = Voucher.find_by(discount_code: params[:discount_code])
     if @voucher.present?
+      return unauthorized({ message: 'Signup to enjoy discounts!' }) unless @mobile_user.present?
       @mobile_user.cart.payment.update(voucher_id: @voucher.id)
       show_cart
     else
