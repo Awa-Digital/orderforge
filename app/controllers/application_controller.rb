@@ -56,7 +56,7 @@ class ApplicationController < ActionController::Base
       unauthorized({ message: 'Authorization Absent!' })
     else
       token = authorization_header.split(' ')[1]
-      secret_key = ENV['SECRET_KEY_BASE'] || Rails.application.secrets.secret_key_base
+      secret_key = ENV['SECRET_KEY_BASE']
       begin
         decoded_token = JWT.decode(token, secret_key)
         current_user = User.find(decoded_token[0]['user_id'])
