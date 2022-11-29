@@ -84,7 +84,13 @@ class Order < ApplicationRecord
   end
 
   def delivery_charge
-    0.00
+    @addr = order_address
+    if @addr.present?
+      return 0.00 if @addr.delivery_area_id.present?
+      return @addr.delivery_area.price if @addr.delivery_area_id.present?
+    else
+      0.00
+    end
   end
 
   def vat_charge
@@ -92,7 +98,7 @@ class Order < ApplicationRecord
   end
 
   def order_total
-    (total + vat_charge + delivery_charge).to_f
+    (total + vat_charge + delivery_charge.to_f).to_f
   end
 
   def discounted_price
