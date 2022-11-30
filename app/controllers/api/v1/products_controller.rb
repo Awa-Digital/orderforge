@@ -23,7 +23,7 @@ module Api
 
       def hot_deals
         @hot_deals = if Order.limit(5).joins(:order_items).pluck(:product_id).uniq.count > 5
-                       Product.find(Order.limit(5).joins(:order_items).pluck(:product_id).uniq)
+                       Product.find(Order.where(status: 'paid').limit(5).joins(:order_items).pluck(:product_id).uniq)
                      else
                        Product.where(id: Product.pluck(:id).sample(5))
                      end
