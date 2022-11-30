@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_11_29_002520) do
+ActiveRecord::Schema.define(version: 2022_11_30_222621) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -168,7 +168,6 @@ ActiveRecord::Schema.define(version: 2022_11_29_002520) do
     t.decimal "total", precision: 8, scale: 2, default: "0.0"
     t.string "recipient_email"
     t.datetime "processing_date"
-    t.string "pdf_receipt"
   end
 
   create_table "password_reset_tokens", force: :cascade do |t|

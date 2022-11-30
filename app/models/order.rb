@@ -2,18 +2,15 @@
 
 # Model for User Cart
 class Order < ApplicationRecord
-  mount_uploader :pdf_receipt, PdfUploader
-
-  has_many :order_items
-  has_one :payment
+  has_many :order_items, dependent: :destroy
+  has_one :payment, dependent: :destroy
   has_one :order_address, dependent: :destroy
   # belongs_to :address, optional: true
   belongs_to :user, optional: true
 
   validates :status, inclusion: { in: %w[initiated paid completed], message: "'%{value}' is not a valid status" }
 
-  before_create :generate_reference_id
-  after_create :generate_payment, :generate_cart_address, :set_recipient
+  after_create :generate_reference_id, :generate_payment, :generate_cart_address, :set_recipient
 
   NLABEL = "#{self.class.name}_notification"
   NTYPE = "#{self.class.name}_notification"
@@ -27,7 +24,8 @@ class Order < ApplicationRecord
   end
 
   def generate_reference_id
-    self.reference = "JAZ#{DateTime.now.to_i}"
+    update(reference: "JAZ#{id}#{DateTime.now.to_i}")
+    reference
   end
 
   def set_processing_date
@@ -60,10 +58,10 @@ class Order < ApplicationRecord
   end
 
   def set_recipient
-    unless guest?
-      update(recipient_name: user.full_name, recipient_phone: user.phone_number,
-             recipient_email: user.email)
-    end
+    return if guest?
+
+    update(recipient_name: user.full_name, recipient_phone: user.phone_number,
+           recipient_email: user.email)
   end
 
   def generate_cart_address
@@ -164,11 +162,7 @@ class Order < ApplicationRecord
   end
 
   def generate_pdf_receipt
-    file = make_pdf
-    update!(pdf_receipt: file)
-    # File.delete(file) if File.exist?(file)
-    # pdf_receipt
-    file
+    make_pdf
   end
 
   def make_pdf
