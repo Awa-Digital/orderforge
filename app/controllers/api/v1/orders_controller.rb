@@ -94,7 +94,6 @@ class Api::V1::OrdersController < Api::V1::BaseController
     if @address.present?
       @mobile_user.cart.order_address.update!(JSON.parse(@address.to_json).except('id'))
       @mobile_user.cart.order_address.update!(delivery_area_id: @address.delivery_area_id)
-      @mobile
       success({ message: 'Address has been assigned successfully', data: @address })
     else
       notfound({ message: 'No address found with this id for this user' })

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :null_session
   before_action :authenticate_user
@@ -63,12 +65,11 @@ class ApplicationController < ActionController::Base
         if !current_user
           unauthorized({ message: 'User not found' })
         elsif current_user.active
+          Sentry.set_user(username: current_user.full_name, email: current_user.email, id: current_user.id)
           @mobile_user = current_user
         elsif current_user.inactive
-          shout("deleted account")
+          shout('deleted account')
           unauthorized({ message: 'User not found' })
-        else
-          @mobile_user = current_user
         end
       rescue JWT::ExpiredSignature
         unauthorized({ message: 'Your session has expired' })
