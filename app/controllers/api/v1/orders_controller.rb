@@ -8,6 +8,9 @@ class Api::V1::OrdersController < Api::V1::BaseController
   def cart
     @cart_render = @cart
     @message = 'Cart Fetched!'
+    shout('Delivery Area')
+    puts @cart.delivery_address.delivery_area.to_json
+    shout('Delivery Area')
     render 'cart'
   end
 
@@ -117,7 +120,7 @@ class Api::V1::OrdersController < Api::V1::BaseController
   end
 
   def address_areas
-    areas = DeliveryArea.all.select{|x| !x.day_rate.nil?}.sort_by(&:name)
+    areas = DeliveryArea.all.select { |x| !x.day_rate.nil? }.sort_by(&:name)
     success({ message: 'Areas Fetched', data: areas })
   end
 
