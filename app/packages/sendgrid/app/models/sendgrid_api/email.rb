@@ -35,7 +35,7 @@ module SendgridApi
     end
 
     def order_processor_email(order)
-      @mail.template_id = 'd-5c23e94785584498835113282036cbb2'
+      @mail.template_id = ' d-7d3adcc2d4394b63af1e895e47ab9415'
       @mail.from = SendGrid::Email.new(email: @noreply, name: @noreply_title)
       subject = "An order has been placed - ##{order.reference}"
       @mail.subject = subject

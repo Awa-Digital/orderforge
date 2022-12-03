@@ -12,7 +12,8 @@ class Api::V1::Profile::LeaderController < Api::V1::Profile::BaseController
     rank = 0
     users.each do |user|
       arr << {
-        name: user.full_name,
+        image: user.avatar,
+        name: user.full_name.camelize,
         amount: user.orders.where(paid: true).sum(&:total),
         rank: rank+1
       }
