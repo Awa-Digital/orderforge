@@ -76,6 +76,10 @@ Rails.application.routes.draw do
           get 'all', to: 'transactions#index'
           get 'show', to: 'transactions#show'
         end
+
+        scope 'leader' do
+          get 'board', to: 'leader#board'
+        end
       end
     end
   end
