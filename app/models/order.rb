@@ -139,6 +139,7 @@ class Order < ApplicationRecord
     @title = "Thank you for your order #{user.first_name}!"
     @body = '⚡️ Your payment has been received and your order is being processed, sit back, relax and we would deliver in no time'
     order_notification(@title, @body)
+    send_processing_email
     send_order_receipt_email
   end
 
@@ -159,6 +160,10 @@ class Order < ApplicationRecord
 
   def send_order_receipt_email
     SendgridApi::Email.new.order_receipt_email(self)
+  end
+
+  def send_processing_email
+    SendgridApi::Email.new.order_processor_email(self)
   end
 
   def generate_pdf_receipt
