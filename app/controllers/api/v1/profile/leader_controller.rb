@@ -2,7 +2,7 @@
 # for User Addresses
 class Api::V1::Profile::LeaderController < Api::V1::Profile::BaseController
   def board
-    @users = User.all.sort(&:total_spends)
+    @users = User.all.select{|x| x.total_spends > 0}.sort_by{|x| -x.total_spends}
     data = make_data(@users)
     success({message: 'Leaderboard fetched successfully', data: data})
   end
