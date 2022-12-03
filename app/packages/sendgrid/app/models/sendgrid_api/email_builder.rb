@@ -38,8 +38,8 @@ module SendgridApi
         total: ActionController::Base.helpers.number_to_currency(order.payment.total, unit: "₦"),
         items: items_array(order.order_items),
         delivery_address: delivery_address(order),
-        phone_number: order.recipient_phone
-        email_address: order.recipient_email
+        phone_number: order.recipient_phone,
+        email_address: order.recipient_email,
         recipient_name: order.recipient_name
 
       }
