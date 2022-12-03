@@ -29,7 +29,7 @@ module SendgridApi
       {
         subject: subject,
         preheader: '⚡️ A customer has placed an order',
-        customer_name: order.user.first_name,
+        customer_name: order.recipient_name,
         order_tracking_url: order.order_tracking_url,
         vat_charge: ActionController::Base.helpers.number_to_currency(order.vat_charge, unit: "₦"),
         delivery_charge: ActionController::Base.helpers.number_to_currency(order.delivery_charge, unit: "₦"),
