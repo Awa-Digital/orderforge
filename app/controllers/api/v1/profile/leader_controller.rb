@@ -1,6 +1,8 @@
 
 # for User Addresses
 class Api::V1::Profile::LeaderController < Api::V1::Profile::BaseController
+  skip_before_action :authenticate_user
+  before_action :authenticate_guest
   def board
     @users = User.all.select{|x| x.total_spends > 0}.sort_by{|x| -x.total_spends}
     data = make_data(@users)
