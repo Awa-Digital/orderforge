@@ -110,6 +110,10 @@ class User < ApplicationRecord
     "#{ENV['APP_BASE_URL']}/user/verify/#{AccountVerification.find_by(email: email).email_token}"
   end
 
+  def total_spends
+    orders.where(paid: true).sum(&:order_total)
+  end
+
   private
 
   def otp_validation

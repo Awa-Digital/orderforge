@@ -1,3 +1,7 @@
 {
-  "conventionalCommits.scopes": ["password reset", "notification"]
+  "conventionalCommits.scopes": [
+    "password reset",
+    "notification",
+    "leaderboard"
+  ]
 }
