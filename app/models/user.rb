@@ -113,6 +113,7 @@ class User < ApplicationRecord
   def total_spends
     return 0 if orders.where(paid: true).count == 0
 
+    puts "Total Spends for #{id}"
     orders.where(paid: true).sum(&:order_total)
   end
 
