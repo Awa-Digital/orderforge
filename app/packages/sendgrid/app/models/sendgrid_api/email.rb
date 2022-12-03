@@ -34,6 +34,24 @@ module SendgridApi
       @sg.client.mail._('send').post(request_body: @mail.to_json)
     end
 
+    def order_processor_email(order)
+      @mail.template_id = 'd-5c23e94785584498835113282036cbb2'
+      @mail.from = SendGrid::Email.new(email: @noreply, name: @noreply_title)
+      subject = "An order has been placed - ##{order.reference}"
+      @mail.subject = subject
+      data = SendgridApi::EmailBuilder.order_receipt_email_data(order, subject)
+      personalization = self_personalization(data)
+      @mail.add_personalization(personalization)
+      @sg.client.mail._('send').post(request_body: @mail.to_json)
+    end
+
+    def self_personalization(data)
+      personalization = SendGrid::Personalization.new
+      personalization.add_to(SendGrid::Email.new(email: 'orders@jazzysburger.com', name: "Operations"))
+      personalization.add_dynamic_template_data(JSON.parse(data.to_json))
+      personalization
+    end
+
     def make_personalization(user, subject, data)
       personalization = SendGrid::Personalization.new
       personalization.add_to(SendGrid::Email.new(email: user.email, name: user.full_name))
