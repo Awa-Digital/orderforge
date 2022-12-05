@@ -27,11 +27,11 @@ class DeliveryArea < ApplicationRecord
     when 'day'
       day_rate
     when 'dusk'
-      dusk_rate
+      2000
     when 'night'
       2000
     when 'dawn'
-      dawn_rate
+      2000
     end
   end
 
