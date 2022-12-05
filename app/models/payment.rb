@@ -53,6 +53,7 @@ class Payment < ApplicationRecord
     update(paid: true)
     order.update(status: 'paid', paid: true)
     order.set_processing_date
+    order.generate_completion_notification
   end
 
   def verify

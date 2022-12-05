@@ -94,7 +94,6 @@ class Api::V1::PaymentController < Api::V1::BaseController
   def complete_payment(payment)
     payment.complete
     message = 'You have successfully paid for this transaction'
-    payment.order.generate_completion_notification
     show_payment_success(payment, message)
   end
 
