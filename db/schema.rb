@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_11_30_222621) do
+ActiveRecord::Schema.define(version: 2022_12_05_043157) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -213,6 +213,8 @@ ActiveRecord::Schema.define(version: 2022_11_30_222621) do
     t.datetime "updated_at", precision: 6, null: false
     t.boolean "liked"
     t.bigint "subcategory_id"
+    t.integer "start_time", default: 0
+    t.integer "end_time", default: 23
     t.index ["subcategory_id"], name: "index_products_on_subcategory_id"
   end
 

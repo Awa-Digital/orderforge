@@ -16,7 +16,7 @@ module Api
         @products = if @mobile_user.present?
                       @mobile_user.products
                     else
-                      Product.all
+                      Product.all.select(&:available)
                     end
         render 'grouped'
       end
@@ -77,7 +77,7 @@ module Api
         @products = if @mobile_user.present?
                       @mobile_user.products
                     else
-                      Product.all
+                      Product.all.select(&:available)
                     end
       end
     end
