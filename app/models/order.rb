@@ -14,7 +14,7 @@ class Order < ApplicationRecord
 
   NLABEL = "#{self.class.name}_notification"
   NTYPE = "#{self.class.name}_notification"
-  LAUNCH_DATE = DateTime.new(2022, 11, 30)
+  LAUNCH_DATE = DateTime.new(2022, 12, 5)
 
   def as_json(options = {})
     options[:methods] =
@@ -163,6 +163,8 @@ class Order < ApplicationRecord
   end
 
   def send_processing_email
+    return unless paid == true
+
     SendgridApi::Email.new.order_processor_email(self)
   end
 

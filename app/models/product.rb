@@ -14,10 +14,18 @@ class Product < ApplicationRecord
             :category_id,
             :amount, presence: true
 
+  NOW = Date.today
+
   def as_json(options = {})
-    options[:methods] = %i[category subcategory ingredients review_rating review_count]
+    options[:methods] = %i[available category subcategory ingredients review_rating review_count]
     options[:except] = %i[created_at updated_at user_id subcategory_id category_id]
     super
+  end
+
+  def available
+    @start_time = Time.new(NOW.year, NOW.month, NOW.day, start_time, 0)
+    @end_time = Time.new(NOW.year, NOW.month, NOW.day, end_time, 59)
+    Time.now.between?(@start_time, @end_time)
   end
 
   def like(user)

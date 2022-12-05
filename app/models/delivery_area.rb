@@ -22,17 +22,17 @@ class DeliveryArea < ApplicationRecord
   end
 
   def price
-    2000
-    # case check_time
-    # when 'day'
-    #   day_rate
-    # when 'dusk'
-    #   dusk_rate
-    # when 'night'
-    #   night_rate
-    # when 'dawn'
-    #   dawn_rate
-    # end
+    # 2000
+    case check_time
+    when 'day'
+      day_rate
+    when 'dusk'
+      dusk_rate
+    when 'night'
+      night_rate
+    when 'dawn'
+      dawn_rate
+    end
   end
 
   def check_time

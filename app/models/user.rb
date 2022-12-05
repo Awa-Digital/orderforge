@@ -56,7 +56,7 @@ class User < ApplicationRecord
   end
 
   def products
-    prods = Product.all
+    prods = Product.all.select(&:available)
     prods.each do |p|
       p.liked = p.liked?(self)
     end
