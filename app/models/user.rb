@@ -117,6 +117,10 @@ class User < ApplicationRecord
     orders.where(paid: true).sum(&:order_total)
   end
 
+  def update_spend_score
+    update_attribute :spend_score, orders.where(paid: true).sum(&:order_total)
+  end
+
   private
 
   def otp_validation
