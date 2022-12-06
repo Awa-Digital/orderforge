@@ -1,7 +1,7 @@
 # to handle payment request
 class Api::V1::PaymentController < Api::V1::BaseController
-  skip_before_action :authenticate_user, only: %i[new confirm attach_discount]
-  before_action :authenticate_guest, only: %i[new confirm attach_discount]
+  skip_before_action :authenticate_user, only: %i[new confirm verify_with_webhook attach_discount]
+  before_action :authenticate_guest, only: %i[new confirm verify_with_webhook attach_discount]
   before_action :set_cart
 
   def new
@@ -67,17 +67,23 @@ class Api::V1::PaymentController < Api::V1::BaseController
   end
 
   def verify_with_webhook
-    shout "LOGGING WEBHOOK"
-    puts params
+    shout("VERIFYING PAYMENT FROM WEBHOOK")
+    @payment = Payment.find_by(reference: params['data']['reference'])
+    find_and_verify_payment(@payment)
   end
 
   def confirm
+    shout("VERIFYING PAYMENT FROM API")
     @payment = Payment.find_by(reference: params[:reference])
-    if @payment.present?
-      if @payment.paid == true
-        success({ message: 'This cart has been paid for', data: { payment: @payment, cart: @payment.order } })
+    find_and_verify_payment(@payment)
+  end
+
+  def find_and_verify_payment(payment)
+    if payment.present?
+      if payment.paid == true
+        success({ message: 'This cart has been paid for', data: { payment: payment, cart: payment.order } })
       else
-        verify_payment(@payment)
+        verify_payment(payment)
       end
     else
       notfound({ message: 'No payment found with this reference' })
