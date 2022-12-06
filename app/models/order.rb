@@ -142,6 +142,7 @@ class Order < ApplicationRecord
     @body = '⚡️ Your payment has been received and your order is being processed, sit back, relax and we would deliver in no time'
     order_notification(@title, @body)
     send_order_receipt_email
+    user.update_spend_score
   end
 
   def order_notification(title, body)
