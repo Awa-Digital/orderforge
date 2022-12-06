@@ -66,6 +66,11 @@ class Api::V1::PaymentController < Api::V1::BaseController
     end
   end
 
+  def verify_with_webhook
+    shout "LOGGING WEBHOOK"
+    puts params
+  end
+
   def confirm
     @payment = Payment.find_by(reference: params[:reference])
     if @payment.present?

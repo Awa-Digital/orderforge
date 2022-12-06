@@ -55,6 +55,7 @@ Rails.application.routes.draw do
         post 'initiate', to: 'payment#new'
         post 'add/discount', to: 'payment#attach_discount'
         post 'verify', to: 'payment#confirm'
+        post 'pay/verify', to: 'payment#verify_with_webhook'
       end
 
       namespace :profile do
