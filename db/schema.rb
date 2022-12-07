@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_12_06_063806) do
+ActiveRecord::Schema.define(version: 2022_12_06_103621) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -192,6 +192,7 @@ ActiveRecord::Schema.define(version: 2022_12_06_063806) do
     t.string "gateway"
     t.string "payment_id"
     t.integer "voucher_id"
+    t.datetime "paid_at"
   end
 
   create_table "product_ingredients", force: :cascade do |t|

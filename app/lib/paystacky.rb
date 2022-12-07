@@ -22,7 +22,7 @@ class Paystacky
   def verify(trans)
     transactions = PaystackTransactions.new(@paystack_obj)
     result = transactions.verify(trans.reference)
-    trans.update(payment_id: result['data']['id'])
+    trans.update(payment_id: result['data']['id'], paid_at: result['data']['paid_at'])
     result
   end
 end

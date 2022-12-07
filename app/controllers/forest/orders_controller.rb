@@ -5,4 +5,8 @@ class Forest::OrdersController < ForestLiana::SmartActionsController
     pdf = order.generate_pdf_receipt
     send_data File.open(pdf).read, filename: "#{order.reference}.pdf", type: 'application/pdf', disposition: 'attachment'
   end
+
+  def verify_payment
+    #
+  end
 end

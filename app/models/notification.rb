@@ -9,8 +9,8 @@ class Notification < ApplicationRecord
 
   def run_deliveries
     # deliver_sms
-    deliver_email
     deliver_push
+    deliver_email
   end
 
   def deliver_sms
