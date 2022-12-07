@@ -1959,6 +1959,45 @@
         "load": false,
         "change": []
       }
+    }, {
+      "name": "Verify Payment",
+      "type": "bulk",
+      "base_url": null,
+      "endpoint": "forest/actions/verify-payment",
+      "http_method": "POST",
+      "redirect": null,
+      "download": false,
+      "fields": [],
+      "hooks": {
+        "load": false,
+        "change": []
+      }
+    }, {
+      "name": "Mark as Processing",
+      "type": "bulk",
+      "base_url": null,
+      "endpoint": "forest/actions/mark-as-processing",
+      "http_method": "POST",
+      "redirect": null,
+      "download": false,
+      "fields": [],
+      "hooks": {
+        "load": false,
+        "change": []
+      }
+    }, {
+      "name": "Mark as Delivered",
+      "type": "bulk",
+      "base_url": null,
+      "endpoint": "forest/actions/mark-as-delivered",
+      "http_method": "POST",
+      "redirect": null,
+      "download": false,
+      "fields": [],
+      "hooks": {
+        "load": false,
+        "change": []
+      }
     }]
   }, {
     "name": "OrderAddress",

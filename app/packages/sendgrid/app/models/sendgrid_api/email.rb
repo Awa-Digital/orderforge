@@ -34,6 +34,17 @@ module SendgridApi
       @sg.client.mail._('send').post(request_body: @mail.to_json)
     end
 
+    def guest_order_receipt_email(order)
+      @mail.template_id = 'd-5c23e94785584498835113282036cbb2'
+      @mail.from = SendGrid::Email.new(email: @noreply, name: @noreply_title)
+      subject = "Your Order Receipt ##{order.reference}"
+      @mail.subject = subject
+      data = SendgridApi::EmailBuilder.guest_order_receipt_email_data(order, subject)
+      personalization = make_guest_personalization(order, subject, data)
+      @mail.add_personalization(personalization)
+      @sg.client.mail._('send').post(request_body: @mail.to_json)
+    end
+
     def order_processor_email(order)
       @mail.template_id = 'd-7d3adcc2d4394b63af1e895e47ab9415'
       @mail.from = SendGrid::Email.new(email: @noreply, name: @noreply_title)
@@ -55,6 +66,13 @@ module SendgridApi
     def make_personalization(user, subject, data)
       personalization = SendGrid::Personalization.new
       personalization.add_to(SendGrid::Email.new(email: user.email, name: user.full_name))
+      personalization.add_dynamic_template_data(JSON.parse(data.to_json))
+      personalization
+    end
+
+    def make_guest_personalization(order, subject, data)
+      personalization = SendGrid::Personalization.new
+      personalization.add_to(SendGrid::Email.new(email: order.recipient_email, name: order.recipient_name))
       personalization.add_dynamic_template_data(JSON.parse(data.to_json))
       personalization
     end
