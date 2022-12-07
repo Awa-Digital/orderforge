@@ -103,10 +103,10 @@ class Receipt
 
   def thanks
     @pdf.move_down(10)
-    @pdf.text 'Thanks you for your patronage!', size: 6, align: :center
+    @pdf.text 'Thank you for your patronage!', size: 6, align: :center
     @pdf.move_down(4)
     @pdf.text 'For complains and feedback', size: 6, align: :center
-    @pdf.text '+234 708 873 1453 | +234 912 424 2461', size: 6, align: :center
+    @pdf.text '+234 907 466 6655', size: 6, align: :center
     @pdf.text 'jazzysburger.com', size: 6, align: :center
   end
 end

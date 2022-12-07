@@ -7,6 +7,26 @@ class Forest::OrdersController < ForestLiana::SmartActionsController
   end
 
   def verify_payment
-    #
+    order_ids = params[:data][:attributes][:ids]
+    orders = Order.find(order_ids)
+    orders.map(&:verify)
+  end
+
+  def mark_as_processing
+    order_ids = params[:data][:attributes][:ids]
+    orders = Order.find(order_ids)
+    orders.map{|o| o.update(status: 'processing')}
+  end
+
+  def mark_as_delivering
+    order_ids = params[:data][:attributes][:ids]
+    orders = Order.find(order_ids)
+    orders.map{|o| o.update(status: 'delivering')}
+  end
+
+  def mark_as_complete
+    order_ids = params[:data][:attributes][:ids]
+    orders = Order.find(order_ids)
+    orders.map{|o| o.update(status: 'completed')}
   end
 end
