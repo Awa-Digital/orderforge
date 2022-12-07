@@ -135,14 +135,23 @@ class Order < ApplicationRecord
 
   def generate_completion_notification
     send_processing_email
-
-    return if user_id.nil?
-
-    @title = "Thank you for your order #{user.first_name}!"
+    @title = "Thank you for your order #{recipient_name}!"
     @body = '⚡️ Your payment has been received and your order is being processed, sit back, relax and we would deliver in no time'
     order_notification(@title, @body)
-    send_order_receipt_email
+
+    deliver_mails
+    return if user_id.nil?
+
     user.update_spend_score
+    shout("Notification Delivered for: #{reference}")
+  end
+
+  def deliver_mails
+    return send_guest_order_receipt_email if user_id.nil?
+
+    send_order_receipt_email
+    send_guest_order_receipt_email if user.email != recipient_email
+    shout("Emails Delivered for: #{reference}")
   end
 
   def order_notification(title, body)
@@ -162,6 +171,10 @@ class Order < ApplicationRecord
 
   def send_order_receipt_email
     SendgridApi::Email.new.order_receipt_email(self)
+  end
+
+  def send_guest_order_receipt_email
+    SendgridApi::Email.new.guest_order_receipt_email(self)
   end
 
   def send_processing_email
