@@ -5,7 +5,7 @@ class DeliveryArea < ApplicationRecord
   has_many :addresses
   has_many :order_addresses
 
-  NOW = Date.today
+  NOW = Date.today.in_time_zone
   DAY_START = Time.new(NOW.year, NOW.month, NOW.day, 8, 0)
   DAY_END = Time.new(NOW.year, NOW.month, NOW.day, 18, 59)
   DUSK_START = Time.new(NOW.year, NOW.month, NOW.day, 19, 0)
@@ -16,14 +16,16 @@ class DeliveryArea < ApplicationRecord
   DAWN_END = Time.new(NOW.year, NOW.month, NOW.day, 7, 59)
 
   def as_json(options = {})
-    options[:methods] = %i[price]
+    options[:methods] = %i[price price_per_time]
     options[:except] = %i[created_at updated_at]
     super
   end
 
   def price
     day_rate
-    # 2000
+  end
+
+  def price_per_time
     # case check_time
     # when 'day'
     #   day_rate
@@ -37,13 +39,13 @@ class DeliveryArea < ApplicationRecord
   end
 
   def check_time
-    if Time.now.between?(DAY_START, DAY_END)
+    if Time.now.in_time_zone.between?(DAY_START, DAY_END)
       'day'
-    elsif Time.now.between?(DUSK_START, DUSK_END)
+    elsif Time.now.in_time_zone.between?(DUSK_START, DUSK_END)
       'dusk'
-    elsif Time.now.between?(NIGHT_START, NIGHT_END)
+    elsif Time.now.in_time_zone.between?(NIGHT_START, NIGHT_END)
       'night'
-    elsif Time.now.between?(DAWN_START, DAWN_END)
+    elsif Time.now.in_time_zone.between?(DAWN_START, DAWN_END)
       'dawn'
     end
   end
