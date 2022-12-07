@@ -1780,7 +1780,7 @@
     }, {
       "field": "paid",
       "type": "Boolean",
-      "default_value": null,
+      "default_value": "false",
       "enums": null,
       "integration": null,
       "is_filterable": true,
@@ -1948,7 +1948,7 @@
     "segments": [],
     "actions": [{
       "name": "Print Receipt",
-      "type": "bulk",
+      "type": "single",
       "base_url": null,
       "endpoint": "forest/actions/print-receipt",
       "http_method": "POST",
@@ -1986,10 +1986,23 @@
         "change": []
       }
     }, {
-      "name": "Mark as Delivered",
+      "name": "Mark as Delivering",
       "type": "bulk",
       "base_url": null,
-      "endpoint": "forest/actions/mark-as-delivered",
+      "endpoint": "forest/actions/mark-as-delivering",
+      "http_method": "POST",
+      "redirect": null,
+      "download": false,
+      "fields": [],
+      "hooks": {
+        "load": false,
+        "change": []
+      }
+    }, {
+      "name": "Mark as Complete",
+      "type": "bulk",
+      "base_url": null,
+      "endpoint": "forest/actions/mark-as-complete",
       "http_method": "POST",
       "redirect": null,
       "download": false,

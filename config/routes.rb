@@ -3,6 +3,10 @@ Rails.application.routes.draw do
   # MUST be declared before the mount ForestLiana::Engine.
   namespace :forest do
     post '/actions/print-receipt' => 'orders#print_receipt'
+    post '/actions/verify-payment' => 'orders#verify_payment'
+    post '/actions/mark-as-processing' => 'orders#mark_as_processing'
+    post '/actions/mark-as-delivering' => 'orders#mark_as_delivering'
+    post '/actions/mark-as-complete' => 'orders#mark_as_complete'
   end
   mount ForestLiana::Engine => '/forest'
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html

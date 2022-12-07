@@ -8,13 +8,15 @@ class Order < ApplicationRecord
   # belongs_to :address, optional: true
   belongs_to :user, optional: true
 
-  validates :status, inclusion: { in: %w[initiated paid completed], message: "'%{value}' is not a valid status" }
+  validates :status, inclusion: { in: %w[initiated paid processing delivering completed], message: "'%{value}' is not a valid status" }
 
   after_create :generate_reference_id, :generate_payment, :generate_cart_address, :set_recipient
 
   NLABEL = "#{self.class.name}_notification"
   NTYPE = "#{self.class.name}_notification"
   LAUNCH_DATE = DateTime.new(2022, 12, 5)
+
+  include Concerns::Verify
 
   def as_json(options = {})
     options[:methods] =
