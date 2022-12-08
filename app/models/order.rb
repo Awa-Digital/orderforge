@@ -12,11 +12,16 @@ class Order < ApplicationRecord
 
   after_create :generate_reference_id, :generate_payment, :generate_cart_address, :set_recipient
 
+  scope :to_be_processed_today, -> { select {|p| p.processed_today} }
+
   NLABEL = "#{self.class.name}_notification"
   NTYPE = "#{self.class.name}_notification"
-  LAUNCH_DATE = DateTime.new(2022, 12, 5)
 
   include Concerns::Verify
+  include Concerns::Calculations
+  include Concerns::Emails
+  include Concerns::Processing
+
 
   def as_json(options = {})
     options[:methods] =
@@ -28,35 +33,6 @@ class Order < ApplicationRecord
   def generate_reference_id
     update(reference: "JAZ#{id}#{DateTime.now.to_i}")
     reference
-  end
-
-  def set_processing_date
-    update(processing_date: calculate_processing_date)
-  end
-
-  def order_type
-    return 'preorder' if LAUNCH_DATE > DateTime.now
-
-    'order'
-  end
-
-  def calculate_processing_date
-    return DateTime.now unless order_type == 'preorder'
-
-    available_date
-  end
-
-  def available_date
-    launch_date = LAUNCH_DATE
-    loop do
-      date_filled = Order.where.not(processing_date: nil).select do |o|
-        o.processing_date.to_date == launch_date.to_date
-      end.count >= 500
-      break if date_filled == false
-
-      launch_date += 1.day
-    end
-    launch_date
   end
 
   def set_recipient
@@ -75,43 +51,6 @@ class Order < ApplicationRecord
       create_payment(total: order_total)
     else
       create_payment(user_id: user.id, total: order_total)
-    end
-  end
-
-  def update_totals
-    update(total: order_items.sum(:subtotal))
-    payment.update_total(order_total)
-  end
-
-  def delivery_charge
-    @addr = order_address
-    if @addr.present?
-      return 0.00 unless @addr.delivery_area_id.present?
-
-      delivery_address.delivery_area.price
-    else
-      0.00
-    end
-  end
-
-  def vat_charge
-    # (total.to_i * 0.075).to_f
-    0.00
-  end
-
-  def order_total
-    (total + vat_charge + delivery_charge.to_f).to_f
-  end
-
-  def discounted_price
-    order_total - discount_amount
-  end
-
-  def discount_amount
-    if payment.voucher.present?
-      (order_total * (payment.voucher.discount_rate / 100))
-    else
-      0.00
     end
   end
 
@@ -146,43 +85,6 @@ class Order < ApplicationRecord
 
     user.update_spend_score
     shout("Notification Delivered for: #{reference}")
-  end
-
-  def deliver_mails
-    return send_guest_order_receipt_email if user_id.nil?
-
-    send_order_receipt_email
-    send_guest_order_receipt_email if user.email != recipient_email
-    shout("Emails Delivered for: #{reference}")
-  end
-
-  def order_notification(title, body)
-    Notification.create(
-      user_id: user_id,
-      title: title,
-      body: body,
-      analytics_label: NLABEL,
-      order_reference: reference,
-      notification_type: NTYPE
-    )
-  end
-
-  def order_tracking_url
-    "#{ENV['APP_BASE_URL']}/order-details/#{reference}"
-  end
-
-  def send_order_receipt_email
-    SendgridApi::Email.new.order_receipt_email(self)
-  end
-
-  def send_guest_order_receipt_email
-    SendgridApi::Email.new.guest_order_receipt_email(self)
-  end
-
-  def send_processing_email
-    return unless paid == true
-
-    SendgridApi::Email.new.order_processor_email(self)
   end
 
   def generate_pdf_receipt
