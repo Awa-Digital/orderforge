@@ -21,7 +21,7 @@ module Order::Concerns
     end
 
     def set_processing_data
-      update(processing_date: calculate_processing_date, priority: calculate_priority)
+      update(processing_date: calculate_processing_date)
       Order.update_priorities
     end
 
