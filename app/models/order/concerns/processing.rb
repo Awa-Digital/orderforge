@@ -22,17 +22,13 @@ module Order::Concerns
 
     def set_processing_data
       update(processing_date: calculate_processing_date, priority: calculate_priority)
+      Order.update_priorities
     end
 
     def calculate_processing_date
       return DateTime.now unless order_type == 'next_day_order'
 
       DateTime.now + 1.day
-    end
-
-    def calculate_priority
-      orders = Order.find(Payment.paid_only.paid_today.sort_by(&:paid_at).pluck(:id)).where.not(priority: 0)
-      priority_orders = orders
     end
   end
 end
