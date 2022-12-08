@@ -99,7 +99,7 @@ class Order < ApplicationRecord
   end
 
   def self.update_priorities
-    orders = Order.where(status: 'paid').find(Payment.paid_only.paid_at_today.sort_by(&:paid_at).pluck(:id))
+    orders = Order.find(Payment.paid_only.paid_at_today.sort_by(&:paid_at).pluck(:id)).select{|o| o.status == 'paid'}
     priority = 1
     orders.each do |o|
       o.update(priority: priority)
