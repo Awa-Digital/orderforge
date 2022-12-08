@@ -5,7 +5,7 @@ class Payment < ApplicationRecord
 
   before_create :set_paid
 
-  scope :paid_at_today, -> { select {|p| p.paid_today} }
+  scope :paid_at_today, -> { select {|p| p.paid_on_today} }
   scope :paid_only, -> { where(paid: true) }
 
   def as_json(options = {})
@@ -64,7 +64,8 @@ class Payment < ApplicationRecord
     payment_status == 'success'
   end
 
-  def paid_today
-    paid_at.to_date == Date.today.in_time_zone.to_date
+  def paid_on_today
+      paid_today = paid_at.to_date == Date.today.in_time_zone.to_date
+      paid_today && paid == true
   end
 end
