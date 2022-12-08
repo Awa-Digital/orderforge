@@ -5,6 +5,9 @@ class Payment < ApplicationRecord
 
   before_create :set_paid
 
+  scope :paid_at_today, -> { select {|p| p.paid_today} }
+  scope :paid_only, -> { where(paid: true) }
+
   def as_json(options = {})
     options[:methods] = %i[voucher]
     options[:except] = %i[created_at updated_at user_id]
@@ -52,12 +55,16 @@ class Payment < ApplicationRecord
   def complete
     update(paid: true)
     order.update(status: 'paid', paid: true)
-    order.set_processing_date
+    order.set_processing_data
     order.generate_completion_notification
   end
 
   def verify
     payment_status = Paystacky.new.verify(self)['data']['status']
     payment_status == 'success'
+  end
+
+  def paid_today
+    paid_at.to_date == Date.today.in_time_zone.to_date
   end
 end
