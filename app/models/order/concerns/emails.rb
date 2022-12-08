@@ -1,5 +1,9 @@
 module Order::Concerns
   module Emails
+
+    NLABEL = "#{self.class.name}_notification"
+    NTYPE = "#{self.class.name}_notification"
+
     def deliver_mails
       return send_guest_order_receipt_email if user_id.nil?
 

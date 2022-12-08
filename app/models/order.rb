@@ -14,9 +14,6 @@ class Order < ApplicationRecord
 
   scope :to_be_processed_today, -> { select {|p| p.processed_today} }
 
-  NLABEL = "#{self.class.name}_notification"
-  NTYPE = "#{self.class.name}_notification"
-
   include Concerns::Verify
   include Concerns::Calculations
   include Concerns::Emails
