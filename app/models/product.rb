@@ -14,7 +14,7 @@ class Product < ApplicationRecord
             :category_id,
             :amount, presence: true
 
-  NOW = Date.today.in_time_zone
+  # NOW = Date.today.in_time_zone
 
   def as_json(options = {})
     options[:methods] = %i[available category subcategory ingredients review_rating review_count]
@@ -23,8 +23,9 @@ class Product < ApplicationRecord
   end
 
   def available
-    @start_time = Time.new(NOW.year, NOW.month, NOW.day, start_time, 0)
-    @end_time = Time.new(NOW.year, NOW.month, NOW.day, end_time, 59)
+    @now = Date.today.in_time_zone
+    @start_time = Time.new(@now.year, @now.month, @now.day, start_time, 0)
+    @end_time = Time.new(@now.year, @now.month, @now.day, end_time, 59)
     Time.now.in_time_zone.between?(@start_time, @end_time)
   end
 
