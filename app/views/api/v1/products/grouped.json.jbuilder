@@ -5,7 +5,7 @@ json.data do
     json.title category.title
     json.image category.image
     json.subcategories do
-      json.array! category.subcategories do |subcategory|
+      json.array! category.subcategories.order(title: :asc) do |subcategory|
         json.title subcategory.title
         json.products do
           json.array! subcategory.products.select(&:available) do |product|
