@@ -1,11 +1,11 @@
 json.status 'success'
 json.message 'Grouped products fetched successfully'
 json.data do
-  json.array! Category.all do |category|
+  json.array! Category.all.order(title: :asc) do |category|
     json.title category.title
     json.image category.image
     json.subcategories do
-      json.array! category.subcategories.order(title: :asc) do |subcategory|
+      json.array! category.subcategories.order(title: :desc) do |subcategory|
         json.title subcategory.title
         json.products do
           json.array! subcategory.products.select(&:available) do |product|
