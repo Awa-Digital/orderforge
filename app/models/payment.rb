@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Payment < ApplicationRecord
   belongs_to :order
   belongs_to :user, optional: true
@@ -5,7 +7,7 @@ class Payment < ApplicationRecord
 
   before_create :set_paid
 
-  scope :paid_at_today, -> { select {|p| p.paid_on_today} }
+  scope :paid_at_today, -> { select(&:paid_on_today) }
   scope :paid_only, -> { where(paid: true) }
 
   def as_json(options = {})
@@ -38,6 +40,8 @@ class Payment < ApplicationRecord
     update_reference
     update_total(order.order_total)
     Paystacky.new.init(self)
+  rescue StandardError => e
+    Sentry.capture_exception(e)
   end
 
   def payment_total
@@ -61,11 +65,14 @@ class Payment < ApplicationRecord
 
   def verify
     payment_status = Paystacky.new.verify(self)['data']['status']
+  rescue StandardError => e
+    Sentry.capture_exception(e)
+  else
     payment_status == 'success'
   end
 
   def paid_on_today
-      paid_today = paid_at.to_date == Date.today.in_time_zone.to_date
-      paid_today && paid == true
+    paid_today = paid_at.to_date == Date.today.in_time_zone.to_date
+    paid_today && paid == true
   end
 end
