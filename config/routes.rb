@@ -1,5 +1,6 @@
-Rails.application.routes.draw do
+# frozen_string_literal: true
 
+Rails.application.routes.draw do
   # MUST be declared before the mount ForestLiana::Engine.
   namespace :forest do
     post '/actions/print-receipt' => 'orders#print_receipt'
@@ -63,7 +64,6 @@ Rails.application.routes.draw do
       end
 
       namespace :profile do
-
         scope 'addresses' do
           post 'add', to: 'addresses#new_address'
           get 'all', to: 'addresses#index'
@@ -84,6 +84,21 @@ Rails.application.routes.draw do
 
         scope 'leader' do
           get 'board', to: 'leader#board'
+        end
+      end
+
+      namespace :be, path: 'ops' do
+        scope 'auth' do
+          post 'login', to: 'auth#login'
+        end
+
+        scope 'orders' do
+          get '', to: 'orders#index'
+          get 'filter/:status', to: 'orders#filter'
+          get 'pending', to: 'orders#pending'
+          post 'mark/processing/:order_id', to: 'orders#mark_as_processing'
+          post 'mark/delivering/:order_id', to: 'orders#mark_as_delivering'
+          post 'mark/completed/:order_id', to: 'orders#mark_as_completed'
         end
       end
     end

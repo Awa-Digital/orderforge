@@ -7,7 +7,7 @@ class OrderItem < ApplicationRecord
   after_save :update_parents
 
   def as_json(options = {})
-    options[:methods] = %i[subtotal base_price]
+    options[:methods] = %i[subtotal base_price product removables]
     options[:except] = %i[created_at updated_at order_id]
     super
   end
