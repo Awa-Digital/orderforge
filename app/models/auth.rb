@@ -11,10 +11,10 @@ class Auth < ApplicationRecord
                          message: "'%<value>s' is not a valid account_type" }
 
   VISIBLE_ACTIONS = {
-    'super' => %w[initiated paid awaiting_processing processing ready_for_packaging packaged delivering completed],
+    'super' => %w[initiated paid awaiting_processing processing awaiting_packaging packaged delivering completed],
     'accepter' => %w[paid awaiting_processing],
-    'processor' => %w[awaiting_processing processing ready_for_packaging],
-    'packager' => %w[ready_for_packaging packaged],
+    'processor' => %w[awaiting_processing processing awaiting_packaging],
+    'packager' => %w[awaiting_packaging packaged],
     'dispatcher' => %w[packaged delivering]
   }.freeze
 

@@ -6,7 +6,7 @@ module Api
     module Be
       # Operations on Orders
       class OrdersController < Api::V1::Be::BaseController
-        before_action :set_order, only: %i[mark_as_processing mark_as_completed mark_as_delivering]
+        before_action :set_order, except: %i[index filter pending]
         def index
           @orders = Order.all
           success({ message: 'orders fetched', data: @orders })
@@ -23,9 +23,24 @@ module Api
           success({ message: 'orders fetched', data: @orders })
         end
 
+        def mark_as_accepted
+          @order.update_attribute :status, 'awaiting_processing'
+          success({ message: 'accepted order', data: @order })
+        end
+
         def mark_as_processing
           @order.update_attribute :status, 'processing'
           success({ message: 'marked as processing', data: @order })
+        end
+
+        def mark_as_awaiting_packaging
+          @order.update_attribute :status, 'awaiting_packaging'
+          success({ message: 'marked as awaiting packaging', data: @order })
+        end
+
+        def mark_as_packaged
+          @order.update_attribute :status, 'packaged'
+          success({ message: 'marked as packaged', data: @order })
         end
 
         def mark_as_delivering
@@ -36,6 +51,11 @@ module Api
         def mark_as_completed
           @order.update_attribute :status, 'completed'
           success({ message: 'marked as completed', data: @order })
+        end
+
+        def verify
+          @order.verify
+          success({ message: 'verification complete', data: @order })
         end
 
         private

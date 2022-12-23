@@ -11,8 +11,8 @@ module Order::Concerns
       'initiated' => 'paid',
       'paid' => 'awaiting_processing',
       'awaiting_processing' => 'processing',
-      'processing' => 'ready_for_packaging',
-      'ready_for_packaging' => 'packaged',
+      'processing' => 'awaiting_packaging',
+      'awaiting_packaging' => 'packaged',
       'packaged' => 'delivering',
       'delivering' => 'completed',
       'completed' => 'nil'
@@ -23,7 +23,7 @@ module Order::Concerns
       'paid' => { text: 'Accept Order', endpoint_path: 'mark/accept/' },
       'awaiting_processing' => { text: 'Mark as Processing', endpoint_path: 'mark/processing/' },
       'processing' => { text: 'Mark as Ready to be Packaged', endpoint_path: 'mark/awaiting_packaging/' },
-      'ready_for_packaging' => { text: 'Mark as Packaged', endpoint_path: 'mark/packaged/' },
+      'awaiting_packaging' => { text: 'Mark as Packaged', endpoint_path: 'mark/packaged/' },
       'packaged' => { text: 'Mark as Out for Delivery', endpoint_path: 'mark/delivering/' },
       'delivering' => { text: 'Mark as Completed', endpoint_path: 'mark/completed/' }
     }.freeze
