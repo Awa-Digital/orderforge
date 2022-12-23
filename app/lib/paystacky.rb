@@ -16,7 +16,7 @@ class Paystacky
         email: trans.order.recipient_email
       )
     rescue StandardError => e
-      Sentry.capture_message(e)
+      Sentry.capture_exception(e)
     else
       trans.update(gateway_reference: result['data']['access_code'], checkout_url: result['data']['authorization_url'],
                  gateway: 'Paystack')
