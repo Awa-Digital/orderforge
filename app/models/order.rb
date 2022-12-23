@@ -9,12 +9,12 @@ class Order < ApplicationRecord
   belongs_to :user, optional: true
 
   validates :status,
-            inclusion: { in: %w[initiated paid processing delivering completed],
-                         message: "'%{value}' is not a valid status" }
+            inclusion: { in: %w[initiated paid awaiting_processing processing ready_for_packaging packaged delivering completed],
+                         message: "'%<value>' is not a valid status" }
 
   after_create :generate_reference_id, :generate_payment, :generate_cart_address, :set_recipient
 
-  scope :to_be_processed_today, -> { select { |p| p.processed_today } }
+  scope :to_be_processed_today, -> { select(&:processed_today) }
 
   include Concerns::Verify
   include Concerns::Calculations
@@ -23,7 +23,7 @@ class Order < ApplicationRecord
 
   def as_json(options = {})
     options[:methods] =
-      %i[delivery_charge vat_charge delivery_address discount_amount discounted_price order_items payment]
+      %i[next_step next_action delivery_charge vat_charge delivery_address discount_amount discounted_price order_items payment]
     # options[:except] = %i[created_at place_id recipient_id]
     super
   end
@@ -75,7 +75,7 @@ class Order < ApplicationRecord
   def generate_completion_notification
     send_processing_email
     @title = "Thank you for your order #{recipient_name}!"
-    @body = '⚡️ Your payment has been received and your order is being processed, sit back, relax and we would deliver in no time'
+    @body = '⚡️ Your payment has been received and your order is being processed.'
     order_notification(@title, @body)
 
     deliver_mails
