@@ -96,6 +96,9 @@ Rails.application.routes.draw do
           get '', to: 'orders#index'
           get 'filter/:status', to: 'orders#filter'
           get 'pending', to: 'orders#pending'
+          post 'mark/processing/:order_id', to: 'orders#mark_as_processing'
+          post 'mark/delivering/:order_id', to: 'orders#mark_as_delivering'
+          post 'mark/completed/:order_id', to: 'orders#mark_as_completed'
         end
       end
     end
