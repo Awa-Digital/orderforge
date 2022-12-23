@@ -8,17 +8,18 @@ class Order < ApplicationRecord
   # belongs_to :address, optional: true
   belongs_to :user, optional: true
 
-  validates :status, inclusion: { in: %w[initiated paid processing delivering completed], message: "'%{value}' is not a valid status" }
+  validates :status,
+            inclusion: { in: %w[initiated paid processing delivering completed],
+                         message: "'%{value}' is not a valid status" }
 
   after_create :generate_reference_id, :generate_payment, :generate_cart_address, :set_recipient
 
-  scope :to_be_processed_today, -> { select {|p| p.processed_today} }
+  scope :to_be_processed_today, -> { select { |p| p.processed_today } }
 
   include Concerns::Verify
   include Concerns::Calculations
   include Concerns::Emails
   include Concerns::Processing
-
 
   def as_json(options = {})
     options[:methods] =
@@ -96,7 +97,7 @@ class Order < ApplicationRecord
   end
 
   def self.update_priorities
-    orders = Order.find(Payment.paid_only.paid_at_today.sort_by(&:paid_at).pluck(:id)).select{|o| o.status == 'paid'}
+    orders = Order.find(Payment.paid_only.sort_by(&:paid_at).pluck(:order_id)).select { |o| o.status == 'paid' }
     priority = 1
     orders.each do |o|
       o.update(priority: priority)

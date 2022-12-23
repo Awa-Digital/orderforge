@@ -30,6 +30,8 @@ module Order::Concerns
     end
 
     def discount_amount
+      return 0.00 unless payment
+
       if payment.voucher.present?
         (order_total * (payment.voucher.discount_rate / 100))
       else
