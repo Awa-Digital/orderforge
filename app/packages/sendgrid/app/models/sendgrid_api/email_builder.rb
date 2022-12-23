@@ -67,7 +67,7 @@ module SendgridApi
           quantity: item.quantity,
           unit_price: ActionController::Base.helpers.number_to_currency(item.base_price, unit: '₦'),
           subtotal: ActionController::Base.helpers.number_to_currency(item.subtotal, unit: '₦'),
-          removables: "Remove: #{removables.includes(:ingredient).pluck('ingredients.name')}"
+          removables: "Remove: #{removables.includes(:ingredient).pluck('ingredients.name').join(', ')}"
         }
       end
       arr
