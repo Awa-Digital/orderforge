@@ -96,11 +96,13 @@ Rails.application.routes.draw do
           get '', to: 'orders#index'
           get 'filter/:status', to: 'orders#filter'
           get 'pending', to: 'orders#pending'
+          post 'mark/accept/:order_id', to: 'orders#mark_as_accepted'
           post 'mark/processing/:order_id', to: 'orders#mark_as_processing'
           post 'mark/awaiting_packaging/:order_id', to: 'orders#mark_as_awaiting_packaging'
           post 'mark/packaged/:order_id', to: 'orders#mark_as_packaged'
           post 'mark/delivering/:order_id', to: 'orders#mark_as_delivering'
           post 'mark/completed/:order_id', to: 'orders#mark_as_completed'
+          post 'verify/:order_id', to: 'orders#verify'
         end
       end
     end

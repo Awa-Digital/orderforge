@@ -9,7 +9,7 @@ class Order < ApplicationRecord
   belongs_to :user, optional: true
 
   validates :status,
-            inclusion: { in: %w[initiated paid awaiting_processing processing ready_for_packaging packaged delivering completed],
+            inclusion: { in: %w[initiated paid awaiting_processing processing awaiting_packaging packaged delivering completed],
                          message: "'%<value>' is not a valid status" }
 
   after_create :generate_reference_id, :generate_payment, :generate_cart_address, :set_recipient
