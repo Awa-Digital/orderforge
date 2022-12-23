@@ -29,16 +29,22 @@ module Order::Concerns
 
     def send_order_receipt_email
       SendgridApi::Email.new.order_receipt_email(self)
+    rescue StandardError => e
+      Sentry.capture_exception(e)
     end
 
     def send_guest_order_receipt_email
       SendgridApi::Email.new.guest_order_receipt_email(self)
+    rescue StandardError => e
+      Sentry.capture_exception(e)
     end
 
     def send_processing_email
       return unless paid == true
 
       SendgridApi::Email.new.order_processor_email(self)
+    rescue StandardError => e
+      Sentry.capture_exception(e)
     end
   end
 end

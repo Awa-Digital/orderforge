@@ -19,7 +19,7 @@ module Api
         def assign_auth_token(user)
           @token = generate_auth_token(user)
           success({ message: 'Authenticated',
-                    data: { auth: { token: @token } } })
+                    data: { auth: { token: @token, available_statuses: user.available_statuses, account_type: user.account_type } } })
         end
 
         def generate_auth_token(user)
