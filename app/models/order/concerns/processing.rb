@@ -19,13 +19,13 @@ module Order::Concerns
     }.freeze
 
     NEXT_ACTION = {
-      'initiated' => 'verify_payment',
-      'paid' => 'accept_order',
-      'awaiting_processing' => 'mark_as_processing',
-      'processing' => 'mark_as_ready_for_packaging',
-      'ready_for_packaging' => 'mark_as_packaged',
-      'packaged' => 'mark_as_out_for_delivery',
-      'delivering' => 'mark_as_completed'
+      'initiated' => { text: 'Verify Payment', endpoint_path: 'verify/' },
+      'paid' => { text: 'Accept Order', endpoint_path: 'mark/accept/' },
+      'awaiting_processing' => { text: 'Mark as Processing', endpoint_path: 'mark/processing/' },
+      'processing' => { text: 'Mark as Ready to be Packaged', endpoint_path: 'mark/awaiting_packaging/' },
+      'ready_for_packaging' => { text: 'Mark as Packaged', endpoint_path: 'mark/packaged/' },
+      'packaged' => { text: 'Mark as Out for Delivery', endpoint_path: 'mark/delivering/' },
+      'delivering' => { text: 'Mark as Completed', endpoint_path: 'mark/completed/' }
     }.freeze
 
     def processed_today
