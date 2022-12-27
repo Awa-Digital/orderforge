@@ -105,7 +105,7 @@ class Api::V1::OrdersController < Api::V1::BaseController
       recipient_name: params[:recipient]['name'],
       recipient_phone: params[:recipient]['phone']
     }
-    recipient[:recipient_email] = params[:recipient]['email'] unless @mobile_user.present?
+    recipient[:recipient_email] = params[:recipient]['email'].strip unless @mobile_user.present?
     @cart.update(
       recipient
     )
