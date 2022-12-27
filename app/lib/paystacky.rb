@@ -6,14 +6,11 @@ class Paystacky
 
   def init(trans)
     transactions = PaystackTransactions.new(@paystack_obj)
-    puts trans.reference
-    puts trans.in_kobo.round(0).to_s
-    puts trans.order.recipient_email
     begin
       result = transactions.initializeTransaction(
         reference: trans.reference,
         amount: trans.in_kobo.round(0).to_s,
-        email: trans.order.recipient_email
+        email: trans.order.recipient_email.strip
       )
     rescue StandardError => e
       Sentry.capture_exception(e)
