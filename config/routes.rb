@@ -94,7 +94,9 @@ Rails.application.routes.draw do
 
         scope 'orders' do
           get '', to: 'orders#index'
+          get 'search', to: 'orders#search'
           get 'filter/:status', to: 'orders#filter'
+          get 'filter/:status/search', to: 'orders#filtered_search'
           get 'pending', to: 'orders#pending'
           post 'mark/accept/:order_id', to: 'orders#mark_as_accepted'
           post 'mark/processing/:order_id', to: 'orders#mark_as_processing'

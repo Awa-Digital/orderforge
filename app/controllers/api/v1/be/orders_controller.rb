@@ -6,30 +6,12 @@ module Api
     module Be
       # Operations on Orders
       class OrdersController < Api::V1::Be::BaseController
-        before_action :set_order, except: %i[index filter pending]
+        before_action :set_order, except: %i[index filter pending search filtered_search]
         def index
           @all_orders = Order.all
           @orders = @all_orders.page(params[:page]).per(params[:per_page])
           paginate_orders
         end
-
-        # rubocop:disable Metrics/MethodLength
-        def paginate_orders
-          success({
-            message: 'orders fetched',
-            data: {
-              orders: @orders.includes(:payment).order("payment.paid_at ASC"),
-              pagination: {
-                total_orders: @all_orders.count,
-                current_page: @orders.current_page,
-                next_page: @orders.next_page,
-                last_page?: @orders.last_page?,
-                total_pages: @orders.total_pages
-              }
-            }
-          })
-        end
-        # rubocop:enable Metrics/MethodLength
 
         def filter
           @all_orders = Order.where(status: params[:status])
@@ -38,6 +20,11 @@ module Api
         end
 
         def search
+          @all_orders = Order.all
+          @orders
+        end
+
+        def filtered_search
 
         end
 
