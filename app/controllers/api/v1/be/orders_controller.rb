@@ -8,13 +8,33 @@ module Api
       class OrdersController < Api::V1::Be::BaseController
         before_action :set_order, except: %i[index filter pending]
         def index
-          @orders = Order.all
-          success({ message: 'orders fetched', data: @orders })
+          @all_orders = Order.all
+          @orders = @all_orders.page(params[:page]).per(params[:per_page])
+          paginate_orders
         end
 
+        # rubocop:disable Metrics/MethodLength
+        def paginate_orders
+          success({
+            message: 'orders fetched',
+            data: {
+              orders: @orders,
+              pagination: {
+                total_orders: @all_orders.count,
+                current_page: @orders.current_page,
+                next_page: @orders.next_page,
+                last_page?: @orders.last_page?,
+                total_pages: @orders.total_pages
+              }
+            }
+          })
+        end
+        # rubocop:enable Metrics/MethodLength
+
         def filter
-          @orders = Order.where(status: params[:status])
-          success({ message: 'orders fetched', data: @orders })
+          @all_orders = Order.where(status: params[:status])
+          @orders = @all_orders.page(params[:page]).per(params[:per_page])
+          paginate_orders
         end
 
         def pending
