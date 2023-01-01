@@ -20,8 +20,10 @@ module Api
         end
 
         def search
-          @all_orders = Order.all
-          @orders
+          @q = Order.search(reference_or_recipient_email_or_recipient_phone_or_recipient_name_cont: params[:q])
+          @all_orders = @q.result(distinct: true)
+          @orders = @all_orders.page(params[:page]).per(params[:per_page])
+          paginate_orders
         end
 
         def filtered_search
