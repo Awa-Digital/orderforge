@@ -1,8 +1,15 @@
 class AdUploader < CarrierWave::Uploader::Base
-  include Cloudinary::CarrierWave
+  include CarrierWave::RMagick
+  # include Cloudinary::CarrierWave
 
-  def public_id
-    "jazzy/#{ENV['MEDIA_SUBFOLDER']}/ads/ad_#{model.id}_#{DateTime.now.to_i}"
+  storage :file
+
+  # def public_id
+  #   "jazzy/#{ENV['MEDIA_SUBFOLDER']}/ads/ad_#{model.id}_#{DateTime.now.to_i}"
+  # end
+
+  def store_dir
+    "public/#{ENV['MEDIA_SUBFOLDER']}/ads/ad_#{model.id}_#{DateTime.now.to_i}"
   end
 
   def default_url(*args)
