@@ -18,7 +18,7 @@ module Api
           success({
             message: 'orders fetched',
             data: {
-              orders: @orders,
+              orders: @orders.includes(:payment).order("payment.paid_at ASC"),
               pagination: {
                 total_orders: @all_orders.count,
                 current_page: @orders.current_page,
@@ -35,6 +35,10 @@ module Api
           @all_orders = Order.where(status: params[:status])
           @orders = @all_orders.page(params[:page]).per(params[:per_page])
           paginate_orders
+        end
+
+        def search
+
         end
 
         def pending
