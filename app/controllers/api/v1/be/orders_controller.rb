@@ -27,7 +27,10 @@ module Api
         end
 
         def filtered_search
-
+          @q = Order.where(status: params[:status]).search(reference_or_recipient_email_or_recipient_phone_or_recipient_name_cont: params[:q])
+          @all_orders = @q.result(distinct: true)
+          @orders = @all_orders.page(params[:page]).per(params[:per_page])
+          paginate_orders
         end
 
         def pending
