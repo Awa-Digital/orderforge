@@ -6,15 +6,26 @@ module Api
     module Be
       # Operations on Orders
       class OrdersController < Api::V1::Be::BaseController
-        before_action :set_order, except: %i[index filter pending]
+        before_action :set_order, except: %i[index filter pending search filtered_search]
         def index
-          @orders = Order.all
-          success({ message: 'orders fetched', data: @orders })
+          @all_orders = Order.all
+          @orders = @all_orders.page(params[:page]).per(params[:per_page])
+          paginate_orders
         end
 
         def filter
-          @orders = Order.where(status: params[:status])
-          success({ message: 'orders fetched', data: @orders })
+          @all_orders = Order.where(status: params[:status])
+          @orders = @all_orders.page(params[:page]).per(params[:per_page])
+          paginate_orders
+        end
+
+        def search
+          @all_orders = Order.all
+          @orders
+        end
+
+        def filtered_search
+
         end
 
         def pending

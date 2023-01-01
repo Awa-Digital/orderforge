@@ -62,12 +62,18 @@ module SendgridApi
     def self.items_array(items)
       arr = []
       items.each do |item|
+        removables = if item.removables.present?
+          "Remove: #{item.removables.includes(:ingredient).pluck('ingredients.name').join(', ')}"
+        else
+          ""
+        end
+
         arr << {
           title: item.product.title,
           quantity: item.quantity,
           unit_price: ActionController::Base.helpers.number_to_currency(item.base_price, unit: '₦'),
           subtotal: ActionController::Base.helpers.number_to_currency(item.subtotal, unit: '₦'),
-          removables: "Remove: #{item.removables.includes(:ingredient).pluck('ingredients.name').join(', ')}"
+          removables: removables
         }
       end
       arr

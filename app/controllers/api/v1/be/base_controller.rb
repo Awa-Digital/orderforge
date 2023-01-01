@@ -29,6 +29,24 @@ module Api
           Sentry.set_user(email: current_user.email, id: current_user.id)
           @admin_user = current_user
         end
+
+        # rubocop:disable Metrics/MethodLength
+        def paginate_orders
+          success({
+            message: 'orders fetched',
+            data: {
+              orders: @orders.includes(:payment).order("payment.paid_at ASC"),
+              pagination: {
+                total_orders: @all_orders.count,
+                current_page: @orders.current_page,
+                next_page: @orders.next_page,
+                last_page?: @orders.last_page?,
+                total_pages: @orders.total_pages
+              }
+            }
+          })
+        end
+        # rubocop:enable Metrics/MethodLength
       end
     end
   end
