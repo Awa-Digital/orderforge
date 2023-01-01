@@ -5,11 +5,11 @@ class AdUploader < CarrierWave::Uploader::Base
   storage :file
 
   def public_id
-    "#{ENV['MEDIA_SUBFOLDER']}/ads/ad_#{model.id}_#{DateTime.now.to_i}"
+    "#{ENV['MEDIA_SUBFOLDER']}/ads/ad_#{model.id}"
   end
 
   def store_dir
-    "#{ENV['MEDIA_SUBFOLDER']}/ads/ad_#{model.id}_#{DateTime.now.to_i}"
+    "#{ENV['MEDIA_SUBFOLDER']}/ads/ad_#{model.id}"
   end
 
   def default_url(*args)
