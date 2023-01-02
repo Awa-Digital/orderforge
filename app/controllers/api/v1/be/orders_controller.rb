@@ -69,6 +69,11 @@ module Api
           success({ message: 'marked as completed', data: @order })
         end
 
+        def download_pdf
+          pdf = @order.generate_pdf_receipt
+          send_data File.open(pdf).read, filename: "#{@order.reference}.pdf", type: 'application/pdf', disposition: 'attachment'
+        end
+
         def verify
           @order.verify
           success({ message: 'verification complete', data: @order })
