@@ -40,31 +40,41 @@ module Api
         end
 
         def mark_as_accepted
+          @order.order_status_stamps.create(auth_id: @admin_user.id, action_name: 'accepted')
           @order.update(status: 'awaiting_processing')
           success({ message: 'accepted order', data: @order })
         end
 
         def mark_as_processing
+          @order.order_status_stamps.create(auth_id: @admin_user.id, action_name: 'processing')
           @order.update(status: 'processing')
           success({ message: 'marked as processing', data: @order })
         end
 
         def mark_as_awaiting_packaging
+          @order.order_status_stamps.create(auth_id: @admin_user.id, action_name: 'awaiting_packaging')
+
           @order.update(status: 'awaiting_packaging')
           success({ message: 'marked as awaiting packaging', data: @order })
         end
 
         def mark_as_packaged
+          @order.order_status_stamps.create(auth_id: @admin_user.id, action_name: 'packaged')
+
           @order.update(status: 'packaged')
           success({ message: 'marked as packaged', data: @order })
         end
 
         def mark_as_delivering
+          @order.order_status_stamps.create(auth_id: @admin_user.id, action_name: 'delivering')
+
           @order.update(status: 'delivering')
           success({ message: 'marked as delivering', data: @order })
         end
 
         def mark_as_completed
+          @order.order_status_stamps.create(auth_id: @admin_user.id, action_name: 'completed')
+
           @order.update(status: 'completed')
           success({ message: 'marked as completed', data: @order })
         end
@@ -77,6 +87,11 @@ module Api
         def verify
           @order.verify
           success({ message: 'verification complete', data: @order })
+        end
+
+        def logs
+          @logs = @order.order_status_stamps.order(created_at: :desc)
+          success({ message: 'order time logs fetched', data: @logs })
         end
 
         private

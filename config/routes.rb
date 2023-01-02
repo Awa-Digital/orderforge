@@ -105,6 +105,7 @@ Rails.application.routes.draw do
           post 'mark/delivering/:order_id', to: 'orders#mark_as_delivering'
           post 'mark/completed/:order_id', to: 'orders#mark_as_completed'
           get 'download/:order_id', to: 'orders#download_pdf'
+          get ':order_id/logs', to: 'orders#logs'
           post 'verify/:order_id', to: 'orders#verify'
         end
       end

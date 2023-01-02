@@ -4,6 +4,8 @@
 class Auth < ApplicationRecord
   has_secure_password
 
+  has_many :order_status_stamps, dependent: :destroy
+
   validates :email, :account_type, presence: true
   validates :email, uniqueness: true
   validates :account_type,

@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  auth_id: 1
+  order_id: 1
+  message: MyString
+  action: MyString
+  action_name: MyString
+
+two:
+  auth_id: 1
+  order_id: 1
+  message: MyString
+  action: MyString
+  action_name: MyString
