@@ -1,28 +1,9 @@
+# frozen_string_literal: true
+
+# rubocop:disable Style/ClassAndModuleChildren
 module Order::Concerns
+  # email sender for all order notifications
   module Emails
-
-    NLABEL = "#{self.class.name}_notification"
-    NTYPE = "#{self.class.name}_notification"
-
-    def deliver_mails
-      return send_guest_order_receipt_email if user_id.nil?
-
-      send_order_receipt_email
-      send_guest_order_receipt_email if user.email != recipient_email
-      shout("Emails Delivered for: #{reference}")
-    end
-
-    def order_notification(title, body)
-      Notification.create(
-        user_id: user_id,
-        title: title,
-        body: body,
-        analytics_label: NLABEL,
-        order_reference: reference,
-        notification_type: NTYPE
-      )
-    end
-
     def order_tracking_url
       "#{ENV['APP_BASE_URL']}/order-details/#{reference}"
     end
@@ -30,6 +11,7 @@ module Order::Concerns
     def send_order_receipt_email
       SendgridApi::Email.new.order_receipt_email(self)
     rescue StandardError => e
+      puts "Order Receipt Email Delivery for #{user.email} failed"
       Sentry.capture_exception(e)
     end
 
@@ -46,5 +28,33 @@ module Order::Concerns
     rescue StandardError => e
       Sentry.capture_exception(e)
     end
+
+    def send_order_processing_email(name)
+      return unless status == 'processing'
+
+      @body = "#{name}! Your order ##{reference} is being processed, sit back, relax while we make you the best burger ever!"
+      SendgridApi::Email.new.status_processing_email(self, @body)
+    rescue StandardError => e
+      Sentry.capture_exception(e)
+    end
+
+    def send_order_delivering_email(name)
+      return unless status == 'delivering'
+
+      @body = "#{name}! Your order ##{reference} has been dispatched for delivery, a rider would contact you(the recipient) shortly!"
+      SendgridApi::Email.new.status_processing_email(self, @body)
+    rescue StandardError => e
+      Sentry.capture_exception(e)
+    end
+
+    def send_order_completed_email(name)
+      return unless status == 'completed'
+
+      @body = "#{name}! Your order ##{reference} has been delivered, enjoy the best burger in ever!"
+      SendgridApi::Email.new.status_processing_email(self, @body)
+    rescue StandardError => e
+      Sentry.capture_exception(e)
+    end
   end
 end
+# rubocop:enable Style/ClassAndModuleChildren

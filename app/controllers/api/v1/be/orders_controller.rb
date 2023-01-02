@@ -40,32 +40,32 @@ module Api
         end
 
         def mark_as_accepted
-          @order.update_attribute :status, 'awaiting_processing'
+          @order.update(status: 'awaiting_processing')
           success({ message: 'accepted order', data: @order })
         end
 
         def mark_as_processing
-          @order.update_attribute :status, 'processing'
+          @order.update(status: 'processing')
           success({ message: 'marked as processing', data: @order })
         end
 
         def mark_as_awaiting_packaging
-          @order.update_attribute :status, 'awaiting_packaging'
+          @order.update(status: 'awaiting_packaging')
           success({ message: 'marked as awaiting packaging', data: @order })
         end
 
         def mark_as_packaged
-          @order.update_attribute :status, 'packaged'
+          @order.update(status: 'packaged')
           success({ message: 'marked as packaged', data: @order })
         end
 
         def mark_as_delivering
-          @order.update_attribute :status, 'delivering'
+          @order.update(status: 'delivering')
           success({ message: 'marked as delivering', data: @order })
         end
 
         def mark_as_completed
-          @order.update_attribute :status, 'completed'
+          @order.update(status: 'completed')
           success({ message: 'marked as completed', data: @order })
         end
 

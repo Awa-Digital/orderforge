@@ -39,6 +39,16 @@ module SendgridApi
       }
     end
 
+    def self.status_email_builder(order, subject, body)
+      {
+        subject: subject,
+        preheader: "Order status notification for order ##{order.reference}",
+        customer_name: order.recipient_name,
+        order_tracking_url: order.order_tracking_url,
+        status_notification_body: body
+      }
+    end
+
     def self.processor_email_data(order, subject)
       {
         subject: subject,
