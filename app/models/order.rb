@@ -13,12 +13,14 @@ class Order < ApplicationRecord
                          message: "'%<value>' is not a valid status" }
 
   after_create :generate_reference_id, :generate_payment, :generate_cart_address, :set_recipient
+  after_update :send_update_notifications
 
   scope :to_be_processed_today, -> { select(&:processed_today) }
 
   include Concerns::Verify
   include Concerns::Calculations
   include Concerns::Emails
+  include Concerns::Notifications
   include Concerns::Processing
 
   def as_json(options = {})
@@ -74,15 +76,9 @@ class Order < ApplicationRecord
 
   def generate_completion_notification
     send_processing_email
-    @title = "Thank you for your order #{recipient_name}!"
-    @body = '⚡️ Your payment has been received and your order is being processed.'
-    order_notification(@title, @body)
-
-    deliver_mails
     return if user_id.nil?
 
     user.update_spend_score
-    shout("Notification Delivered for: #{reference}")
   end
 
   def generate_pdf_receipt

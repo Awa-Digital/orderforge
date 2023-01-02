@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_12_23_151918) do
+ActiveRecord::Schema.define(version: 2023_01_02_121246) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -178,6 +178,10 @@ ActiveRecord::Schema.define(version: 2022_12_23_151918) do
     t.string "recipient_email"
     t.datetime "processing_date"
     t.integer "priority", default: 0
+    t.boolean "sent_receipt_notification", default: false
+    t.boolean "sent_processing_notification", default: false
+    t.boolean "sent_delivering_notification", default: false
+    t.boolean "sent_completed_notification", default: false
   end
 
   create_table "password_reset_tokens", force: :cascade do |t|
