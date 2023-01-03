@@ -18,7 +18,7 @@ module SendgridApi
       subject = "Important: Verify Your Email #{user.first_name}"
       @mail.subject = subject
       data = SendgridApi::EmailBuilder.verification_email_data(user)
-      personalization = make_personalization(user, subject, data)
+      personalization = make_personalization(user, data)
       @mail.add_personalization(personalization)
       @sg.client.mail._('send').post(request_body: @mail.to_json)
     end
