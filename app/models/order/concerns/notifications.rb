@@ -34,7 +34,6 @@ module Order::Concerns
       send_order_receipt_email
       send_guest_order_receipt_email if user.phone_number.remove('+') != recipient_phone.remove('+')
       create_order_notification(@title, @body, @label)
-      update!(sent_receipt_notification: true)
       "Receipt Notifications Delivered for: ##{reference}"
     end
 
@@ -48,7 +47,6 @@ module Order::Concerns
       send_order_processing_email(user.first_name)
       send_order_processing_email(recipient_name) if user.phone_number.remove('+') != recipient_phone.remove('+')
       create_order_notification(@title, @body, @label)
-      update_attribute :sent_processing_notification, true
       "Processing Notifications Delivered for: ##{reference}"
     end
 
@@ -62,7 +60,6 @@ module Order::Concerns
       send_order_delivering_email(user.first_name)
       send_order_delivering_email(recipient_name) if user.phone_number.remove('+') != recipient_phone.remove('+')
       create_order_notification(@title, @body, @label)
-      update_attribute :sent_delivering_notification, true
       "Out for Delivery Notifications Delivered for: ##{reference}"
     end
 
@@ -76,7 +73,6 @@ module Order::Concerns
       send_order_completed_email(user.first_name)
       send_order_completed_email(recipient_name) if user.phone_number.remove('+') != recipient_phone.remove('+')
       create_order_notification(@title, @body, @label)
-      update_attribute :sent_completed_notification, true
       "Order Completion Notifications Delivered for: ##{reference}"
     end
   end

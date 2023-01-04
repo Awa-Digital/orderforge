@@ -12,6 +12,7 @@ module Order::Concerns
       return if sent_receipt_notification == true
 
       SendgridApi::Email.new.order_receipt_email(self)
+      update!(sent_receipt_notification: true)
     rescue StandardError => e
       puts "Order Receipt Email Delivery for #{user.email} failed"
       Sentry.capture_exception(e)
@@ -21,6 +22,7 @@ module Order::Concerns
       return if sent_receipt_notification == true
 
       SendgridApi::Email.new.guest_order_receipt_email(self)
+      update!(sent_receipt_notification: true)
     rescue StandardError => e
       Sentry.capture_exception(e)
     end
@@ -39,6 +41,7 @@ module Order::Concerns
 
       @body = "#{name}! Your order ##{reference} is being processed, sit back, relax while we make you the best burger ever!"
       SendgridApi::Email.new.status_processing_email(self, @body)
+      update_attribute :sent_processing_notification, true
     rescue StandardError => e
       Sentry.capture_exception(e)
     end
@@ -49,6 +52,7 @@ module Order::Concerns
 
       @body = "#{name}! Your order ##{reference} has been dispatched for delivery, a rider would contact you(the recipient) shortly!"
       SendgridApi::Email.new.status_processing_email(self, @body)
+      update_attribute :sent_delivering_notification, true
     rescue StandardError => e
       Sentry.capture_exception(e)
     end
@@ -59,6 +63,7 @@ module Order::Concerns
 
       @body = "#{name}! Your order ##{reference} has been delivered, enjoy the best burger in ever!"
       SendgridApi::Email.new.status_processing_email(self, @body)
+      update_attribute :sent_completed_notification, true
     rescue StandardError => e
       Sentry.capture_exception(e)
     end
