@@ -34,7 +34,7 @@ module Order::Concerns
       send_order_receipt_email
       send_guest_order_receipt_email if user.phone_number.remove('+') != recipient_phone.remove('+')
       create_order_notification(@title, @body, @label)
-      update_attribute :sent_receipt_notification, true
+      update!(sent_receipt_notification: true)
       "Receipt Notifications Delivered for: ##{reference}"
     end
 

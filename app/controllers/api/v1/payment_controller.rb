@@ -79,10 +79,10 @@ module Api
             @order.payment.update!(reference: params['data']['reference'])
           end
           @payment = @order.payment
+          find_and_verify_payment(@payment)
         else
           Sentry.capture_message("Order not found with reference #{params['data']['reference']}")
         end
-        find_and_verify_payment(@payment)
       end
 
       def confirm
@@ -99,7 +99,7 @@ module Api
             verify_payment(payment)
           end
         else
-          notfound({ message: 'No payment found with this reference' })
+          notfound({ message: "No payment found with this reference #{reference}" })
         end
       end
 
