@@ -2,7 +2,7 @@ class AdUploader < CarrierWave::Uploader::Base
   include CarrierWave::RMagick
   # include Cloudinary::CarrierWave
 
-  storage :file
+  storage :fog
 
   def public_id
     "#{ENV['MEDIA_SUBFOLDER']}/ads/ad_#{model.id}"
