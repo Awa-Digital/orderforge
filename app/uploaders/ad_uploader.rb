@@ -5,11 +5,11 @@ class AdUploader < CarrierWave::Uploader::Base
   storage :fog
 
   def public_id
-    "#{ENV['MEDIA_SUBFOLDER']}/ads/ad_#{model.id}"
+    "JJB/#{ENV['MEDIA_SUBFOLDER']}/ads/ad_#{model.id}"
   end
 
   def store_dir
-    "#{ENV['MEDIA_SUBFOLDER']}/ads/ad_#{model.id}"
+    "JJB/#{ENV['MEDIA_SUBFOLDER']}/ads/ad_#{model.id}"
   end
 
   def default_url(*args)
