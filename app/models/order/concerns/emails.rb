@@ -11,6 +11,7 @@ module Order::Concerns
     def send_order_receipt_email
       return if sent_receipt_notification == true
 
+      # OrderMailer.with(reference: reference).receipt_email.deliver
       SendgridApi::Email.new.order_receipt_email(self)
       update!(sent_receipt_notification: true)
     rescue StandardError => e
