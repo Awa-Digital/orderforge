@@ -13,7 +13,7 @@ class User < ApplicationRecord
 
   has_secure_password
 
-  validate :otp_validation
+  validate :otp_validation, on: :create
 
   validates :first_name,
             :last_name,
