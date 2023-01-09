@@ -1,4 +1,4 @@
-Rack::Attack.throttle('ip limit', limit: 10, period: 5) do |request|
+Rack::Attack.throttle('ip limit', limit: 5, period: 5.seconds) do |request|
   request.ip
 end
 
