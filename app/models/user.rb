@@ -107,7 +107,7 @@ class User < ApplicationRecord
   end
 
   def verification_url
-    "#{ENV['APP_BASE_URL']}/user/verify/#{AccountVerification.find_by(email:).email_token}"
+    "#{ENV['APP_BASE_URL']}/user/verify/#{AccountVerification.find_by(email: email).email_token}"
   end
 
   def total_spends
