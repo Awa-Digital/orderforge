@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-require 'byebug'
 
 Rack::Attack.throttle('ip limit', limit: 5, period: 5.seconds) do |request|
   request.ip
