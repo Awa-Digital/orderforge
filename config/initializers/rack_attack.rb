@@ -1,22 +1,20 @@
-Rack::Attack.throttle('ip limit', limit: 5, period: 5.seconds) do |request|
-  request.ip
-end
+# frozen_string_literal: true
 
-LOGGER = Logger.new("log/rack-attack.log")
-ActiveSupport::Notifications.subscribe('rack.attack') do |name, start, finish, request_id, req|
+Rack::Attack.throttle('ip limit', limit: 5, period: 5.seconds, &:ip)
 
-  LOGGER.info "SUSPECT!"
-  LOGGER.info req.ip
+LOGGER = Logger.new('log/rack-attack.log')
+ActiveSupport::Notifications.subscribe('throttle.rack_attack') do |_name, _start, _finish, _request_id, req|
+  LOGGER.info 'SUSPECT!'
+  LOGGER.info req[:request]
   # if [:throttle].include?(req.env['rack.attack.match_type'])
   #   LOGGER.info [match, req.ip, req.request_method, req.fullpath, ('"' + req.user_agent.to_s + '"')].join(' ')
   # end
 end
 
 bad_ips = ENV['BLOCKED_IPS'].split(',')
-Rack::Attack.blocklist "Block IPs from Environment Variable" do |req|
+Rack::Attack.blocklist 'Block IPs from Environment Variable' do |req|
   bad_ips.include?(req.ip)
 end
-
 
 # Lockout IP addresses that are hammering your login page.
 # After 20 requests in 1 minute, block all requests from that IP for 1 hour.
