@@ -1,14 +1,8 @@
 # frozen_string_literal: true
 
-Rack::Attack.throttle('ip limit', limit: 5, period: 5.seconds, &:ip)
-
-LOGGER = Logger.new('log/rack-attack.log')
-ActiveSupport::Notifications.subscribe('throttle.rack_attack') do |_name, _start, _finish, _request_id, req|
-  LOGGER.info 'SUSPECT!'
-  LOGGER.info req[:request]
-  # if [:throttle].include?(req.env['rack.attack.match_type'])
-  #   LOGGER.info [match, req.ip, req.request_method, req.fullpath, ('"' + req.user_agent.to_s + '"')].join(' ')
-  # end
+Rack::Attack.throttle('ip limit', limit: 10, period: 5.seconds) do |request|
+  Rails.logger.error("----- ----- ----- ----- ----- Rack::Attack Too many Requests from IP: #{request.ip}")
+  request.ip
 end
 
 bad_ips = ENV['BLOCKED_IPS'].split(',')
@@ -16,14 +10,8 @@ Rack::Attack.blocklist 'Block IPs from Environment Variable' do |req|
   bad_ips.include?(req.ip)
 end
 
-# Lockout IP addresses that are hammering your login page.
-# After 20 requests in 1 minute, block all requests from that IP for 1 hour.
 Rack::Attack.blocklist('allow2ban scrapers') do |req|
-  # `filter` returns false value if request is to your login page (but still
-  # increments the count) so request below the limit are not blocked until
-  # they hit the limit.  At that point, filter will return true and block.
-  Rack::Attack::Allow2Ban.filter(req.ip, maxretry: 3, findtime: 1.minute, bantime: 1.hour) do
-    # The count for the IP is incremented if the return value is truthy.
+  Rack::Attack::Allow2Ban.filter(req.ip, maxretry: 60, findtime: 30.seconds, bantime: 10.minutes) do
     true
   end
 end
