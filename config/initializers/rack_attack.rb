@@ -4,10 +4,12 @@ end
 
 LOGGER = Logger.new("log/rack-attack.log")
 ActiveSupport::Notifications.subscribe('rack.attack') do |name, start, finish, request_id, req|
-  if [:throttle].include? req.env['rack.attack.match_type']
-    LOGGER.info "SUSPECT!"
-    LOGGER.info [match, req.ip, req.request_method, req.fullpath, ('"' + req.user_agent.to_s + '"')].join(' ')
-  end
+
+  LOGGER.info "SUSPECT!"
+  LOGGER.info req.ip
+  # if [:throttle].include?(req.env['rack.attack.match_type'])
+  #   LOGGER.info [match, req.ip, req.request_method, req.fullpath, ('"' + req.user_agent.to_s + '"')].join(' ')
+  # end
 end
 
 bad_ips = ENV['BLOCKED_IPS'].split(',')
