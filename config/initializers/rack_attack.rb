@@ -1,7 +1,7 @@
 # frozen_string_literal: true
+require 'byebug'
 
-Rack::Attack.throttle('ip limit', limit: 10, period: 5.seconds) do |request|
-  Rails.logger.error("----- ----- ----- ----- ----- Rack::Attack Too many Requests from IP: #{request.ip}")
+Rack::Attack.throttle('ip limit', limit: 5, period: 5.seconds) do |request|
   request.ip
 end
 
@@ -11,7 +11,15 @@ Rack::Attack.blocklist 'Block IPs from Environment Variable' do |req|
 end
 
 Rack::Attack.blocklist('allow2ban scrapers') do |req|
-  Rack::Attack::Allow2Ban.filter(req.ip, maxretry: 60, findtime: 30.seconds, bantime: 10.minutes) do
+  Rack::Attack::Allow2Ban.filter(req.ip, maxretry: 40, findtime: 30.seconds, bantime: 10.minutes) do
     true
   end
+end
+
+ActiveSupport::Notifications.subscribe('throttle.rack_attack') do |_name, _start, _finish, _request_id, req|
+  Rails.logger.error("----- ----- ----- ----- ----- Rack::Attack::Throttle Too many Throttling Requests from IP: #{req[:request].ip}")
+end
+
+ActiveSupport::Notifications.subscribe('blocklist.rack_attack') do |_name, _start, _finish, _request_id, req|
+  Rails.logger.error("----- ----- ----- ----- ----- Rack::Attack::Ban IP: #{req[:request].ip} has been Banned!")
 end
