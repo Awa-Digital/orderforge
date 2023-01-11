@@ -1,23 +1,221 @@
+<style>
+  #receipt-body h3 {
+    color: #000000;
+  }
+  #receipt-body .user-greeting {
+    font-size: 14px;
+    font-weight: 600;
+  }
+  #receipt-body .ad {
+    width: 100%;
+    margin: 40px 0;
+  }
+  #receipt-body .ad img {
+    width: 100%;
+  }
+  #receipt-body .user-greeting-info,
+  #receipt-body .order-details .order-details-id {
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.5);
+    margin: 0;
+  }
+  h4.order-details-heading {
+    margin: 20px 0 8px !important;
+  }
+  #receipt-body .order-details .order-items-table {
+    margin: 20px auto;
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 10px;
+  }
+  #receipt-body .order-details .order-items-table .item-row .item-image {
+    width: 20%;
+  }
 
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
-  </head>
-  <body>
-    <p>You got a new order from <%= @order.recipient_name %>!</p>
-    <p>
-    Order details<br>
-    --------------------------
+  #receipt-body .order-details .order-items-table .item-row .item-title {
+    width: 60%;
+    padding: 0 20px;
+  }
+  #receipt-body .order-details .order-items-table .item-row .item-subtotal {
+    width: 10%;
+    text-align: right;
+    font-size: 14px;
+  }
+  #receipt-body
+    .order-details
+    .order-items-table
+    .item-row
+    .item-image
+    .item-image-holder {
+    width: 100%;
+    height: 70px;
+    background-size: cover;
+    border-radius: 8px;
+    margin: 0 auto;
+  }
+  #receipt-body
+    .order-details
+    .order-items-table
+    .item-row
+    .item-title
+    .item-title-title,
+  #receipt-body
+    .order-details
+    .order-items-table
+    .item-row
+    .item-title
+    .item-quantity-info {
+    margin: 0;
+  }
+  #receipt-body
+    .order-details
+    .order-items-table
+    .item-row
+    .item-title
+    .item-quantity-info {
+    color: rgba(0, 0, 0, 0.5);
+    font-size: 12px;
+  }
+  #receipt-body
+    .order-details
+    .order-items-table
+    .item-row
+    .item-title
+    .item-title-title {
+    font-size: 14px;
+  }
+
+  #receipt-body .order-details .order-summary-details .order-summary-table {
+    width: 100%;
+    padding: 20px 0;
+    border: 1px solid rgba(255, 39, 9, 0.1);
+  }
+  #receipt-body
+    .order-details
+    .order-summary-details
+    .order-summary-table
+    .summary-image-icon
+    td {
+    width: 30%;
+    text-align: center;
+  }
+  #receipt-body
+    .order-details
+    .order-summary-details
+    .order-summary-table
+    .summary-image-icon
+    td
+    img {
+    width: 30%;
+  }
+  #receipt-body
+    .order-details
+    .order-summary-details
+    .order-summary-table
+    .summary-row
+    .summary-row-title {
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.5);
+    text-align: right;
+    padding-right: 20px;
+  }
+  #receipt-body
+    .order-details
+    .order-summary-details
+    .order-summary-table
+    .summary-row
+    .summary-row-amount {
+    text-align: left;
+    color: rgba(0, 0, 0, 0.8);
+    font-size: 14px;
+  }
+  #receipt-body
+    .order-details
+    .order-summary-details
+    .order-summary-table
+    .summary-row
+    .summary-row-amount.total {
+    font-weight: 600;
+  }
+</style>
+<div id="receipt-body">
+  <h3>Your order is confirmed!</h3>
+  <p class="user-greeting">Hello <%=@order.recipient_name%>,</p>
+  <p class="user-greeting-info">
+    Payment for your order has been confirmed and will be sent out for delivery
+    shortly
+  </p>
+  <div class="ad">
+    <img src="<%= @ad.image_url %>" alt="" />
+  </div>
+  <div class="order-details">
+    <h4 class="order-details-heading">Order Details</h4>
+    <p class="order-details-id">
+      Order ref:
+      <a href="<%= @order.order_tracking_url %>"><%= @order.reference %></a>
     </p>
-    <p>Name: <%= @order.recipient_name %></p>
-    <p>Email: <%= @order.recipient_email %></p>
-    <p>Address: </p>
-    <p>Phone: <%= @order.recipient_phone %></p>
-    <p>
-    Message:<br>
-    ----------
-    </p>
-    <p><%= @order.reference %></p>
-  </body>
-</html>
+    <div class="order-details-items">
+      <table class="order-items-table">
+        <% @order.order_items.each do |item| %>
+        <tr class="item-row">
+          <td class="item-image">
+            <div
+              class="item-image-holder"
+              style="background-image: url(<%= item.product.image_url %>)"
+            ></div>
+          </td>
+          <td class="item-title">
+            <p class="item-title-title"><%= item.product.title %></p>
+            <p class="item-quantity-info">
+              <%= item.quantity%>x at <%=
+              number_to_currency(item.product.amount, unit: '₦', separator: '.',
+              delimiter: ',', precision: 2) %>
+            </p>
+          </td>
+          <td class="item-subtotal">
+            <%= number_to_currency(item.subtotal, unit: '₦', separator: '.',
+            delimiter: ',', precision: 2) %>
+          </td>
+        </tr>
+        <% end %>
+      </table>
+    </div>
+    <div class="order-summary-details">
+      <table class="order-summary-table">
+        <tr class="summary-image-icon">
+          <td rowspan="5">
+            <img src="https://awa-apps.fra1.cdn.digitaloceanspaces.com/JJB/public-space/truck.svg" alt="" />
+          </td>
+        </tr>
+        <tr class="summary-row">
+          <td class="summary-row-title">Subtotal</td>
+          <td class="summary-row-amount">
+            <%= number_to_currency(@order.total, unit: '₦', separator: '.',
+            delimiter: ',', precision: 2) %>
+          </td>
+        </tr>
+        <tr class="summary-row">
+          <td class="summary-row-title">Delivery Fees</td>
+          <td class="summary-row-amount">
+            <%= number_to_currency(@order.delivery_charge, unit: '₦', separator:
+            '.', delimiter: ',', precision: 2) %>
+          </td>
+        </tr>
+        <tr class="summary-row">
+          <td class="summary-row-title">Discount</td>
+          <td class="summary-row-amount">
+            <%= number_to_currency(@order.discount_amount, unit: '₦', separator:
+            '.', delimiter: ',', precision: 2) %>
+          </td>
+        </tr>
+        <tr class="summary-row">
+          <td class="summary-row-title">Total</td>
+          <td class="summary-row-amount total">
+            <%= number_to_currency(@order.payment.total, unit: '₦', separator:
+            '.', delimiter: ',', precision: 2) %>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>

@@ -2,7 +2,7 @@
 class OrderMailerPreview < ActionMailer::Preview
   def receipt_email
     # Set up a temporary order for the preview
-    order = Order.last
+    order = Order.find(55)
 
     OrderMailer.with(reference: order.reference).receipt_email
   end
