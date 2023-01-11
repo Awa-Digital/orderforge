@@ -11,19 +11,20 @@ module Order::Concerns
     def send_order_receipt_email
       return if sent_receipt_notification == true
 
-      # OrderMailer.with(reference: reference).receipt_email.deliver
-      SendgridApi::Email.new.order_receipt_email(self)
+      OrderMailer.with(reference: reference, receipient: user.email).receipt_email.deliver
+      # SendgridApi::Email.new.order_receipt_email(self)
       update!(sent_receipt_notification: true)
     rescue StandardError => e
-      puts "Order Receipt Email Delivery for #{user.email} failed"
+      puts "Order Receipt Email Delivery for #{user.email} failed!!"
       Sentry.capture_exception(e)
     end
 
     def send_guest_order_receipt_email
-      return if sent_receipt_notification == true
+      return if sent_guest_receipt_notification == true
 
-      SendgridApi::Email.new.guest_order_receipt_email(self)
-      update!(sent_receipt_notification: true)
+      OrderMailer.with(reference: reference, receipient: recipient_email).receipt_email.deliver
+      # SendgridApi::Email.new.guest_order_receipt_email(self)
+      update!(sent_guest_receipt_notification: true)
     rescue StandardError => e
       Sentry.capture_exception(e)
     end

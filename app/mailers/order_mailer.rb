@@ -5,7 +5,8 @@ class OrderMailer < ApplicationMailer
   def receipt_email
     @order = Order.find_by(reference: params[:reference])
     @ad = Ad.active_ads.last
+    @preheader = "#{@order.recipient_name} Your order has been confirmed and here are the details"
 
-    mail(to: 'urchman0000@gmail.com', subject: "You got a new order!", delivery_method_options: @delivery_options)
+    mail(to: params[:receipient], subject: "You got a new order!", delivery_method_options: @delivery_options)
   end
 end

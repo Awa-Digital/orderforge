@@ -5,11 +5,12 @@
     <style>
       /* Email styles need to be inline */
       body {
-        background-color: rgba(255, 39, 9, 1);
+        background-color: #fff;
         padding: 0;
         margin: 0;
         font-family: "Helvetica";
       }
+      .preheader { display:none !important; visibility:hidden; opacity:0; color:transparent; height:0; width:0; }
       #email-header {
         padding: 20px 0;
       }
@@ -36,7 +37,7 @@
       #email-main {
         max-width: 768px;
         background: #fff;
-        padding: 20px 40px;
+        padding: 20px 20px;
         margin: 0px auto;
       }
       #receipt-body h3 {
@@ -181,6 +182,7 @@
   </head>
 
   <body>
+      <span class="preheader" style="display: none !important; visibility: hidden; opacity: 0; color: transparent; height: 0; width: 0;"><%= @preheader %></span>
     <div id="email-main">
       <%= render 'layouts/email/header' %>
       <%= yield %>
