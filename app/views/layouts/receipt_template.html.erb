@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <style>
+      /* Email styles need to be inline */
+      body {
+        background-color: rgba(255, 39, 9, 1);
+        padding: 0;
+        margin: 0;
+        font-family: "Helvetica";
+      }
+      #email-header {
+        padding: 20px 0;
+      }
+      #email-header .brand-logo img {
+        width: 50px;
+      }
+      #email-footer {
+        padding: 20px 0;
+      }
+      #email-footer .explainer-text {
+        font-size: 12px;
+        color: rgba(0, 0, 0, 0.5);
+        border-top: 1px solid rgba(255, 39, 9, 0.1);
+        padding-top: 20px;
+      }
+      #email-footer h5 {
+        margin: 0 0 10px;
+      }
+      #email-footer a {
+        text-decoration: 0;
+        font-weight: 600;
+        color: rgba(255, 39, 9, 1);
+      }
+      #email-main {
+        max-width: 768px;
+        background: #fff;
+        padding: 20px 40px;
+        margin: 0px auto;
+      }
+      #receipt-body h3 {
+        color: #000000;
+      }
+      #receipt-body .user-greeting {
+        font-size: 14px;
+        font-weight: 600;
+      }
+      #receipt-body .ad {
+        width: 100%;
+        margin: 40px 0;
+      }
+      #receipt-body .ad img {
+        width: 100%;
+      }
+      #receipt-body .user-greeting-info,
+      #receipt-body .order-details .order-details-id {
+        font-size: 12px;
+        color: rgba(0, 0, 0, 0.5);
+        margin: 0;
+      }
+      h4.order-details-heading {
+        margin: 20px 0 8px !important;
+      }
+      #receipt-body .order-details .order-items-table {
+        margin: 20px auto;
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0 10px;
+      }
+      #receipt-body .order-details .order-items-table .item-row .item-image {
+        width: 20%;
+      }
+
+      #receipt-body .order-details .order-items-table .item-row .item-title {
+        width: 60%;
+        padding: 0 20px;
+      }
+      #receipt-body .order-details .order-items-table .item-row .item-subtotal {
+        width: 10%;
+        text-align: right;
+        font-size: 14px;
+      }
+      #receipt-body
+        .order-details
+        .order-items-table
+        .item-row
+        .item-image
+        .item-image-holder {
+        width: 100%;
+        height: 70px;
+        background-size: cover;
+        border-radius: 8px;
+        margin: 0 auto;
+      }
+      #receipt-body
+        .order-details
+        .order-items-table
+        .item-row
+        .item-title
+        .item-title-title,
+      #receipt-body
+        .order-details
+        .order-items-table
+        .item-row
+        .item-title
+        .item-quantity-info {
+        margin: 0;
+      }
+      #receipt-body
+        .order-details
+        .order-items-table
+        .item-row
+        .item-title
+        .item-quantity-info {
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 12px;
+      }
+      #receipt-body
+        .order-details
+        .order-items-table
+        .item-row
+        .item-title
+        .item-title-title {
+        font-size: 14px;
+      }
+
+      #receipt-body .order-details .order-summary-details .order-summary-table {
+        width: 100%;
+        padding: 20px 0;
+        border: 1px solid rgba(255, 39, 9, 0.1);
+      }
+      #receipt-body
+        .order-details
+        .order-summary-details
+        .order-summary-table
+        .summary-image-icon
+        td {
+        width: 30%;
+        text-align: center;
+      }
+      #receipt-body
+        .order-details
+        .order-summary-details
+        .order-summary-table
+        .summary-image-icon
+        td
+        img {
+        width: 30%;
+      }
+      #receipt-body
+        .order-details
+        .order-summary-details
+        .order-summary-table
+        .summary-row
+        .summary-row-title {
+        font-size: 12px;
+        color: rgba(0, 0, 0, 0.5);
+        text-align: right;
+        padding-right: 20px;
+      }
+      #receipt-body
+        .order-details
+        .order-summary-details
+        .order-summary-table
+        .summary-row
+        .summary-row-amount {
+        text-align: left;
+        color: rgba(0, 0, 0, 0.8);
+        font-size: 14px;
+      }
+      #receipt-body
+        .order-details
+        .order-summary-details
+        .order-summary-table
+        .summary-row
+        .summary-row-amount.total {
+        font-weight: 600;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="email-main">
+      <%= render 'layouts/email/header' %>
+      <%= yield %>
+      <%= render 'layouts/email/footer' %>
+    </div>
+  </body>
+</html>
