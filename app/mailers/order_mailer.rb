@@ -1,5 +1,5 @@
 class OrderMailer < ApplicationMailer
-  before_action :set_receipt_email, only: [:receipt_email]
+  before_action :set_receipt_email, only: [:receipt_email, :coy_order_email]
 
   layout 'receipt_template'
   def receipt_email
