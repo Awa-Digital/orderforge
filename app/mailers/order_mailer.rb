@@ -9,4 +9,11 @@ class OrderMailer < ApplicationMailer
 
     mail(to: params[:receipient], subject: "You got a new order!", delivery_method_options: @delivery_options)
   end
+
+  def coy_order_email
+    @order = Order.find_by(reference: params[:reference])
+    @preheader = "A user just paid for an order"
+
+    mail(to: 'orders@jazzysburger.com', subject: "An order has been placed  - #{@order.reference}", delivery_method_options: @delivery_options)
+  end
 end

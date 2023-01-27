@@ -32,7 +32,8 @@ module Order::Concerns
     def send_processing_email
       return unless paid == true
 
-      SendgridApi::Email.new.order_processor_email(self)
+      OrderMailer.with(reference: reference).coy_order_email.deliver
+      # SendgridApi::Email.new.order_processor_email(self)
     rescue StandardError => e
       Sentry.capture_exception(e)
     end

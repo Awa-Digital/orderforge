@@ -6,4 +6,11 @@ class OrderMailerPreview < ActionMailer::Preview
 
     OrderMailer.with(reference: order.reference).receipt_email
   end
+
+  def coy_order_email
+    # Set up a temporary order for the preview
+    order = Order.find(55)
+
+    OrderMailer.with(reference: order.reference).coy_order_email
+  end
 end

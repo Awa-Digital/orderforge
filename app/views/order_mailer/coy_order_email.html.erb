@@ -1,0 +1,92 @@
+<div id="receipt-body">
+  <h3>A new order has been received!</h3>
+  <p class="user-greeting">Hello Admin,</p>
+  <p class="user-greeting-info">
+    A payment for an order has been received for <b><%=@order.recipient_name%></b>
+  </p>
+<br>
+  <p class="user-greeting-info">
+    Contact the customer to confirm the details of the order before proceeding with processing it.
+  </p>
+
+  <div class="order-details">
+    <h4 class="order-details-heading">Order Details</h4>
+    <p class="order-details-id">
+      Order ref:
+      <a href="<%= @order.order_tracking_url %>"><%= @order.reference %></a>
+    </p>
+    <div class="order-details-items">
+      <table class="order-items-table">
+        <% @order.order_items.each do |item| %>
+        <tr class="item-row">
+          <td class="item-image">
+            <div
+              class="item-image-holder"
+              style="background-image: url(<%= item.product.image_url %>)"
+            ></div>
+          </td>
+          <td class="item-title">
+            <p class="item-title-title"><%= item.product.title %></p>
+            <p class="item-quantity-info">
+              <%= item.quantity%>x at <%=
+              number_to_currency(item.product.amount, unit: '₦', separator: '.',
+              delimiter: ',', precision: 2) %>
+            </p>
+          </td>
+          <td class="item-subtotal">
+            <%= number_to_currency(item.subtotal, unit: '₦', separator: '.',
+            delimiter: ',', precision: 2) %>
+          </td>
+        </tr>
+        <% end %>
+      </table>
+    </div>
+    <div class="billing-details">
+      <h4 class="order-details-header">Billed to:</h4>
+      <p class="order-details-recipient"><b><%= @order.recipient_name %></b></p>
+      <p class="order-details-p">Address: <%= @order.order_address.house_number %> <%= @order.order_address.street %>, <%= @order.order_address.city %>, <%= @order.order_address.state %>,  <%= @order.order_address.country %></p>
+      <p class="order-details-p"><b><a href="tel:<%= @order.recipient_phone %>"><%= @order.recipient_phone %></a> | <a href="mailto:<%= @order.recipient_email %>"><%= @order.recipient_email %></a></b></p>
+    </div>
+
+    <div class="order-summary-details">
+      <table class="order-summary-table">
+        <tr class="summary-image-icon">
+          <td rowspan="5">
+            <img
+              src="https://awa-apps.fra1.cdn.digitaloceanspaces.com/JJB/public-space/truck-for-email.png"
+              alt=""
+            />
+          </td>
+        </tr>
+        <tr class="summary-row">
+          <td class="summary-row-title">Subtotal</td>
+          <td class="summary-row-amount">
+            <%= number_to_currency(@order.total, unit: '₦', separator: '.',
+            delimiter: ',', precision: 2) %>
+          </td>
+        </tr>
+        <tr class="summary-row">
+          <td class="summary-row-title">Delivery Fees</td>
+          <td class="summary-row-amount">
+            <%= number_to_currency(@order.delivery_charge, unit: '₦', separator:
+            '.', delimiter: ',', precision: 2) %>
+          </td>
+        </tr>
+        <tr class="summary-row">
+          <td class="summary-row-title">Discount</td>
+          <td class="summary-row-amount">
+            <%= number_to_currency(@order.discount_amount, unit: '₦', separator:
+            '.', delimiter: ',', precision: 2) %>
+          </td>
+        </tr>
+        <tr class="summary-row">
+          <td class="summary-row-title">Total</td>
+          <td class="summary-row-amount total">
+            <%= number_to_currency(@order.payment.total, unit: '₦', separator:
+            '.', delimiter: ',', precision: 2) %>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
