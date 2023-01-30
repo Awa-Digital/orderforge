@@ -1,3 +1,7 @@
+# frozen_string_literal: true
+
+# rubocop:disable Metrics/ClassLength
+# user model
 class User < ApplicationRecord
   mount_uploader :avatar, AvatarUploader
 
@@ -11,21 +15,21 @@ class User < ApplicationRecord
   has_many :ratings, dependent: :destroy
   has_one :password_reset_token, dependent: :destroy
 
-  has_secure_password
+  has_secure_password validations: false
+  validate :setting_password
 
   validate :otp_validation, on: :create
 
   validates :first_name,
             :last_name,
             :password,
-            :password_confirmation,
             :phone_number, presence: true
 
   validates :email,
             :phone_number, uniqueness: true
 
   validates :phone_number, length: { is: 13 }
-  validates :password, length: { minimum: 8 }
+  validates :password, length: { minimum: 8 }, allow_blank: true
 
   after_create :generate_attributes, :update_account_verification
   before_destroy :remove_account_verification
@@ -42,6 +46,12 @@ class User < ApplicationRecord
     create_favourite unless favourite.present?
     create_notification_setting unless notification_setting.present?
     save_to_sendgrid
+  end
+
+  def setting_password
+    return if password_digest.blank?
+
+    errors[:password_confirmation] << "doesn't match password" unless @password_confirmation == password
   end
 
   def update_account_verification
@@ -111,7 +121,7 @@ class User < ApplicationRecord
   end
 
   def total_spends
-    return 0 if orders.where(paid: true).count == 0
+    return 0 if orders.where(paid: true).count.zero?
 
     # puts "Total Spends for #{id}: #{orders.where(paid: true).sum(&:order_total)}"
     orders.where(paid: true).sum(&:order_total)
@@ -133,3 +143,5 @@ class User < ApplicationRecord
     end
   end
 end
+
+# rubocop:enable Metrics/ClassLength

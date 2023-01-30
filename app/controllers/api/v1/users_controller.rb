@@ -3,15 +3,15 @@ class Api::V1::UsersController < Api::V1::BaseController
   skip_before_action :authenticate_user, except: %i[show update disable update_avatar]
 
   def signup
-    user = User.new(user_params)
-    user.password = params[:password]
-    user.password_confirmation = params[:password_confirmation]
+    @user = User.new(user_params)
+    @user.password = params[:password]
+    @user.password_confirmation = params[:password_confirmation]
     begin
-      user.save!
+      @user.save!
     rescue StandardError => e
-      unprocessable({ message: e.message, data: user.errors })
+      unprocessable({ message: e.original_message, data: @user.errors })
     else
-      assign_token_to_user(user)
+      assign_token_to_user(@user)
     end
   end
 
@@ -96,13 +96,13 @@ class Api::V1::UsersController < Api::V1::BaseController
 
   def request_password_reset
     @user = User.find_by(email: params[:email])
-    if @user
-      @user.create_password_reset_token unless @user.password_reset_token.present?
-      @user.update_password_reset_token if @user.password_reset_token.present?
-      success({
-                message: 'if you are a registered user, you will get an email with instructions on how to reset your password'
-              })
-    end
+    return unless @user
+
+    @user.create_password_reset_token unless @user.password_reset_token.present?
+    @user.update_password_reset_token if @user.password_reset_token.present?
+    success({
+              message: 'if you are a registered user, you will get an email with instructions on how to reset your password'
+            })
   end
 
   def reset_password
