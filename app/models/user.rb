@@ -22,7 +22,6 @@ class User < ApplicationRecord
 
   validates :first_name,
             :last_name,
-            :password,
             :phone_number, presence: true
 
   validates :email,

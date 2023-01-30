@@ -1,3 +1,5 @@
+#  rubocop:disable Metrics/ClassLength
+
 # User Managment
 class Api::V1::UsersController < Api::V1::BaseController
   skip_before_action :authenticate_user, except: %i[show update disable update_avatar]
@@ -139,3 +141,4 @@ class Api::V1::UsersController < Api::V1::BaseController
                                  :phone_otp, :avatar)
   end
 end
+# rubocop:enable Metrics/ClassLength

@@ -2,8 +2,14 @@ class AvatarUploader < CarrierWave::Uploader::Base
   include CarrierWave::RMagick
   # include Cloudinary::CarrierWave
 
+  storage :fog
+
   def public_id
-    "jazzy/#{ENV['MEDIA_SUBFOLDER']}/users/user_#{model.id}_#{DateTime.now.to_i}"
+    "JJB/#{ENV['MEDIA_SUBFOLDER']}/users/user_#{model.id}"
+  end
+
+  def store_dir
+    "JJB/#{ENV['MEDIA_SUBFOLDER']}/users/user_#{model.id}"
   end
 
   process resize_to_fit: [300, 300]
