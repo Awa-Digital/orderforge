@@ -1,5 +1,5 @@
 class OrderMailer < ApplicationMailer
-  before_action :set_receipt_email, only: [:receipt_email, :coy_order_email]
+  before_action :set_receipt_email, only: %i[receipt_email coy_order_email]
 
   layout 'receipt_template'
   def receipt_email
@@ -7,13 +7,14 @@ class OrderMailer < ApplicationMailer
     @ad = Ad.active_ads.last
     @preheader = "#{@order.recipient_name} Your order has been confirmed and here are the details"
 
-    mail(to: params[:receipient], subject: "You got a new order!", delivery_method_options: @delivery_options)
+    mail(to: params[:receipient], subject: 'You got a new order!', delivery_method_options: @delivery_options)
   end
 
   def coy_order_email
     @order = Order.find_by(reference: params[:reference])
-    @preheader = "A user just paid for an order"
+    @preheader = 'A user just paid for an order'
 
-    mail(to: 'orders@jazzysburger.com', subject: "An order has been placed  - #{@order.reference}", delivery_method_options: @delivery_options)
+    mail(to: 'orders@jazzysburger.com', cc: 'dispatch@jazzysburger.com', subject: "An order has been placed  - #{@order.reference}",
+         delivery_method_options: @delivery_options)
   end
 end

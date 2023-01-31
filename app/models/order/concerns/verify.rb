@@ -1,4 +1,5 @@
 module Order::Concerns
+  # verification of payment
   module Verify
     def verify
       paid = payment.verify
