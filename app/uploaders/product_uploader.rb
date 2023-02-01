@@ -1,8 +1,15 @@
 class ProductUploader < CarrierWave::Uploader::Base
-  include Cloudinary::CarrierWave
+  include CarrierWave::RMagick
+  # include Cloudinary::CarrierWave
+
+  storage :fog
 
   def public_id
-    "jazzy/#{ENV['MEDIA_SUBFOLDER']}/products/prod_#{model.id}_#{DateTime.now.to_i}"
+    "JJB/#{ENV['MEDIA_SUBFOLDER']}/products/prod_#{model.id}"
+  end
+
+  def store_dir
+    "JJB/#{ENV['MEDIA_SUBFOLDER']}/products/prod_#{model.id}"
   end
 
   # Provide a default URL as a default if there hasn't been a file uploaded:
