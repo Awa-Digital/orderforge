@@ -16,5 +16,5 @@ class AdUploader < CarrierWave::Uploader::Base
     "https://api.jazzysburger.com/sunday-ad.png"
   end
 
-  process resize_to_fit: [1840, 785]
+  process resize_to_fit: [736, 314]
 end
