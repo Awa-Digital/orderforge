@@ -39,6 +39,11 @@
             delimiter: ',', precision: 2) %>
           </td>
         </tr>
+          <% if item.removables.count > 0 %>
+          <tr>
+            <td colspan="3">Remove: <span class="red"><%= item.removables.includes(:ingredient).pluck('ingredients.name').join(', ') %></span> from the <b><%= item.product.title %></b></td>
+          </tr>
+          <% end %>
         <% end %>
       </table>
     </div>
