@@ -22,11 +22,12 @@ module Api
       end
 
       def hot_deals
-        @hot_deals = if Order.limit(5).joins(:order_items).pluck(:product_id).uniq.count > 5
-                       Product.find(Order.where(status: 'paid').limit(5).joins(:order_items).pluck(:product_id).uniq).select(&:available)
-                     else
-                       Product.where(id: Product.select(&:available).pluck(:id).sample(5))
-                     end
+        @hot_deals = Product.where(id: Product.select(&:available).pluck(:id)).order(created_at: :desc).limit(5)
+        # @hot_deals = if Order.limit(5).joins(:order_items).pluck(:product_id).uniq.count > 5
+        #                Product.find(Order.where(status: 'paid').limit(5).joins(:order_items).pluck(:product_id).uniq).select(&:available)
+        #              else
+        #                Product.where(id: Product.select(&:available).pluck(:id).sample(5))
+        #              end
         success({ message: 'hot deals fetched successfully', data: @hot_deals })
       end
 
