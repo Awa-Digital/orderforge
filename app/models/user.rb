@@ -44,7 +44,7 @@ class User < ApplicationRecord
   def generate_attributes
     create_favourite unless favourite.present?
     create_notification_setting unless notification_setting.present?
-    save_to_sendgrid
+    deliver_email
   end
 
   def setting_password
@@ -103,12 +103,12 @@ class User < ApplicationRecord
     password_reset_token.update_token
   end
 
-  def save_to_sendgrid
+  def deliver_email
     # make this asynchronous with retries
-    Sendgrid.new.add_contacts(self)
-    puts '------ Contact saved to Sendgrid!'
+    deliver_verification_email
+    puts '------ Verification Email Sent --------'
   rescue StandardError
-    puts "Couldn't save user details to sendgrid"
+    puts "Couldn't send verification email"
   end
 
   def inactive
@@ -117,6 +117,18 @@ class User < ApplicationRecord
 
   def verification_url
     "#{ENV['APP_BASE_URL']}/user/verify/#{AccountVerification.find_by(email: email).email_token}"
+  end
+
+  def deliver_verification_email
+    UserMailer.with(id: self.id).welcome.deliver
+  end
+
+  def deliver_reset_password_email
+    UserMailer.with(id: self.id).reset.deliver
+  end
+
+  def reset_url
+    "#{ENV['APP_BASE_URL']}/reset-password/#{password_reset_token.token}"
   end
 
   def total_spends

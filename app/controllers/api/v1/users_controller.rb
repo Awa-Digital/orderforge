@@ -98,10 +98,12 @@ class Api::V1::UsersController < Api::V1::BaseController
 
   def request_password_reset
     @user = User.find_by(email: params[:email])
-    return unless @user
+    return notfound({message: "No user with this email found"}) unless @user
 
     @user.create_password_reset_token unless @user.password_reset_token.present?
     @user.update_password_reset_token if @user.password_reset_token.present?
+    @user.deliver_reset_password_email
+
     success({
               message: 'if you are a registered user, you will get an email with instructions on how to reset your password'
             })

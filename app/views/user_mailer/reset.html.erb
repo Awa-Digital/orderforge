@@ -1,0 +1,22 @@
+<div id="receipt-body">
+  <div class="ad">
+    <img src="https://awa-apps.fra1.cdn.digitaloceanspaces.com/JJB%2Fpublic-space%2Freset-password.png" alt="reset password image" />
+  </div>
+  <h3>You have requested to change your password!</h3>
+  <p class="user-greeting">Hello <%=@user.first_name%>,</p>
+  <p class="user-greeting-info">
+    You are getting this emaii because you have requested to change your password from our website or our mobile app.
+  </p>
+  <br>
+  <p class="user-greeting-info">
+    If you have not requested to change your password then please ignore this email or report it to our customer support team via our website or our mobile app
+  </p>
+  <div class="reset-details">
+    <%# <h4 class="order-details-heading">Order Details</h4> %>
+    <a class="action-button" href="<%= @user.reset_url %>">Reset Password</a>
+
+    <p class="user-greeting-info">
+    or click on this link to reset your password:  <a href="<%= @user.reset_url %>"><%= @user.reset_url %></a>
+  </p>
+  </div>
+</div>
