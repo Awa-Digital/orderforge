@@ -3,14 +3,14 @@
 # Order Receipts
 class Receipt
   def initialize(order)
-    @logo = 'https://awa-apps.fra1.cdn.digitaloceanspaces.com/JJB/public-space/logo-for-email.png'
+    @logo = 'app/assets/images/logo.png'
     @pdf = Prawn::Document.new(page_size: 'A6')
     @order = order
     @pdf.font 'app/assets/fonts/Inter-Regular.ttf'
   end
 
   def generate_file
-    @pdf.image open(@logo), width: 50, position: :center
+    @pdf.image @logo, width: 50, position: :center
     header('Order Receipt')
     recipient
     @pdf.font_size(6) do
