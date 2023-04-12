@@ -107,6 +107,7 @@ Rails.application.routes.draw do
           get 'download/:order_id', to: 'orders#download_pdf'
           get ':order_id/logs', to: 'orders#logs'
           post 'verify/:order_id', to: 'orders#verify'
+          get 'order_items_counter', to: "orders#order_items_counter"
         end
       end
     end

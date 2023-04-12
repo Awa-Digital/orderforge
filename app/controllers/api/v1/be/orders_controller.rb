@@ -6,7 +6,8 @@ module Api
     module Be
       # Operations on Orders
       class OrdersController < Api::V1::Be::BaseController
-        before_action :set_order, except: %i[index filter pending search filtered_search]
+        skip_before_action :authenticate_token, only: [:order_items_counter]
+        before_action :set_order, except: %i[index filter pending search filtered_search order_items_counter]
         def index
           @all_orders = Order.all
           @orders = @all_orders.page(params[:page]).per(params[:per_page])
@@ -17,6 +18,16 @@ module Api
           @all_orders = Order.where(status: params[:status])
           @orders = @all_orders.page(params[:page]).per(params[:per_page])
           paginate_orders
+        end
+
+        def order_items_counter
+          @order_items = OrderItem.all.select{|oi| oi.order.paid == true}
+          @data = {}
+          @order_items.each do |oi|
+            @data[oi.product.title] = @data[oi.product.title].to_i + oi.quantity
+          end
+
+          success({message: "Ordered Items have been fetched successfully", data: @data})
         end
 
         def search
