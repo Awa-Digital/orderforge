@@ -21,13 +21,17 @@ module Api
         end
 
         def order_items_counter
-          @order_items = OrderItem.all.select{|oi| oi.order.paid == true}
+          start_date = params[:start_date].to_date
+          end_date = params[:end_date].to_date
+          @orders = Order.where(paid: true, updated_at: start_date..end_date)
+          @order_items = []
+          @orders.map{|o| o.order_items.map{|oi| @order_items << oi}}
           @data = {}
           @order_items.each do |oi|
             @data[oi.product.title] = @data[oi.product.title].to_i + oi.quantity
           end
 
-          success({message: "Ordered Items have been fetched successfully", data: @data})
+          success({message: "Ordered items have been counted for #{start_date.to_s} to #{end_date.to_s}", data: @data})
         end
 
         def search
