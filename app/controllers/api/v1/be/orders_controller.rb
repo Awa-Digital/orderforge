@@ -32,7 +32,7 @@ module Api
             @data[oi.product.title] = @data[oi.product.title].to_i + oi.quantity
           end
 
-          success({message: "Ordered items have been counted for #{start_date.to_s} to #{end_date.to_s}", data: @data})
+          success({message: "Ordered items have been counted for #{month}-#{year}", data: @data})
         end
 
         def search
