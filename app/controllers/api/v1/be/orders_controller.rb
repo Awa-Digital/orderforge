@@ -21,9 +21,10 @@ module Api
         end
 
         def order_items_counter
-          start_date = params[:start_date].to_date
-          end_date = params[:end_date].to_date
-          @orders = Order.where(paid: true, updated_at: start_date..end_date)
+          month = params[:month]
+          year = params[:year]
+          @payment_ids = Payment.where(paid: true).select{|p| p.paid_at.strftime("%m-%Y") ==  "#{month}-#{year}"}
+          @orders = Order.where(id: @payment_ids, paid: true)
           @order_items = []
           @orders.map{|o| o.order_items.map{|oi| @order_items << oi}}
           @data = {}
