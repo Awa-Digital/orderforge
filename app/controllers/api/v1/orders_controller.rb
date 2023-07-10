@@ -1,6 +1,6 @@
 class Api::V1::OrdersController < Api::V1::BaseController
   skip_before_action :authenticate_user,
-                     only: %i[cart create_guest_cart update_address remove attach_recipient address_areas]
+                     only: %i[cart create_guest_cart update_address remove attach_recipient address_areas address_regions regions_areas]
   before_action :authenticate_guest, only: %i[cart create_guest_cart update_address remove attach_recipient]
   before_action :set_product, only: %i[add update remove]
   before_action :set_cart, except: [:address_areas]
@@ -120,6 +120,17 @@ class Api::V1::OrdersController < Api::V1::BaseController
 
   def address_areas
     areas = DeliveryArea.all.select { |x| !x.day_rate.nil? }.sort_by(&:name)
+    success({ message: 'Areas Fetched', data: areas })
+  end
+
+  def address_regions
+    areas = Region.all
+    success({ message: 'Regions Fetched', data: areas })
+  end
+
+  def regions_areas
+    region = Region.find(params[:region_id])
+    areas = region.delivery_areas.all.select { |x| !x.day_rate.nil? }.sort_by(&:name)
     success({ message: 'Areas Fetched', data: areas })
   end
 

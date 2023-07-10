@@ -54,6 +54,8 @@ Rails.application.routes.draw do
         post 'add/address', to: 'orders#attach_address'
         post 'add/recipient', to: 'orders#attach_recipient'
         get 'address/areas', to: 'orders#address_areas'
+        get 'address/regions', to: 'orders#address_regions'
+        get 'address/regions/:region_id/areas', to: 'orders#regions_areas'
       end
 
       scope 'payment' do
