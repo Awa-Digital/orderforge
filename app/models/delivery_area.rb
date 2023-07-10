@@ -4,6 +4,7 @@
 class DeliveryArea < ApplicationRecord
   has_many :addresses
   has_many :order_addresses
+  belongs_to :region
 
   def as_json(options = {})
     options[:methods] = %i[price price_per_time]

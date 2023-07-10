@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_01_30_160734) do
+ActiveRecord::Schema.define(version: 2023_07_10_093231) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -20,8 +20,8 @@ ActiveRecord::Schema.define(version: 2023_01_30_160734) do
     t.string "otp"
     t.string "email"
     t.string "email_token"
-    t.boolean "email_verified"
-    t.boolean "phone_verified"
+    t.boolean "email_verified", default: false
+    t.boolean "phone_verified", default: false
     t.integer "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -74,6 +74,7 @@ ActiveRecord::Schema.define(version: 2023_01_30_160734) do
     t.decimal "dusk_rate", precision: 8, scale: 2
     t.decimal "night_rate", precision: 8, scale: 2
     t.decimal "dawn_rate", precision: 8, scale: 2
+    t.integer "region_id", default: 1
   end
 
   create_table "devices", force: :cascade do |t|
@@ -112,6 +113,12 @@ ActiveRecord::Schema.define(version: 2023_01_30_160734) do
   create_table "ingredients", force: :cascade do |t|
     t.string "name"
     t.string "icon"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "locations", force: :cascade do |t|
+    t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -253,6 +260,12 @@ ActiveRecord::Schema.define(version: 2023_01_30_160734) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["product_id"], name: "index_ratings_on_product_id"
     t.index ["user_id"], name: "index_ratings_on_user_id"
+  end
+
+  create_table "regions", force: :cascade do |t|
+    t.integer "location_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "removables", force: :cascade do |t|
