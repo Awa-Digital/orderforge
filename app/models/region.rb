@@ -1,4 +1,4 @@
 class Region < ApplicationRecord
-  belongs_to :region
+  belongs_to :location
   has_many :delivery_areas
 end
