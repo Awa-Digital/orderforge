@@ -10,10 +10,11 @@ module Order::Concerns
       if @addr.present?
         return 0.00 unless @addr.delivery_area_id.present?
 
-        if delivery_address.delivery_area.price.nil?
+        if @addr.delivery_area.price.nil?
           0.00
         else
-          delivery_address.delivery_area.price
+          puts @addr.delivery_area
+          @addr.delivery_area.price
         end
       else
         0.00
