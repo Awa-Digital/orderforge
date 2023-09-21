@@ -6,6 +6,7 @@ class Api::V1::UsersController < Api::V1::BaseController
 
   def signup
     @user = User.new(user_params)
+    @user.email = user_params[:email].downcase.gsub(' ', '')
     @user.password = params[:password]
     @user.password_confirmation = params[:password_confirmation]
     begin

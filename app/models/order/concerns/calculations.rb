@@ -10,7 +10,11 @@ module Order::Concerns
       if @addr.present?
         return 0.00 unless @addr.delivery_area_id.present?
 
-        delivery_address.delivery_area.price
+        if delivery_address.delivery_area.price.nil?
+          0.00
+        else
+          delivery_address.delivery_area.price
+        end
       else
         0.00
       end
@@ -40,3 +44,19 @@ module Order::Concerns
     end
   end
 end
+
+
+# 26
+# 3
+#
+# 9
+#
+# 21
+#
+# 46
+#
+# 51
+#
+# 75
+#
+# 77
