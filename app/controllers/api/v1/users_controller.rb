@@ -97,7 +97,7 @@ class Api::V1::UsersController < Api::V1::BaseController
   end
 
   def request_password_reset
-    @user = User.find_by(email: params[:email])
+    @user = User.find_by(email: params[:email].downcase.gsub(' ', ''))
     return notfound({message: "No user with this email found"}) unless @user
 
     @user.create_password_reset_token unless @user.password_reset_token.present?
