@@ -83,8 +83,8 @@ class Order < ApplicationRecord
 
   def generate_completion_notification
     next_order_no = Order.where(paid: true).all.count + 1
-    order.update(status: 'paid', paid: true, order_no: next_order_no )
-    
+    update(status: 'paid', paid: true, order_no: next_order_no )
+
     OrderMailer.with(reference:).coy_order_email.deliver
     puts "NOTIFIED COMPANY ABOUT ORDER"
     return if user_id.nil?
