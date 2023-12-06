@@ -55,8 +55,10 @@ class User < ApplicationRecord
 
   def update_account_verification
     account = AccountVerification.find_by(phone: phone_number)
-    account.update(phone_verified: true, user_id: id)
-    account.process_email_verification
+    if account
+      account.update(phone_verified: true, user_id: id)
+      account.process_email_verification
+    end
   end
 
   def remove_account_verification
@@ -146,11 +148,12 @@ class User < ApplicationRecord
 
   def otp_validation
     account = AccountVerification.find_by(phone: phone_number)
+    errors.add :otp, 'is invalid. Resend new OTP or try again' unless account.present?
+
+
     if account
-      errors[:phone_number] << 'is not valid' unless account.valid_phone?
-      errors[:otp] << 'is invalid. Resend new OTP or try again' if account.otp != phone_otp
-    elsif account.otp != phone_otp
-      errors[:account] << 'verification not processed yet'
+      errors.add :phone_number, 'is not valid' unless account.valid_phone?
+      errors.add :otp, 'is invalid. Resend new OTP or try again' if account.otp != phone_otp
     end
   end
 end

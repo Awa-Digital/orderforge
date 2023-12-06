@@ -12,7 +12,7 @@ class Api::V1::UsersController < Api::V1::BaseController
     begin
       @user.save!
     rescue StandardError => e
-      unprocessable({ message: e.original_message, data: @user.errors })
+      unprocessable({ message: "Something went wrong while creating account", data: @user.errors })
     else
       assign_token_to_user(@user)
     end
