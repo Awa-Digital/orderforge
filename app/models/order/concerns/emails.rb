@@ -32,8 +32,11 @@ module Order::Concerns
       return unless paid == true
 
       shout("sending emails to orders@jazzysburger.com for ORDER: #{id}")
-      OrderMailer.with(reference:).coy_order_email.deliver
-      # SendgridApi::Email.new.order_processor_email(self)
+      begin
+        OrderMailer.with(reference:).coy_order_email.deliver
+      rescue Net::SMTPAuthenticationError => e
+        Sentry.capture_message(e)
+      end
     rescue StandardError => e
       Sentry.capture_exception(e)
     end
