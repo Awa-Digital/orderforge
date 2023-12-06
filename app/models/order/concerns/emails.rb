@@ -30,7 +30,7 @@ module Order::Concerns
     def send_processing_email
       return unless paid == true
 
-      shout("sending emails to orders@jazzysburger.com for ORDER: #{id}")
+      puts "SENDING Emails to orders@jazzysburger.com for ORDER: #{id}"
       OrderMailer.with(reference:).coy_order_email.deliver
     rescue Net::SMTPAuthenticationError => e
       Sentry.capture_exception(Net::SMTPAuthenticationError.new("Email Deliver Error"))

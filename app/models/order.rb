@@ -17,6 +17,12 @@ class Order < ApplicationRecord
   after_update :send_update_notifications
 
   scope :to_be_processed_today, -> { select(&:processed_today) }
+  scope :stale_orders, -> {
+    where(status: ["initiated"])
+      .where("created_at < ?", Date.today)
+      .where("updated_at < ?", Date.today)
+      .where("processing_date IS NULL OR processing_date < ?", Date.today)
+  }
 
   include Concerns::Verify
   include Concerns::Calculations
@@ -80,6 +86,9 @@ class Order < ApplicationRecord
     return if user_id.nil?
 
     user.update_spend_score
+    next_order_no = Order.where(paid: true).all.count + 1
+    order.update(status: 'paid', paid: true, order_no: next_order_no )
+    order.set_processing_data
   end
 
   def generate_pdf_receipt
