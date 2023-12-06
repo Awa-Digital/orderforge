@@ -1,5 +1,3 @@
-#  rubocop:disable Metrics/ClassLength
-
 # User Managment
 class Api::V1::UsersController < Api::V1::BaseController
   skip_before_action :authenticate_user, except: %i[show update disable update_avatar]
@@ -54,15 +52,15 @@ class Api::V1::UsersController < Api::V1::BaseController
   def assign_token_to_user(user)
     @token = generate_auth_token(user)
     success({ message: "#{user.first_name}, welcome to Jazzy's Juicy Burger!",
-              data: { user: user, auth: { token: @token } } })
+              data: { user:, auth: { token: @token } } })
   end
 
   def login
     @user = User.find_by(email: params[:email].downcase.gsub(' ', ''))
-    if !@user
-      unauthorized({ message: 'invalid username, email or password' })
-    else
+    if @user
       log_user_in(@user)
+    else
+      unauthorized({ message: 'invalid username, email or password' })
     end
   end
 
@@ -99,7 +97,7 @@ class Api::V1::UsersController < Api::V1::BaseController
 
   def request_password_reset
     @user = User.find_by(email: params[:email].downcase.gsub(' ', ''))
-    return notfound({message: "No user with this email found"}) unless @user
+    return notfound({ message: "No user with this email found" }) unless @user
 
     @user.create_password_reset_token unless @user.password_reset_token.present?
     @user.update_password_reset_token if @user.password_reset_token.present?

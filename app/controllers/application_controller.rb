@@ -54,11 +54,9 @@ class ApplicationController < ActionController::Base
 
   def authenticate_user
     authorization_header = request.headers[:authorization]
-    if !authorization_header
-      unauthorized({ message: 'Authorization Absent!' })
-    else
-      token = authorization_header.split(' ')[1]
-      secret_key = ENV['SECRET_KEY_BASE']
+    if authorization_header
+      token = authorization_header.split[1]
+      secret_key = ENV.fetch('SECRET_KEY_BASE', nil)
       begin
         decoded_token = JWT.decode(token, secret_key)
         current_user = User.find(decoded_token[0]['user_id'])
@@ -76,6 +74,8 @@ class ApplicationController < ActionController::Base
       rescue StandardError
         unauthorized({ message: 'Invalid token' })
       end
+    else
+      unauthorized({ message: 'Authorization Absent!' })
     end
   end
 
@@ -85,10 +85,10 @@ class ApplicationController < ActionController::Base
 
   def authenticate_guest
     authorization_header = request.headers[:authorization]
-    if !authorization_header
-      @mobile_user = nil
-    else
+    if authorization_header
       authenticate_user
+    else
+      @mobile_user = nil
     end
   end
 end

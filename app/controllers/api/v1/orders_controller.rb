@@ -38,7 +38,7 @@ class Api::V1::OrdersController < Api::V1::BaseController
   end
 
   def add_to_cart(product_id, quantity, cart, removables)
-    @item = cart.items.find_or_create_by(product_id: product_id)
+    @item = cart.items.find_or_create_by(product_id:)
     @item.quantity = quantity.to_i
     begin
       @item.save!
@@ -70,11 +70,11 @@ class Api::V1::OrdersController < Api::V1::BaseController
   # to avoid mobile app breaking
   def guest_address_obj(params)
     {
-      "house_number": params['house_number'],
-      "street": params['street'],
-      "state": params['state'],
-      "delivery_area_id": params['delivery_area_id'],
-      "country": params['country']
+      house_number: params['house_number'],
+      street: params['street'],
+      state: params['state'],
+      delivery_area_id: params['delivery_area_id'],
+      country: params['country']
     }
   end
 
@@ -120,7 +120,7 @@ class Api::V1::OrdersController < Api::V1::BaseController
 
   def address_areas
     region = Region.find(1)
-    areas = region.delivery_areas.all.select { |x| !x.day_rate.nil? }.sort_by(&:name)
+    areas = region.delivery_areas.all.reject { |x| x.day_rate.nil? }.sort_by(&:name)
     success({ message: 'Areas Fetched', data: areas })
   end
 
@@ -131,7 +131,7 @@ class Api::V1::OrdersController < Api::V1::BaseController
 
   def regions_areas
     region = Region.find(params[:region_id])
-    areas = region.delivery_areas.all.select { |x| !x.day_rate.nil? }.sort_by(&:name)
+    areas = region.delivery_areas.all.reject { |x| x.day_rate.nil? }.sort_by(&:name)
     success({ message: 'Areas Fetched', data: areas })
   end
 

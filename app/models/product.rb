@@ -44,7 +44,7 @@ class Product < ApplicationRecord
   end
 
   def review_rating
-    if review_count > 0
+    if review_count.positive?
       (ratings.sum(:rating) / ratings.count)
     else
       0

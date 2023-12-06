@@ -1,4 +1,3 @@
-
 # for User Addresses
 class Api::V1::Profile::LeaderController < Api::V1::Profile::BaseController
   skip_before_action :authenticate_user
@@ -6,7 +5,7 @@ class Api::V1::Profile::LeaderController < Api::V1::Profile::BaseController
   def board
     @users = User.all.order(spend_score: :desc).limit(10)
     data = make_data(@users)
-    success({message: 'Leaderboard fetched successfully', data: data})
+    success({ message: 'Leaderboard fetched successfully', data: })
   end
 
   def make_data(users)
@@ -17,7 +16,7 @@ class Api::V1::Profile::LeaderController < Api::V1::Profile::BaseController
         image: user.avatar,
         name: user.full_name.camelize,
         amount: user.orders.where(paid: true).sum(&:total),
-        rank: rank+1
+        rank: rank + 1
       }
       rank += 1
     end

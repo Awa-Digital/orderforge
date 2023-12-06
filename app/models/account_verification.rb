@@ -26,7 +26,7 @@ class AccountVerification < ApplicationRecord
   end
 
   def valid_email?
-    !User.find_by(email: email).present?
+    !User.find_by(email:).present?
   end
 
   def user
@@ -39,7 +39,7 @@ class AccountVerification < ApplicationRecord
   end
 
   def send_email_verification
-    SendgridApi::Email.new.verify_email(self.user)
+    SendgridApi::Email.new.verify_email(user)
     puts 'Email for account verification has been sent! ---- '
   end
 end

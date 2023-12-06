@@ -50,7 +50,6 @@ module Order::Concerns
   end
 end
 
-
 # 26
 # 3
 #

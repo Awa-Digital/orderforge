@@ -3,6 +3,6 @@ class Api::V1::AdsController < Api::V1::BaseController
 
   def ads
     ads = Ad.active_ads
-    success({message: "Ads successfully fetched", data: ads})
+    success({ message: "Ads successfully fetched", data: ads })
   end
 end

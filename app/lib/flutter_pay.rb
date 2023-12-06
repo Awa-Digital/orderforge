@@ -3,9 +3,9 @@
 class FlutterPay
   def initialize
     @flw = Flutterwave.new(
-      ENV['FLW_PUB_KEY'],
-      ENV['FLW_SEC_KEY'],
-      ENV['FLW_ENC_KEY']
+      ENV.fetch('FLW_PUB_KEY', nil),
+      ENV.fetch('FLW_SEC_KEY', nil),
+      ENV.fetch('FLW_ENC_KEY', nil)
     )
     @bank_transfer = BankTransfer.new(@flw)
   end

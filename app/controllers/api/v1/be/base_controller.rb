@@ -13,7 +13,7 @@ module Api
           return unauthorized({ message: 'send request with bearer token!' }) unless authorization_header
 
           begin
-            decode_and_validate_token(authorization_header.split(' ')[1], ENV['SECRET_KEY_BASE'])
+            decode_and_validate_token(authorization_header.split[1], ENV.fetch('SECRET_KEY_BASE', nil))
           rescue JWT::ExpiredSignature
             unauthorized({ message: 'Your token has expired' })
           rescue StandardError
@@ -30,23 +30,21 @@ module Api
           @admin_user = current_user
         end
 
-        # rubocop:disable Metrics/MethodLength
         def paginate_orders
           success({
-            message: 'orders fetched',
-            data: {
-              orders: @orders.includes(:payment).order("payment.paid_at ASC"),
-              pagination: {
-                total_orders: @all_orders.count,
-                current_page: @orders.current_page,
-                next_page: @orders.next_page,
-                last_page?: @orders.last_page?,
-                total_pages: @orders.total_pages
-              }
-            }
-          })
+                    message: 'orders fetched',
+                    data: {
+                      orders: @orders.includes(:payment).order("payment.paid_at ASC"),
+                      pagination: {
+                        total_orders: @all_orders.count,
+                        current_page: @orders.current_page,
+                        next_page: @orders.next_page,
+                        last_page?: @orders.last_page?,
+                        total_pages: @orders.total_pages
+                      }
+                    }
+                  })
         end
-        # rubocop:enable Metrics/MethodLength
       end
     end
   end

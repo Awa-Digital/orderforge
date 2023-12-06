@@ -5,11 +5,11 @@ class AvatarUploader < CarrierWave::Uploader::Base
   storage :fog
 
   def public_id
-    "JJB/#{ENV['MEDIA_SUBFOLDER']}/users/user_#{model.id}"
+    "JJB/#{ENV.fetch('MEDIA_SUBFOLDER', nil)}/users/user_#{model.id}"
   end
 
   def store_dir
-    "JJB/#{ENV['MEDIA_SUBFOLDER']}/users/user_#{model.id}"
+    "JJB/#{ENV.fetch('MEDIA_SUBFOLDER', nil)}/users/user_#{model.id}"
   end
 
   process resize_to_fit: [300, 300]

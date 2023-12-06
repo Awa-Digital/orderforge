@@ -1,15 +1,15 @@
 class FireBase
   def initialize
     @fcm = FCM.new(
-      ENV['FIREBASE_API_TOKEN'],
-      ENV['FIREBASE_CREDENTIALS'],
-      ENV['FIREBASE_PROJECT_ID']
+      ENV.fetch('FIREBASE_API_TOKEN', nil),
+      ENV.fetch('FIREBASE_CREDENTIALS', nil),
+      ENV.fetch('FIREBASE_PROJECT_ID', nil)
     )
   end
 
   def push(token, notify)
     message = {
-      token: token,
+      token:,
       name: notify[:name],
       notification: notification(notify),
       android: android_config(notify),
@@ -34,7 +34,7 @@ class FireBase
       payload: {
         aps: {
           badge: 0,
-          "mutable-content": 1
+          'mutable-content': 1
         }
       },
       fcm_options: { image: notify[:image_url] }

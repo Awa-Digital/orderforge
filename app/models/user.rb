@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable Metrics/ClassLength
 # user model
 class User < ApplicationRecord
   mount_uploader :avatar, AvatarUploader
@@ -63,7 +62,7 @@ class User < ApplicationRecord
 
   def remove_account_verification
     @account = AccountVerification.find_by(user_id: id)
-    @account.destroy if @account
+    @account&.destroy
   end
 
   def products
@@ -118,19 +117,19 @@ class User < ApplicationRecord
   end
 
   def verification_url
-    "#{ENV['APP_BASE_URL']}/user/verify/#{AccountVerification.find_by(email: email).email_token}"
+    "#{ENV.fetch('APP_BASE_URL', nil)}/user/verify/#{AccountVerification.find_by(email:).email_token}"
   end
 
   def deliver_verification_email
-    UserMailer.with(id: self.id).welcome.deliver
+    UserMailer.with(id:).welcome.deliver
   end
 
   def deliver_reset_password_email
-    UserMailer.with(id: self.id).reset.deliver
+    UserMailer.with(id:).reset.deliver
   end
 
   def reset_url
-    "#{ENV['APP_BASE_URL']}/reset-password/#{password_reset_token.token}"
+    "#{ENV.fetch('APP_BASE_URL', nil)}/reset-password/#{password_reset_token.token}"
   end
 
   def total_spends

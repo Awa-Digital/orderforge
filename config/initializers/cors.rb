@@ -14,7 +14,7 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
   #            methods: %i[get post put patch delete options head]
   # end
 
-  null_regex = Regexp.new(/\Anull\z/)
+  null_regex = /\Anull\z/
 
   allow do
     hostnames = [null_regex, 'localhost:3000', 'app.forestadmin.com', 'localhost:3001', 'jazzysjuicyburger.com',
