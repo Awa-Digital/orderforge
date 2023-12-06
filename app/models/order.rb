@@ -82,7 +82,8 @@ class Order < ApplicationRecord
   end
 
   def generate_completion_notification
-    send_processing_email
+    OrderMailer.with(reference:).coy_order_email.deliver
+    puts "NOTIFIED COMPANY ABOUT ORDER"
     return if user_id.nil?
 
     user.update_spend_score

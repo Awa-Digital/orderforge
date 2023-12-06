@@ -10,7 +10,6 @@ module Order::Concerns
       if @addr.present?
         return 0.00 unless @addr.delivery_area_id.present?
 
-        puts @addr.to_json
         if @addr.delivery_area.price.nil?
           0.00
         else
