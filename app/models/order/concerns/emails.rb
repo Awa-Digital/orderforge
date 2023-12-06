@@ -32,7 +32,7 @@ module Order::Concerns
       return unless paid == true
 
       shout("sending emails to orders@jazzysburger.com for ORDER: #{id}")
-      OrderMailer.with(reference: reference).coy_order_email.deliver
+      OrderMailer.with(reference:).coy_order_email.deliver
       # SendgridApi::Email.new.order_processor_email(self)
     rescue StandardError => e
       Sentry.capture_exception(e)

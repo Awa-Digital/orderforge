@@ -9,7 +9,7 @@ class Api::V1::UsersController < Api::V1::BaseController
     @user.password_confirmation = params[:password_confirmation]
     begin
       @user.save!
-    rescue StandardError => e
+    rescue StandardError
       unprocessable({ message: "Something went wrong while creating account", data: @user.errors })
     else
       assign_token_to_user(@user)

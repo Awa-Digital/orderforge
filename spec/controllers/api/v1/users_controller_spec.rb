@@ -3,9 +3,9 @@ require 'rails_helper'
 RSpec.describe Api::V1::UsersController, type: :controller do
   before(:all) do
     @email = "#{Time.now.to_i}@example.com"
-    @phone = "23480#{rand(10000000..99999999)}"
+    @phone = "23480#{rand(10_000_000..99_999_999)}"
     @user_attributes = FactoryBot.attributes_for(:user, email: @email, phone_number: @phone)
-    @otp = create(:account_verification, email: @email, phone: @phone ).otp
+    @otp = create(:account_verification, email: @email, phone: @phone).otp
   end
 
   describe 'POST #signup' do
@@ -21,8 +21,8 @@ RSpec.describe Api::V1::UsersController, type: :controller do
 
     context 'with invalid parameters' do
       it 'does not create a user and returns an error message' do
-        @otp = create(:account_verification, email: "#{Time.now.to_i+2}@example.com", phone: @phone).otp
-        post :signup, params: { user: @user_attributes.merge(phone_number: @phone )}
+        @otp = create(:account_verification, email: "#{Time.now.to_i + 2}@example.com", phone: @phone).otp
+        post :signup, params: { user: @user_attributes.merge(phone_number: @phone) }
         byebug
 
         expect(response).to have_http_status(:unprocessable_entity)
@@ -38,6 +38,5 @@ RSpec.describe Api::V1::UsersController, type: :controller do
         expect(JSON.parse(response.body)['status']).to include('Otp is invalid')
       end
     end
-
   end
 end
