@@ -90,7 +90,7 @@ class Order < ApplicationRecord
     return if user_id.nil?
 
     user.update_spend_score
-    order.set_processing_data
+    set_processing_data
   end
 
   def generate_pdf_receipt
