@@ -16,12 +16,12 @@ CarrierWave.configure do |config|
   config.fog_provider = 'fog/aws'
   config.fog_credentials = {
     provider: 'AWS',
-    aws_access_key_id: ENV['DO_FOG_KEY'],
-    aws_secret_access_key: ENV['DO_FOG_SECRET'],
-    region: ENV['DO_FOG_REGION'],
-    endpoint: ENV['DO_FOG_ENDPOINT']
+    aws_access_key_id: ENV.fetch('DO_FOG_KEY', nil),
+    aws_secret_access_key: ENV.fetch('DO_FOG_SECRET', nil),
+    region: ENV.fetch('DO_FOG_REGION', nil),
+    endpoint: ENV.fetch('DO_FOG_ENDPOINT', nil)
   }
-  config.fog_directory  = ENV['DO_FOG_NAME']
+  config.fog_directory  = ENV.fetch('DO_FOG_NAME', nil)
   config.fog_attributes = { 'Cache-Control' => 'max-age=315576000' }
   config.fog_public = false
   # config.asset_host = 'https://ams3.digitaloceanspaces.com'

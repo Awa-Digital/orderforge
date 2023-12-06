@@ -17,5 +17,3 @@
 # products.each do |p|
 #   Product.create(p)
 # end
-
-

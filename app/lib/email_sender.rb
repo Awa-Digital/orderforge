@@ -2,31 +2,31 @@ require 'sendgrid-ruby'
 
 class EmailSender
   def initialize
-    @sg = SendGrid::API.new(api_key: ENV['SENDGRID_API_KEY'])
+    @sg = SendGrid::API.new(api_key: ENV.fetch('SENDGRID_API_KEY', nil))
   end
 
   def welcome_email(notification)
     sendmail = sendmail(
-      "d-a24c996883234ff5978937466d629ad6", 
-      "eva@yaaaga.com", 
-      "Eva from Yaaaga", 
+      "d-a24c996883234ff5978937466d629ad6",
+      "eva@yaaaga.com",
+      "Eva from Yaaaga",
       "Welcome to Yaaaga"
     )
 
     personalization = SendGrid::Personalization.new
     personalization.add_to(SendGrid::Email.new(
-      email: notification[:email], 
-      name: notification[:first_name]))
+                             email: notification[:email],
+                             name: notification[:first_name]
+                           ))
     personalization.add_dynamic_template_data({
-      "subject" => "Welcome to Yaaaga",
-      "first_name" => notification[:first_name],
-      "email" => notification[:email],
-      "confirmation_link" => notification[:confirmation_url]
-    })
+                                                "subject" => "Welcome to Yaaaga",
+                                                "first_name" => notification[:first_name],
+                                                "email" => notification[:email],
+                                                "confirmation_link" => notification[:confirmation_url]
+                                              })
     sendmail.add_personalization(personalization)
-    response = @sg.client.mail._('send').post(request_body: sendmail.to_json)
-    return "Welcome Email Sent ✅"
-    
+    @sg.client.mail._('send').post(request_body: sendmail.to_json)
+    "Welcome Email Sent ✅"
   end
 
   def verify_email(reciever_email, name, url)
@@ -36,13 +36,13 @@ class EmailSender
     subject = 'Verify Your Email for Stem'
     mail.subject = subject
     personalization = SendGrid::Personalization.new
-    personalization.add_to(SendGrid::Email.new(email: reciever_email, name: name))
+    personalization.add_to(SendGrid::Email.new(email: reciever_email, name:))
     personalization.add_dynamic_template_data({
-      "subject" => subject,
-      "first_name" => name,
-      "email" => reciever_email,
-      "confirm_url" => url
-    })
+                                                "subject" => subject,
+                                                "first_name" => name,
+                                                "email" => reciever_email,
+                                                "confirm_url" => url
+                                              })
     mail.add_personalization(personalization)
     response = @sg.client.mail._('send').post(request_body: mail.to_json)
     print response
@@ -66,20 +66,20 @@ class EmailSender
     personalization = SendGrid::Personalization.new
     personalization.add_to(SendGrid::Email.new(email: transaction.user.email, name: transaction.user.first_name))
     personalization.add_dynamic_template_data({
-      "subject" => transaction.subject,
-      "first_name" => transaction.user.first_name,
-      "email" => transaction.user.email,
-      "description" => transaction.slug_desc,
-      "provider" => transaction.provider,
-      "reference" => transaction.ref,
-      "unit_price" => ActionController::Base.helpers.number_to_currency(transaction.unit_price, unit: '₦', separator: '.', delimiter: ',', precision: 2),
-      "units" => transaction.units,
-      "total" => ActionController::Base.helpers.number_to_currency(transaction.total, unit: '₦', separator: '.', delimiter: ',', precision: 2),
-      "date" => transaction.created_at.strftime("%^A %^b %d, %Y")
-    })
+                                                "subject" => transaction.subject,
+                                                "first_name" => transaction.user.first_name,
+                                                "email" => transaction.user.email,
+                                                "description" => transaction.slug_desc,
+                                                "provider" => transaction.provider,
+                                                "reference" => transaction.ref,
+                                                "unit_price" => ActionController::Base.helpers.number_to_currency(transaction.unit_price, unit: '₦', separator: '.', delimiter: ',', precision: 2),
+                                                "units" => transaction.units,
+                                                "total" => ActionController::Base.helpers.number_to_currency(transaction.total, unit: '₦', separator: '.', delimiter: ',', precision: 2),
+                                                "date" => transaction.created_at.strftime("%^A %^b %d, %Y")
+                                              })
     mail.add_personalization(personalization)
-    response = @sg.client.mail._('send').post(request_body: mail.to_json)
-    return "Notification Email Sent ✅"
+    @sg.client.mail._('send').post(request_body: mail.to_json)
+    "Notification Email Sent ✅"
   end
 
   def init(reciever_email, subject, content, email_type)
@@ -87,7 +87,6 @@ class EmailSender
     to = SendGrid::Email.new(email: reciever_email)
     subject = subject
     content = SendGrid::Content.new(type: email_type, value: content)
-    mail = SendGrid::Mail.new(from, subject, to, content)
-    return mail
+    SendGrid::Mail.new(from, subject, to, content)
   end
 end

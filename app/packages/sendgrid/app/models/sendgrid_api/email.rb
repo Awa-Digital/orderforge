@@ -7,7 +7,7 @@ module SendgridApi
   class Email
     include ActionView::Helpers::NumberHelper
     def initialize
-      @sg = SendGrid::API.new(api_key: ENV['SENDGRID_API_KEY'])
+      @sg = SendGrid::API.new(api_key: ENV.fetch('SENDGRID_API_KEY', nil))
       @mail = SendGrid::Mail.new
       set_senders
     end

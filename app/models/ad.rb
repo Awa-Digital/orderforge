@@ -3,7 +3,7 @@ class Ad < ApplicationRecord
 
   belongs_to :product, optional: true
 
-  scope :active_ads, -> { select {|ad| ad.active_status} }
+  scope :active_ads, -> { select(&:active_status) }
 
   def as_json(options = {})
     options[:methods] = %i[active_status]

@@ -13,7 +13,7 @@ module SendgridApi
 
     def self.order_receipt_email_data(order, subject)
       {
-        subject: subject,
+        subject:,
         preheader: '⚡️ Your payment has been received and your order is being processed, sit back, relax and we would deliver in no time',
         customer_name: order.user.first_name,
         order_tracking_url: order.order_tracking_url,
@@ -27,7 +27,7 @@ module SendgridApi
 
     def self.guest_order_receipt_email_data(order, subject)
       {
-        subject: subject,
+        subject:,
         preheader: '⚡️ Your payment has been received and your order is being processed, sit back, relax and we would deliver in no time',
         customer_name: order.recipient_name,
         order_tracking_url: order.order_tracking_url,
@@ -41,7 +41,7 @@ module SendgridApi
 
     def self.status_email_builder(order, subject, body)
       {
-        subject: subject,
+        subject:,
         preheader: "Order status notification for order ##{order.reference}",
         customer_name: order.recipient_name,
         order_tracking_url: order.order_tracking_url,
@@ -51,7 +51,7 @@ module SendgridApi
 
     def self.processor_email_data(order, subject)
       {
-        subject: subject,
+        subject:,
         preheader: '⚡️ A customer has placed an order',
         customer_name: order.recipient_name,
         order_tracking_url: order.order_tracking_url,
@@ -73,17 +73,17 @@ module SendgridApi
       arr = []
       items.each do |item|
         removables = if item.removables.present?
-          "Remove: #{item.removables.includes(:ingredient).pluck('ingredients.name').join(', ')}"
-        else
-          ""
-        end
+                       "Remove: #{item.removables.includes(:ingredient).pluck('ingredients.name').join(', ')}"
+                     else
+                       ""
+                     end
 
         arr << {
           title: item.product.title,
           quantity: item.quantity,
           unit_price: ActionController::Base.helpers.number_to_currency(item.base_price, unit: '₦'),
           subtotal: ActionController::Base.helpers.number_to_currency(item.subtotal, unit: '₦'),
-          removables: removables
+          removables:
         }
       end
       arr

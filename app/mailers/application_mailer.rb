@@ -4,22 +4,22 @@ class ApplicationMailer < ActionMailer::Base
 
   EMAIL = {
     receipts: {
-      user_name: ENV['RECEIPTS_EMAIL'],
-      password: ENV['RECEIPTS_PASSWORD']
+      user_name: ENV.fetch('RECEIPTS_EMAIL', nil),
+      password: ENV.fetch('RECEIPTS_PASSWORD', nil)
     },
     notify: {
-      user_name: ENV['NOTIFY_EMAIL'],
-      password: ENV['NOTIFY_PASSWORD']
+      user_name: ENV.fetch('NOTIFY_EMAIL', nil),
+      password: ENV.fetch('NOTIFY_PASSWORD', nil)
     },
     web: {
-      user_name: ENV['WEB_EMAIL'],
-      password: ENV['WEB_PASSWORD']
+      user_name: ENV.fetch('WEB_EMAIL', nil),
+      password: ENV.fetch('WEB_PASSWORD', nil)
     },
     noreply: {
-      user_name: ENV['NOREPLY_EMAIL'],
-      password: ENV['NOREPLY_PASSWORD']
+      user_name: ENV.fetch('NOREPLY_EMAIL', nil),
+      password: ENV.fetch('NOREPLY_PASSWORD', nil)
     }
-  }
+  }.freeze
 
   private
 

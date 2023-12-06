@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '3.0.0'
+ruby '3.2.0'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails', branch: 'main'
-gem 'rails', '~> 6.1.4', '>= 6.1.4.6'
+gem 'rails', '~> 7.0.4', '>= 7.0.5.1'
 # Use sqlite3 as the database for Active Record
 # gem 'sqlite3', '~> 1.4'
 # Use Puma as the app server
@@ -43,9 +45,6 @@ group :development do
   gem 'listen', '~> 3.3'
   gem 'rack-mini-profiler', '~> 2.0'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-  gem 'erb-formatter'
-  gem 'ruby-lsp'
-  gem 'solargraph'
   gem 'spring'
 end
 
@@ -66,9 +65,9 @@ gem 'cloudinary'
 gem 'dotenv-rails', groups: %i[development test]
 gem 'faraday-detailed_logger'
 gem 'fcm'
-gem 'fog-aws'
 gem 'forest_liana'
 gem 'httparty'
+gem 'fog-aws'
 gem 'jwt'
 gem 'kaminari'
 gem 'packwerk'
@@ -76,11 +75,12 @@ gem 'paystack'
 gem 'phone'
 gem 'prawn'
 gem 'prawn-table', '~> 0.1.0'
-gem 'rack-attack'
 gem 'rack-cors'
 gem 'ransack', github: 'activerecord-hackery/ransack'
 gem 'rmagick'
 gem 'sendgrid-ruby'
 gem 'sentry-rails'
 gem 'sentry-ruby', '>= 5.7.0'
+gem 'sidekiq', '~> 7.2'
 gem 'typhoeus'
+gem 'rack-attack'

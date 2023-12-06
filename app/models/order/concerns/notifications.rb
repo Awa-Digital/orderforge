@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable Style/ClassAndModuleChildren
-# rubocop:disable Metrics/AbcSize
 module Order::Concerns
   # order notification maker
   module Notifications
@@ -15,9 +13,9 @@ module Order::Concerns
 
     def create_order_notification(title, body, notification_label)
       Notification.create(
-        user_id: user_id,
-        title: title,
-        body: body,
+        user_id:,
+        title:,
+        body:,
         analytics_label: notification_label,
         order_reference: reference,
         notification_type: notification_label

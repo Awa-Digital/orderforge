@@ -23,16 +23,16 @@ module Api
         def order_items_counter
           month = params[:month]
           year = params[:year]
-          @payment_ids = Payment.where(paid: true).select{|p| p.paid_at.strftime("%m-%Y") ==  "#{month}-#{year}"}
+          @payment_ids = Payment.where(paid: true).select { |p| p.paid_at.strftime("%m-%Y") == "#{month}-#{year}" }
           @orders = Order.where(id: @payment_ids, paid: true)
           @order_items = []
-          @orders.map{|o| o.order_items.map{|oi| @order_items << oi}}
+          @orders.map { |o| o.order_items.map { |oi| @order_items << oi } }
           @data = {}
           @order_items.each do |oi|
             @data[oi.product.title] = @data[oi.product.title].to_i + oi.quantity
           end
 
-          success({message: "Ordered items have been counted for #{month}-#{year}", data: @data})
+          success({ message: "Ordered items have been counted for #{month}-#{year}", data: @data })
         end
 
         def search
@@ -97,7 +97,7 @@ module Api
 
         def download_pdf
           pdf = @order.generate_pdf_receipt
-          send_data File.open(pdf).read, filename: "#{@order.reference}.pdf", type: 'application/pdf', disposition: 'attachment'
+          send_data File.read(pdf), filename: "#{@order.reference}.pdf", type: 'application/pdf', disposition: 'attachment'
         end
 
         def verify
@@ -114,7 +114,7 @@ module Api
 
         def set_order
           @order = Order.find_by(id: params[:order_id])
-          return notfound({ message: 'order not found' }) unless @order
+          notfound({ message: 'order not found' }) unless @order
         end
       end
     end

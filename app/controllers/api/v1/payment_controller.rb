@@ -75,9 +75,7 @@ module Api
         shout('VERIFYING PAYMENT FROM WEBHOOK')
         @order = Order.find_by(reference: params['data']['reference'].split('.')[0])
         if @order.present?
-          if @order.payment.reference != params['data']['reference']
-            @order.payment.update!(reference: params['data']['reference'])
-          end
+          @order.payment.update!(reference: params['data']['reference']) if @order.payment.reference != params['data']['reference']
           @payment = @order.payment
           find_and_verify_payment(@payment)
         else
@@ -94,7 +92,7 @@ module Api
       def find_and_verify_payment(payment)
         if payment.present?
           if payment.paid == true
-            success({ message: 'This cart has been paid for', data: { payment: payment, cart: payment.order } })
+            success({ message: 'This cart has been paid for', data: { payment:, cart: payment.order } })
           else
             verify_payment(payment)
           end
@@ -125,10 +123,10 @@ module Api
         cart = payment.order
         render json: {
           status: 'success',
-          message: message,
+          message:,
           data: {
-            payment: payment,
-            cart: cart
+            payment:,
+            cart:
           }
         }, status: 200
       end

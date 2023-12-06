@@ -65,9 +65,9 @@ class Order < ApplicationRecord
 
   def recipient
     {
-      "name": recipient_name,
-      "phone": recipient_phone,
-      "email": recipient_email
+      name: recipient_name,
+      phone: recipient_phone,
+      email: recipient_email
     }
   end
 
@@ -97,7 +97,7 @@ class Order < ApplicationRecord
     orders = Order.find(Payment.paid_only.sort_by(&:paid_at).pluck(:order_id)).select { |o| o.status == 'paid' }
     priority = 1
     orders.each do |o|
-      o.update(priority: priority)
+      o.update(priority:)
       priority += 1
     end
   end

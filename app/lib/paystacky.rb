@@ -1,7 +1,7 @@
 # pay with paystack
 class Paystacky
   def initialize
-    @paystack_obj = Paystack.new(ENV['PSPK'], ENV['PSSK'])
+    @paystack_obj = Paystack.new(ENV.fetch('PSPK', nil), ENV.fetch('PSSK', nil))
   end
 
   def init(trans)
@@ -16,7 +16,7 @@ class Paystacky
       Sentry.capture_exception(e)
     else
       trans.update(gateway_reference: result['data']['access_code'], checkout_url: result['data']['authorization_url'],
-                 gateway: 'Paystack')
+                   gateway: 'Paystack')
     end
   end
 

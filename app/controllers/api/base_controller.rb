@@ -4,7 +4,7 @@ module Api
   # API base controller
   class BaseController < ApplicationController
     def generate_auth_token(user)
-      secret = ENV['SECRET_KEY_BASE']
+      secret = ENV.fetch('SECRET_KEY_BASE', nil)
       # user.user_activities.create(ip: remote_ip, device_type: request_device, fingerprint: fingerprint)
       @token = JWT.encode({
                             user_id: user.id,

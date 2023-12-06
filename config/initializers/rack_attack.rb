@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-Rack::Attack.throttle('ip limit', limit: 5, period: 5.seconds) do |request|
-  request.ip
-end
+Rack::Attack.throttle('ip limit', limit: 5, period: 5.seconds, &:ip)
 
 bad_ips = ENV['BLOCKED_IPS'].split(',')
 Rack::Attack.blocklist 'Block IPs from Environment Variable' do |req|

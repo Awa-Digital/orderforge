@@ -39,10 +39,10 @@ class Notification < ApplicationRecord
 
   def construct
     {
-      title: title,
-      body: body,
+      title:,
+      body:,
       image_url: image,
-      analytics_label: analytics_label
+      analytics_label:
     }
   end
 

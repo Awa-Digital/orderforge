@@ -1,17 +1,16 @@
 # frozen_string_literal: true
 
-# rubocop:disable Style/ClassAndModuleChildren
 module Order::Concerns
   # email sender for all order notifications
   module Emails
     def order_tracking_url
-      "#{ENV['APP_BASE_URL']}/order-details/#{reference}"
+      "#{ENV.fetch('APP_BASE_URL', nil)}/order-details/#{reference}"
     end
 
     def send_order_receipt_email
       return if sent_receipt_notification == true
 
-      OrderMailer.with(reference: reference, receipient: user.email).receipt_email.deliver
+      OrderMailer.with(reference:, receipient: user.email).receipt_email.deliver
       # SendgridApi::Email.new.order_receipt_email(self)
       update!(sent_receipt_notification: true)
     rescue StandardError => e
@@ -22,7 +21,7 @@ module Order::Concerns
     def send_guest_order_receipt_email
       return if sent_guest_receipt_notification == true
 
-      OrderMailer.with(reference: reference, receipient: recipient_email).receipt_email.deliver
+      OrderMailer.with(reference:, receipient: recipient_email).receipt_email.deliver
       # SendgridApi::Email.new.guest_order_receipt_email(self)
       update!(sent_guest_receipt_notification: true)
     rescue StandardError => e
@@ -32,7 +31,7 @@ module Order::Concerns
     def send_processing_email
       return unless paid == true
 
-      OrderMailer.with(reference: reference).coy_order_email.deliver
+      OrderMailer.with(reference:).coy_order_email.deliver
       # SendgridApi::Email.new.order_processor_email(self)
     rescue StandardError => e
       Sentry.capture_exception(e)

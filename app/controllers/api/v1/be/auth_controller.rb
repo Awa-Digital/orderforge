@@ -23,7 +23,7 @@ module Api
         end
 
         def generate_auth_token(user)
-          secret = ENV['SECRET_KEY_BASE']
+          secret = ENV.fetch('SECRET_KEY_BASE', nil)
           @token = JWT.encode({
                                 auth_id: user.id,
                                 email: user.email,
