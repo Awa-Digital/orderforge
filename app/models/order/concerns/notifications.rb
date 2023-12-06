@@ -6,7 +6,6 @@ module Order::Concerns
   # order notification maker
   module Notifications
     def send_update_notifications
-      shout('Running Status Notifications')
       deliver_receipt_notifications if status == 'paid' && sent_receipt_notification == false
       deliver_processing_notifications if status == 'processing' && sent_processing_notification == false
       deliver_delivering_notifications if status == 'delivering' && sent_delivering_notification == false
@@ -25,7 +24,7 @@ module Order::Concerns
     end
 
     def deliver_receipt_notifications
-      shout("Running Receipt Notifications for #{reference}")
+      shout("Sending Receipt Notifications for #{reference}") if status == 'paid' && sent_receipt_notification == false
       return send_guest_order_receipt_email if user_id.nil?
 
       @title = 'Payment Confirmed'
@@ -38,7 +37,7 @@ module Order::Concerns
     end
 
     def deliver_processing_notifications
-      shout("Running Processing Notifications for #{reference}")
+      shout("Running Processing Notifications for #{reference}") if status == 'processing' && sent_processing_notification == false
       return send_order_processing_email(recipient_name) if user_id.nil?
 
       @title = 'Your order is now processing'
@@ -51,7 +50,7 @@ module Order::Concerns
     end
 
     def deliver_delivering_notifications
-      shout("Running Delivering Notifications for #{reference}")
+      shout("Running Delivering Notifications for #{reference}") if status == 'delivering' && sent_delivering_notification == false
       return send_order_delivering_email(recipient_name) if user_id.nil?
 
       @title = 'Your order is out for delivery'
@@ -64,7 +63,7 @@ module Order::Concerns
     end
 
     def deliver_completed_notifications
-      shout("Running Completed Notifications for #{reference}")
+      shout("Running Completed Notifications for #{reference}") if status == 'completed' && sent_completed_notification == false
       return send_order_completed_email(recipient_name) if user_id.nil?
 
       @title = 'Your order has been delivered'

@@ -58,9 +58,9 @@ class Payment < ApplicationRecord
 
   def complete
     update(paid: true)
+    order.generate_completion_notification
     order.update(status: 'paid', paid: true, order_no: Order.where(paid: true).count + 1)
     order.set_processing_data
-    order.generate_completion_notification
   end
 
   def verify
