@@ -3,7 +3,7 @@ class Api::V1::Profile::LeaderController < Api::V1::Profile::BaseController
   skip_before_action :authenticate_user
   before_action :authenticate_guest
   def board
-    @users = User.all.order(spend_score: :desc).limit(10)
+    @users = User.includes(:orders).order(spend_score: :desc).limit(10)
     data = make_data(@users)
     success({ message: 'Leaderboard fetched successfully', data: })
   end
@@ -12,10 +12,11 @@ class Api::V1::Profile::LeaderController < Api::V1::Profile::BaseController
     arr = []
     rank = 0
     users.each do |user|
+      total_amount = user.orders.select { |order| order.paid }.sum(&:total)
       arr << {
         image: user.avatar,
         name: user.full_name.camelize,
-        amount: user.orders.where(paid: true).sum(&:total),
+        amount: total_amount,
         rank: rank + 1
       }
       rank += 1
