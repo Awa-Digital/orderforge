@@ -90,7 +90,8 @@ class Order < ApplicationRecord
     return if user_id.nil?
 
     user.update_spend_score
-    set_processing_data
+    update(processing_date: calculate_processing_date)
+    Order.update_priorities
   end
 
   def generate_pdf_receipt
