@@ -118,6 +118,7 @@ module Api
       def complete_payment(payment)
         shout("Completing Payment....")
         payment.complete
+        shout("Done Completing Payment....")
         message = 'You have successfully paid for this transaction'
         show_payment_success(payment, message)
       end
