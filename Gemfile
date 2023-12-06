@@ -84,3 +84,5 @@ gem 'sendgrid-ruby'
 gem 'sentry-rails'
 gem 'sentry-ruby', '>= 5.7.0'
 gem 'typhoeus'
+
+gem "matrix", "~> 0.4.2"

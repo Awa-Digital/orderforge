@@ -528,6 +528,7 @@ DEPENDENCIES
   jwt
   kaminari
   listen (~> 3.3)
+  matrix (~> 0.4.2)
   packwerk
   paystack
   pg
