@@ -35,7 +35,7 @@ module Order::Concerns
     end
 
     def discounted_price
-      amount_to_be_discounted - discount_amount
+      amount_to_be_discounted - discount_amount + delivery_charge
     end
 
     def discount_amount
