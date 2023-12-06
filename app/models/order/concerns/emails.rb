@@ -35,6 +35,7 @@ module Order::Concerns
       begin
         OrderMailer.with(reference:).coy_order_email.deliver
       rescue Net::SMTPAuthenticationError => e
+        Sentry.capture_exception(Net::SMTPAuthenticationError.new("Email Deliver Error"))
         Sentry.capture_message(e)
       end
     rescue StandardError => e

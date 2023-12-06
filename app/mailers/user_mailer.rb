@@ -7,6 +7,9 @@ class UserMailer < ApplicationMailer
     @preheader = "#{@user.first_name} you have requested to reset your password"
 
     mail(to: @user.email, subject: 'Password Reset Request', delivery_method_options: @delivery_options)
+  rescue Net::SMTPAuthenticationError => e
+    Sentry.capture_exception(Net::SMTPAuthenticationError.new(e))
+    Sentry.capture_message(e)
   end
 
   def welcome
@@ -14,5 +17,8 @@ class UserMailer < ApplicationMailer
     @preheader = "Please verify your email address to get access to order receipts, offers and exclusive burger deals."
 
     mail(to: @user.email, subject: 'Welcome to Jazzy Burger', delivery_method_options: @delivery_options)
+  rescue Net::SMTPAuthenticationError => e
+    Sentry.capture_exception(Net::SMTPAuthenticationError.new(e))
+    Sentry.capture_message(e)
   end
 end

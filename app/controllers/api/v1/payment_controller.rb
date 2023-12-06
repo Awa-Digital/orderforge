@@ -91,8 +91,9 @@ module Api
 
       def find_and_verify_payment(payment)
         if payment.present?
+          # payment.update(paid: false) #remove this later
           if payment.paid == true
-            success({ message: 'This cart has been paid for', data: { payment:, cart: payment.order } })
+            success({ message: 'This cart has already been paid for', data: { payment:, cart: payment.order } })
           else
             verify_payment(payment)
           end
@@ -103,6 +104,7 @@ module Api
 
       def verify_payment(payment)
         paid = payment.verify
+        # paid = true
       rescue StandardError
         server_error({ message: 'contact support' })
       else
@@ -114,6 +116,7 @@ module Api
       end
 
       def complete_payment(payment)
+        shout("Completing Payment....")
         payment.complete
         message = 'You have successfully paid for this transaction'
         show_payment_success(payment, message)

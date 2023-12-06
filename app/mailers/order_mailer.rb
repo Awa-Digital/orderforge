@@ -8,6 +8,9 @@ class OrderMailer < ApplicationMailer
     @preheader = "#{@order.recipient_name} Your order has been confirmed and here are the details"
 
     mail(to: params[:receipient], subject: 'You got a new order!', delivery_method_options: @delivery_options)
+  rescue Net::SMTPAuthenticationError => e
+    Sentry.capture_exception(Net::SMTPAuthenticationError.new(e))
+    Sentry.capture_message(e)
   end
 
   def coy_order_email
@@ -16,5 +19,8 @@ class OrderMailer < ApplicationMailer
 
     mail(to: 'orders@jazzysburger.com', cc: 'dispatch@jazzysburger.com', subject: "An order has been placed  - #{@order.reference}",
          delivery_method_options: @delivery_options)
+  rescue Net::SMTPAuthenticationError => e
+    Sentry.capture_exception(Net::SMTPAuthenticationError.new(e))
+    Sentry.capture_message(e)
   end
 end
