@@ -13,7 +13,7 @@ module Order::Concerns
         if @addr.delivery_area.price.nil?
           0.00
         else
-          puts @addr.delivery_area.id
+          # puts @addr.delivery_area.id
           @addr.delivery_area.price
         end
       else

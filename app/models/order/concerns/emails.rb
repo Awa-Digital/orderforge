@@ -22,7 +22,6 @@ module Order::Concerns
       return if sent_guest_receipt_notification == true
 
       OrderMailer.with(reference:, receipient: recipient_email).receipt_email.deliver
-      # SendgridApi::Email.new.guest_order_receipt_email(self)
       update!(sent_guest_receipt_notification: true)
     rescue StandardError => e
       Sentry.capture_exception(e)
@@ -32,14 +31,10 @@ module Order::Concerns
       return unless paid == true
 
       shout("sending emails to orders@jazzysburger.com for ORDER: #{id}")
-      begin
-        OrderMailer.with(reference:).coy_order_email.deliver
-      rescue Net::SMTPAuthenticationError => e
-        Sentry.capture_exception(Net::SMTPAuthenticationError.new("Email Deliver Error"))
-        Sentry.capture_message(e)
-      end
-    rescue StandardError => e
-      Sentry.capture_exception(e)
+      OrderMailer.with(reference:).coy_order_email.deliver
+    rescue Net::SMTPAuthenticationError => e
+      Sentry.capture_exception(Net::SMTPAuthenticationError.new("Email Deliver Error"))
+      Sentry.capture_message(e)
     end
 
     def send_order_processing_email(name)

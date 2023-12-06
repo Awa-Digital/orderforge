@@ -58,7 +58,9 @@ class Payment < ApplicationRecord
 
   def complete
     update(paid: true)
+    shout("Updating Involved Parties")
     order.generate_completion_notification
+    shout("Done Updating Involved Parties")
     order.update(status: 'paid', paid: true, order_no: Order.where(paid: true).count + 1)
     order.set_processing_data
   end
