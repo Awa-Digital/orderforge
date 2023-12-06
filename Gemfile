@@ -35,6 +35,8 @@ gem 'bootsnap', '>= 1.4.4', require: false
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
+  gem 'rspec-rails'
+  gem 'factory_bot_rails'
 end
 
 group :development do
@@ -65,9 +67,9 @@ gem 'cloudinary'
 gem 'dotenv-rails', groups: %i[development test]
 gem 'faraday-detailed_logger'
 gem 'fcm'
+gem 'fog-aws'
 gem 'forest_liana'
 gem 'httparty'
-gem 'fog-aws'
 gem 'jwt'
 gem 'kaminari'
 gem 'packwerk'
@@ -75,6 +77,7 @@ gem 'paystack'
 gem 'phone'
 gem 'prawn'
 gem 'prawn-table', '~> 0.1.0'
+gem 'rack-attack'
 gem 'rack-cors'
 gem 'ransack', github: 'activerecord-hackery/ransack'
 gem 'rmagick'
@@ -83,4 +86,3 @@ gem 'sentry-rails'
 gem 'sentry-ruby', '>= 5.7.0'
 gem 'sidekiq', '~> 7.2'
 gem 'typhoeus'
-gem 'rack-attack'
