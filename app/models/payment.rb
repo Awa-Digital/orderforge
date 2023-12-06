@@ -22,7 +22,7 @@ class Payment < ApplicationRecord
 
   def discount
     if voucher.present?
-      (order.order_total * (voucher.discount_rate / 100))
+      (order.amount_to_be_discounted * (voucher.discount_rate / 100))
     else
       0.00
     end
@@ -45,7 +45,7 @@ class Payment < ApplicationRecord
   end
 
   def payment_total
-    (order.order_total - discount).to_f
+    (order.amount_to_be_discounted - discount + order.delivery_charge).to_f
   end
 
   def in_kobo

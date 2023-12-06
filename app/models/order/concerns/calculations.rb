@@ -30,15 +30,19 @@ module Order::Concerns
       (total + vat_charge + delivery_charge.to_f).to_f
     end
 
+    def amount_to_be_discounted
+      (total + vat_charge).to_f
+    end
+
     def discounted_price
-      order_total - discount_amount
+      amount_to_be_discounted - discount_amount
     end
 
     def discount_amount
       return 0.00 unless payment
 
       if payment.voucher.present?
-        (order_total * (payment.voucher.discount_rate / 100))
+        (amount_to_be_discounted * (payment.voucher.discount_rate / 100))
       else
         0.00
       end
