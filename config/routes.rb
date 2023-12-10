@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require "sidekiq/web"
 
 Rails.application.routes.draw do
   # MUST be declared before the mount ForestLiana::Engine.
@@ -11,6 +12,10 @@ Rails.application.routes.draw do
   end
   mount ForestLiana::Engine => '/forest'
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+
+  # sidekiq routes
+  mount Sidekiq::Web => '/sidekiq'
+  # end sidekiq routes
 
   namespace :api, defaults: { format: :json } do
     # API for Mobile App

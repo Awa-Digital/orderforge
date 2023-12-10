@@ -3,7 +3,7 @@ module Order::Concerns
   module Verify
     def verify
       return shout('Transaction is verified') if paid == true
-      
+
       payment_status = payment.verify
     rescue StandardError
       raise "An error occurred while verifying this payment: #{payment.reference}"

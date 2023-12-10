@@ -80,11 +80,13 @@ gem 'prawn-table', '~> 0.1.0'
 gem 'rack-attack'
 gem 'rack-cors'
 gem 'ransack', github: 'activerecord-hackery/ransack'
+gem "redis"
 gem 'rmagick'
 gem 'sendgrid-ruby'
 gem 'sentry-rails'
 gem 'sentry-ruby', '>= 5.7.0'
 gem 'sidekiq', '~> 7.2'
+gem "sidekiq-scheduler"
 gem 'typhoeus'
 
 gem "matrix", "~> 0.4.2"
