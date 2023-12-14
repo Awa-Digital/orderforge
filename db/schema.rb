@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_07_10_093836) do
-
+ActiveRecord::Schema[7.0].define(version: 2023_12_14_014030) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -23,8 +22,8 @@ ActiveRecord::Schema.define(version: 2023_07_10_093836) do
     t.boolean "email_verified", default: false
     t.boolean "phone_verified", default: false
     t.integer "user_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "addresses", force: :cascade do |t|
@@ -32,8 +31,8 @@ ActiveRecord::Schema.define(version: 2023_07_10_093836) do
     t.string "street"
     t.string "state", default: "Lagos"
     t.string "country", default: "Nigeria", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "house_number"
     t.integer "delivery_area_id"
     t.index ["user_id"], name: "index_addresses_on_user_id"
@@ -43,8 +42,8 @@ ActiveRecord::Schema.define(version: 2023_07_10_093836) do
     t.string "image"
     t.string "title"
     t.date "expiration_date"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "product_id"
     t.string "url"
   end
@@ -53,23 +52,23 @@ ActiveRecord::Schema.define(version: 2023_07_10_093836) do
     t.string "email"
     t.string "phone"
     t.string "password_digest"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "account_type"
   end
 
   create_table "categories", force: :cascade do |t|
     t.string "title"
     t.text "description"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "image"
   end
 
   create_table "delivery_areas", force: :cascade do |t|
     t.string "name"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.decimal "day_rate", precision: 8, scale: 2
     t.decimal "dusk_rate", precision: 8, scale: 2
     t.decimal "night_rate", precision: 8, scale: 2
@@ -83,21 +82,21 @@ ActiveRecord::Schema.define(version: 2023_07_10_093836) do
     t.string "device_token"
     t.string "device_name"
     t.string "serial_number"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "favourite_items", force: :cascade do |t|
     t.integer "favourite_id"
     t.integer "product_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "favourites", force: :cascade do |t|
     t.integer "user_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "influencers", force: :cascade do |t|
@@ -106,21 +105,21 @@ ActiveRecord::Schema.define(version: 2023_07_10_093836) do
     t.string "twitter_handle"
     t.string "email"
     t.string "password_digest"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "ingredients", force: :cascade do |t|
     t.string "name"
     t.string "icon"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "locations", force: :cascade do |t|
     t.string "name"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "notification_settings", force: :cascade do |t|
@@ -130,8 +129,8 @@ ActiveRecord::Schema.define(version: 2023_07_10_093836) do
     t.boolean "promotions", default: true
     t.boolean "receipts", default: true
     t.boolean "newsletter", default: true
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_notification_settings_on_user_id"
   end
 
@@ -142,8 +141,8 @@ ActiveRecord::Schema.define(version: 2023_07_10_093836) do
     t.string "analytics_label"
     t.integer "user_id"
     t.boolean "seen", default: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "order_reference"
     t.string "notification_type"
   end
@@ -155,8 +154,8 @@ ActiveRecord::Schema.define(version: 2023_07_10_093836) do
     t.string "city"
     t.string "state"
     t.string "country"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "delivery_area_id"
     t.index ["order_id"], name: "index_order_addresses_on_order_id"
   end
@@ -165,8 +164,8 @@ ActiveRecord::Schema.define(version: 2023_07_10_093836) do
     t.integer "product_id"
     t.integer "quantity", default: 1
     t.integer "order_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.decimal "subtotal", precision: 8, scale: 2, default: "0.0"
   end
 
@@ -176,8 +175,8 @@ ActiveRecord::Schema.define(version: 2023_07_10_093836) do
     t.string "message"
     t.string "action", default: "update"
     t.string "action_name"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "orders", force: :cascade do |t|
@@ -186,14 +185,14 @@ ActiveRecord::Schema.define(version: 2023_07_10_093836) do
     t.string "status"
     t.boolean "completed"
     t.boolean "paid", default: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "reference"
     t.string "recipient_name"
     t.string "recipient_phone"
     t.decimal "total", precision: 8, scale: 2, default: "0.0"
     t.string "recipient_email"
-    t.datetime "processing_date"
+    t.datetime "processing_date", precision: nil
     t.integer "priority", default: 0
     t.boolean "sent_receipt_notification", default: false
     t.boolean "sent_processing_notification", default: false
@@ -206,8 +205,8 @@ ActiveRecord::Schema.define(version: 2023_07_10_093836) do
   create_table "password_reset_tokens", force: :cascade do |t|
     t.integer "user_id"
     t.string "token"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "payments", force: :cascade do |t|
@@ -216,8 +215,8 @@ ActiveRecord::Schema.define(version: 2023_07_10_093836) do
     t.integer "discount_id"
     t.integer "order_id"
     t.boolean "paid"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "user_id"
     t.string "reference"
     t.string "gateway_reference"
@@ -225,14 +224,14 @@ ActiveRecord::Schema.define(version: 2023_07_10_093836) do
     t.string "gateway"
     t.string "payment_id"
     t.integer "voucher_id"
-    t.datetime "paid_at"
+    t.datetime "paid_at", precision: nil
   end
 
   create_table "product_ingredients", force: :cascade do |t|
     t.bigint "product_id", null: false
     t.bigint "ingredient_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["ingredient_id"], name: "index_product_ingredients_on_ingredient_id"
     t.index ["product_id"], name: "index_product_ingredients_on_product_id"
   end
@@ -243,12 +242,13 @@ ActiveRecord::Schema.define(version: 2023_07_10_093836) do
     t.string "image"
     t.integer "category_id"
     t.decimal "amount", precision: 8, scale: 2
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.boolean "liked"
     t.bigint "subcategory_id"
     t.integer "start_time", default: 0
     t.integer "end_time", default: 23
+    t.string "status", default: "active"
     t.index ["subcategory_id"], name: "index_products_on_subcategory_id"
   end
 
@@ -256,32 +256,32 @@ ActiveRecord::Schema.define(version: 2023_07_10_093836) do
     t.bigint "user_id", null: false
     t.bigint "product_id", null: false
     t.decimal "rating", default: "0.0"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["product_id"], name: "index_ratings_on_product_id"
     t.index ["user_id"], name: "index_ratings_on_user_id"
   end
 
   create_table "regions", force: :cascade do |t|
     t.integer "location_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "name"
   end
 
   create_table "removables", force: :cascade do |t|
     t.bigint "order_item_id", null: false
     t.bigint "ingredient_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["ingredient_id"], name: "index_removables_on_ingredient_id"
     t.index ["order_item_id"], name: "index_removables_on_order_item_id"
   end
 
   create_table "subcategories", force: :cascade do |t|
     t.string "title"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.bigint "category_id"
     t.index ["category_id"], name: "index_subcategories_on_category_id"
   end
@@ -292,8 +292,8 @@ ActiveRecord::Schema.define(version: 2023_07_10_093836) do
     t.string "email"
     t.string "phone_number"
     t.string "password_digest"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "phone_otp"
     t.boolean "active", default: true
     t.string "avatar"
@@ -305,8 +305,8 @@ ActiveRecord::Schema.define(version: 2023_07_10_093836) do
     t.string "discount_code"
     t.integer "influencer_id"
     t.decimal "discount_rate", precision: 4, scale: 2
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   add_foreign_key "addresses", "users"

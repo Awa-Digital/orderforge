@@ -15,6 +15,7 @@ class Product < ApplicationRecord
             :amount, presence: true
 
   # NOW = Date.today.in_time_zone
+  default_scope { where(:status => "active") }
 
   def as_json(options = {})
     options[:methods] = %i[available category subcategory ingredients review_rating review_count]
