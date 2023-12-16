@@ -67,7 +67,7 @@ class User < ApplicationRecord
 
   def products
     prods = Product.all.select(&:available)
-    liked_product_ids = self.favourite.favourite_items.where(product_id: prods.map(&:id)).pluck(:product_id)
+    liked_product_ids = favourite.favourite_items.where(product_id: prods.map(&:id)).pluck(:product_id)
 
     prods.each do |p|
       p.liked = liked_product_ids.include?(p.id)

@@ -51,9 +51,14 @@ module Api
       end
 
       def search
-        @products = @products.ransack(params[:q]).result(distinct: true).page(params[:page]).per(params[:per_page])
+        product_ids = @products.map(&:id)
+        scoped_products = Product.where(id: product_ids)
+        @products = scoped_products.ransack(params[:q]).result(distinct: true).page(params[:page]).per(params[:per_page])
+
         results = {
-          products: @products, total_results: @products.count, results_per_page: @products.limit_value, total_pages: @products.total_pages,
+          products: @products, total_results: @products.count,
+          results_per_page: @products.limit_value,
+          total_pages: @products.total_pages,
           next_page: @products.next_page, last_page: @products.last_page?
         }
         success({ message: 'products found', data: results })

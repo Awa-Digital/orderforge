@@ -17,7 +17,7 @@ class Order < ApplicationRecord
   after_update :send_update_notifications
 
   scope :to_be_processed_today, -> { select(&:processed_today) }
-  scope :stale_orders, -> {
+  scope :stale_orders, lambda {
     where(status: ["initiated"])
       .where("created_at < ?", Date.today)
       .where("updated_at < ?", Date.today)
@@ -83,7 +83,7 @@ class Order < ApplicationRecord
 
   def generate_completion_notification
     next_order_no = Order.where(paid: true).all.count + 1
-    update(status: 'paid', paid: true, order_no: next_order_no )
+    update(status: 'paid', paid: true, order_no: next_order_no)
 
     OrderMailer.with(reference:).coy_order_email.deliver
     puts "NOTIFIED COMPANY ABOUT ORDER"

@@ -23,6 +23,7 @@ module Order::Concerns
 
     def deliver_receipt_notifications
       return send_guest_order_receipt_email if user_id.nil?
+
       shout("Sending Receipt Notifications for #{reference}") if status == 'paid' && sent_receipt_notification == false
 
       @title = 'Payment Confirmed'

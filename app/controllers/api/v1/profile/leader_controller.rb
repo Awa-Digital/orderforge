@@ -12,7 +12,7 @@ class Api::V1::Profile::LeaderController < Api::V1::Profile::BaseController
     arr = []
     rank = 0
     users.each do |user|
-      total_amount = user.orders.select { |order| order.paid }.sum(&:total)
+      total_amount = user.orders.select(&:paid).sum(&:total)
       arr << {
         image: user.avatar,
         name: user.full_name.camelize,
