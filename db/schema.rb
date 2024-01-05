@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_12_14_014030) do
+ActiveRecord::Schema[7.0].define(version: 2024_01_04_143839) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -36,6 +36,18 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_14_014030) do
     t.string "house_number"
     t.integer "delivery_area_id"
     t.index ["user_id"], name: "index_addresses_on_user_id"
+  end
+
+  create_table "admin_users", force: :cascade do |t|
+    t.string "email"
+    t.string "phone"
+    t.string "first_name"
+    t.string "last_name"
+    t.boolean "super_user"
+    t.string "password_digest"
+    t.string "avatar"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "ads", force: :cascade do |t|

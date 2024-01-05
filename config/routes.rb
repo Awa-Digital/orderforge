@@ -19,6 +19,7 @@ Rails.application.routes.draw do
   # end sidekiq routes
 
   namespace :api, defaults: { format: :json } do
+    draw('business')
     # API for Mobile App
     namespace :v1, path: 'v1' do
       scope 'auth' do
