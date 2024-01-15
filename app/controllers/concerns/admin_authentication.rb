@@ -22,7 +22,7 @@ module AdminAuthentication
   def authenticate_token(token)
     user = AdminUser.find_by(id: token[0]['id'].to_i)
     return unauthorized({ message: I18n.t('not_found', data: "Admin") }) unless user
-    return unauthorized({ message: I18n.t('not_found', data: "Admin") }) unless user.active
+    return unauthorized({ message: I18n.t('not_found', data: "Admin") }) unless user.active?
 
     @admin = @current_user = user
   end

@@ -3,6 +3,7 @@
 # Model for User Cart
 class Order < ApplicationRecord
   has_many :order_items, dependent: :destroy
+  has_many :products, through: :order_items
   has_many :order_status_stamps, dependent: :destroy
   has_one :payment, dependent: :destroy
   has_one :order_address, dependent: :destroy

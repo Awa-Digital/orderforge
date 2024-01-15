@@ -9,7 +9,6 @@ module Api
           before_action :authenticate_admin
 
           include AdminAuthentication
-
         end
       end
     end

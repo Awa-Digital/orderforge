@@ -29,6 +29,7 @@
     <orderEntry type="jdk" jdkName="asdf: 3.2.0" jdkType="RUBY_SDK" />
     <orderEntry type="jdk" jdkName="asdf: 3.2.0" jdkType="RUBY_SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" scope="PROVIDED" name="aasm (v5.5.0, asdf: 3.2.0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="actioncable (v7.0.8, asdf: 3.2.0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="actionmailbox (v7.0.8, asdf: 3.2.0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="actionmailer (v7.0.8, asdf: 3.2.0) [gem]" level="application" />
@@ -89,6 +90,8 @@
     <orderEntry type="library" scope="PROVIDED" name="fugit (v1.9.0, asdf: 3.2.0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="globalid (v1.2.1, asdf: 3.2.0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="googleauth (v1.8.1, asdf: 3.2.0) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="graphiql-rails (v1.9.0, asdf: 3.2.0) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="graphql (v2.2.5, asdf: 3.2.0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="groupdate (v6.4.0, asdf: 3.2.0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="http-accept (v1.7.0, asdf: 3.2.0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="http-cookie (v1.0.5, asdf: 3.2.0) [gem]" level="application" />
@@ -218,6 +221,8 @@
   <component name="RailsGeneratorsCache">
     <option name="generators">
       <list>
+        <option value="aasm" />
+        <option value="active_record:aasm" />
         <option value="active_record:application_record" />
         <option value="active_record:multi_db" />
         <option value="application_record" />
@@ -227,6 +232,20 @@
         <option value="factory_bot:model" />
         <option value="forest_liana:install" />
         <option value="generator" />
+        <option value="graphql:enum" />
+        <option value="graphql:input" />
+        <option value="graphql:install" />
+        <option value="graphql:install:mutation_root" />
+        <option value="graphql:interface" />
+        <option value="graphql:loader" />
+        <option value="graphql:mutation" />
+        <option value="graphql:mutation_create" />
+        <option value="graphql:mutation_delete" />
+        <option value="graphql:mutation_update" />
+        <option value="graphql:object" />
+        <option value="graphql:relay" />
+        <option value="graphql:scalar" />
+        <option value="graphql:union" />
         <option value="helper" />
         <option value="integration_test" />
         <option value="jbuilder" />
@@ -237,6 +256,8 @@
         <option value="mailer" />
         <option value="migration" />
         <option value="model" />
+        <option value="mongoid:aasm" />
+        <option value="nobrainer:aasm" />
         <option value="rack_profiler:install" />
         <option value="resource" />
         <option value="rspec:channel" />
@@ -279,6 +300,8 @@
     </option>
     <option name="myGenerators">
       <list>
+        <option value="aasm" />
+        <option value="active_record:aasm" />
         <option value="active_record:application_record" />
         <option value="active_record:multi_db" />
         <option value="application_record" />
@@ -288,6 +311,20 @@
         <option value="factory_bot:model" />
         <option value="forest_liana:install" />
         <option value="generator" />
+        <option value="graphql:enum" />
+        <option value="graphql:input" />
+        <option value="graphql:install" />
+        <option value="graphql:install:mutation_root" />
+        <option value="graphql:interface" />
+        <option value="graphql:loader" />
+        <option value="graphql:mutation" />
+        <option value="graphql:mutation_create" />
+        <option value="graphql:mutation_delete" />
+        <option value="graphql:mutation_update" />
+        <option value="graphql:object" />
+        <option value="graphql:relay" />
+        <option value="graphql:scalar" />
+        <option value="graphql:union" />
         <option value="helper" />
         <option value="integration_test" />
         <option value="jbuilder" />
@@ -298,6 +335,8 @@
         <option value="mailer" />
         <option value="migration" />
         <option value="model" />
+        <option value="mongoid:aasm" />
+        <option value="nobrainer:aasm" />
         <option value="rack_profiler:install" />
         <option value="resource" />
         <option value="rspec:channel" />

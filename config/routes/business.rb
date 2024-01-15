@@ -1,4 +1,3 @@
-
 namespace :v2, path: 'v2' do
   namespace :be do
     namespace :business do

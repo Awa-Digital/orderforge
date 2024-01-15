@@ -5,7 +5,6 @@ module Api
       module Business
         class AdminUsersController < Api::V2::Be::Business::BaseController
           skip_before_action :authenticate_admin, only: [:login]
-          public
 
           def login
             @user = AdminUser.find_by(email: admin_user_params[:email])
@@ -13,7 +12,7 @@ module Api
 
             if @user.authenticate(admin_user_params[:password])
               @token = @user.get_token
-              success({data: {auth: { token: @token }, admin: @user}})
+              success({ data: { auth: { token: @token }, admin: @user } })
             else
               unauthorized(message: "Email or Password is invalid")
             end
@@ -24,7 +23,6 @@ module Api
           def admin_user_params
             params.require(:admin_user).permit(:email, :password, :phone, :first_name, :last_name)
           end
-
         end
       end
     end

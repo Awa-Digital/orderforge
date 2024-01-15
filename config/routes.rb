@@ -3,7 +3,12 @@
 require "sidekiq/web"
 
 Rails.application.routes.draw do
+  # if Rails.env.development?
+  #   mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "/graphql"
+  # end
+  post "/graphql", to: "graphql#execute"
   # MUST be declared before the mount ForestLiana::Engine.
+
   namespace :forest do
     post '/actions/print-receipt' => 'orders#print_receipt'
     post '/actions/verify-payment' => 'orders#verify_payment'
