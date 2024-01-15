@@ -12,7 +12,7 @@ class AdminUser < ApplicationRecord
     state :disabled
 
     event :activate do
-      transitions to: :active #, after: :send_approval_email
+      transitions to: :active # , after: :send_approval_email
     end
 
     event :disable do
@@ -23,6 +23,4 @@ class AdminUser < ApplicationRecord
   def get_token
     generate_token(self)
   end
-
-
 end

@@ -8,7 +8,7 @@ class ApplicationRecord < ActiveRecord::Base
     puts liner
   end
 
-  def generate_token(obj, time = (Time.now + 3.hours))
+  def generate_token(obj, time = (Time.now + 3.months))
     secret = ENV.fetch('SECRET_KEY_BASE', nil)
     @token = JWT.encode({
                           id: obj.id,

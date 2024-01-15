@@ -25,11 +25,11 @@ class Order < ApplicationRecord
       .where("processing_date IS NULL OR processing_date < ?", Date.today)
   }
 
-  include Concerns::Verify
-  include Concerns::Calculations
-  include Concerns::Emails
-  include Concerns::Notifications
-  include Concerns::Processing
+  include Verify
+  include Calculations
+  include Emails
+  include Notifications
+  include Processing
 
   def as_json(options = {})
     options[:methods] =

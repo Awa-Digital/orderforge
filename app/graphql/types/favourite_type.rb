@@ -8,6 +8,5 @@ module Types
     field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
     field :favourite_items, [Types::FavouriteItemType]
     field :products, [Types::ProductType]
-
   end
 end

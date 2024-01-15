@@ -62,6 +62,7 @@ end
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 
 # Custom Gems
+gem 'aasm'
 gem 'carrierwave'
 gem 'cloudinary'
 gem 'dotenv-rails', groups: %i[development test]
@@ -77,7 +78,6 @@ gem 'kaminari'
 gem 'packwerk'
 gem 'paystack'
 gem 'phone'
-gem 'aasm'
 gem 'prawn'
 gem 'prawn-table', '~> 0.1.0'
 gem 'rack-attack'
