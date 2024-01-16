@@ -39,6 +39,8 @@ class Payment < ApplicationRecord
   def initiate
     update_reference
     update_total(order.order_total)
+    raise "Transaction Email not present" unless order.recipient_email.present?
+
     Paystacky.new.init(self)
   rescue StandardError => e
     Sentry.capture_exception(e)

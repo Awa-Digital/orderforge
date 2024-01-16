@@ -3,6 +3,7 @@
 # Model for User Cart
 class Order < ApplicationRecord
   has_many :order_items, dependent: :destroy
+  has_many :products, through: :order_items
   has_many :order_status_stamps, dependent: :destroy
   has_one :payment, dependent: :destroy
   has_one :order_address, dependent: :destroy
@@ -24,11 +25,11 @@ class Order < ApplicationRecord
       .where("processing_date IS NULL OR processing_date < ?", Date.today)
   }
 
-  include Concerns::Verify
-  include Concerns::Calculations
-  include Concerns::Emails
-  include Concerns::Notifications
-  include Concerns::Processing
+  include Verify
+  include Calculations
+  include Emails
+  include Notifications
+  include Processing
 
   def as_json(options = {})
     options[:methods] =

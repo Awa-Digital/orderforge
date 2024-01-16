@@ -31,3 +31,17 @@
 
 en:
   hello: "Hello world"
+  success: "Request processed successfully"
+  unprocessed: "Request can not be processed"
+  unauthorized: "You need to be authorized to access this resource"
+  invalid: "The %{data} you provided is not valid"
+  not_found: "Could not find the requested %{data}"
+  expired_session: "Your session has expired"
+  missing_header: "Your request was sent without an authorization header"
+  server_error: "Something went wrong, please try again later"
+  conflict: "A similar resource already exists"
+  bad_request: "Please provide a valid data from the client"
+  payment_required: "A payment is required to continue"
+  onboarding:
+    password_set: "Password has been set for this account"
+    conflict: "Account already exists"
