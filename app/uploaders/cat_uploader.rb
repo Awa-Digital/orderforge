@@ -1,7 +1,14 @@
 class CatUploader < CarrierWave::Uploader::Base
-  include Cloudinary::CarrierWave
+  include CarrierWave::RMagick
+  # include Cloudinary::CarrierWave
+
+  storage :fog
 
   def public_id
+    "jazzy/#{ENV.fetch('MEDIA_SUBFOLDER', nil)}/category/ing_#{model.id}_#{DateTime.now.to_i}"
+  end
+
+  def store_dir
     "jazzy/#{ENV.fetch('MEDIA_SUBFOLDER', nil)}/category/ing_#{model.id}_#{DateTime.now.to_i}"
   end
 
