@@ -3,12 +3,12 @@ class IconUploader < CarrierWave::Uploader::Base
   storage :fog
 
   def public_id
-    "jazzy/#{ENV.fetch('MEDIA_SUBFOLDER', nil)}/ingredients/ing_#{model.id}_#{DateTime.now.to_i}"
+    "JJB/#{ENV.fetch('MEDIA_SUBFOLDER', nil)}/ingredients/ing_#{model.id}_#{DateTime.now.to_i}"
   end
 
 
   def store_dir
-    "jazzy/#{ENV.fetch('MEDIA_SUBFOLDER', nil)}/ingredients/ing_#{model.id}_#{DateTime.now.to_i}"
+    "JJB/#{ENV.fetch('MEDIA_SUBFOLDER', nil)}/ingredients/ing_#{model.id}_#{DateTime.now.to_i}"
   end
 
   # Provide a default URL as a default if there hasn't been a file uploaded:
