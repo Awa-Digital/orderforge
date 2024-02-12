@@ -23,14 +23,13 @@ class Product < ApplicationRecord
     super
   end
 
-  def self.ransackable_attributes(auth_object = nil)
-    ["amount", "description", "image", "title"]
+  def self.ransackable_attributes(_auth_object = nil)
+    %w[amount description image title]
   end
 
-  def self.ransackable_associations(auth_object = nil)
-    ["category", "ingredients", "product_ingredients", "subcategory"]
+  def self.ransackable_associations(_auth_object = nil)
+    %w[category ingredients product_ingredients subcategory]
   end
-
 
   def available
     @now = Date.today.in_time_zone

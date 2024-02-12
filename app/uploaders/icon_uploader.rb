@@ -6,7 +6,6 @@ class IconUploader < CarrierWave::Uploader::Base
     "JJB/#{ENV.fetch('MEDIA_SUBFOLDER', nil)}/ingredients/ing_#{model.id}"
   end
 
-
   def store_dir
     "JJB/#{ENV.fetch('MEDIA_SUBFOLDER', nil)}/ingredients/ing_#{model.id}"
   end
