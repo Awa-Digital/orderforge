@@ -1,8 +1,13 @@
 class IconUploader < CarrierWave::Uploader::Base
-  include Cloudinary::CarrierWave
+  include CarrierWave::RMagick
+  storage :fog
 
   def public_id
-    "jazzy/#{ENV.fetch('MEDIA_SUBFOLDER', nil)}/ingredients/ing_#{model.id}_#{DateTime.now.to_i}"
+    "JJB/#{ENV.fetch('MEDIA_SUBFOLDER', nil)}/ingredients/ing_#{model.id}"
+  end
+
+  def store_dir
+    "JJB/#{ENV.fetch('MEDIA_SUBFOLDER', nil)}/ingredients/ing_#{model.id}"
   end
 
   # Provide a default URL as a default if there hasn't been a file uploaded:

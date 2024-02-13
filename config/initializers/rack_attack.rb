@@ -2,7 +2,8 @@
 
 Rack::Attack.throttle('ip limit', limit: 5, period: 5.seconds, &:ip)
 
-bad_ips = ENV['BLOCKED_IPS'].split(',')
+bad_ips = ENV.fetch("BLOCKED_IPS", "0.0.0.1").split(',')
+
 Rack::Attack.blocklist 'Block IPs from Environment Variable' do |req|
   bad_ips.include?(req.ip)
 end
