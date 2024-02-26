@@ -2,15 +2,17 @@
 
 module Mutations
   class CreateIngredient < BaseMutation
-    # TODO: define return fields
-    # field :post, Types::PostType, null: false
+    description "create an ingredient that a burger is made of"
 
-    # TODO: define arguments
-    # argument :name, String, required: true
+    argument :name, String
+    argument :icon, String
 
-    # TODO: define resolve method
-    # def resolve(name:)
-    #   { post: ... }
-    # end
+    type Types::IngredientType
+
+    def resolve(attributes)
+      Ingredient.create!(attributes)
+    rescue ActiveRecord::RecordInvalid => e
+      GraphQL::ExecutionError.new("Invalid input: #{e.record.errors.full_messages.join(', ')}")
+    end
   end
 end

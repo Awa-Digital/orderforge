@@ -17,7 +17,7 @@ class OrderItem < ApplicationRecord
   end
 
   def update_parents
-    order.update_totals
+    order.update_totals if order.present?
   end
 
   def base_price

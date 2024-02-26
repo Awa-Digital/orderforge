@@ -9,10 +9,11 @@ class Order < ApplicationRecord
   has_one :order_address, dependent: :destroy
   # belongs_to :address, optional: true
   belongs_to :user, optional: true
+  accepts_nested_attributes_for :order_items
 
   validates :status,
             inclusion: { in: %w[initiated paid awaiting_processing processing awaiting_packaging packaged delivering completed],
-                         message: "'%<value>' is not a valid status" }
+                         message: "'%{value}' is not a valid status" }
 
   after_create :generate_reference_id, :generate_payment, :generate_cart_address, :set_recipient
   after_update :send_update_notifications
@@ -56,9 +57,9 @@ class Order < ApplicationRecord
 
   def generate_payment
     if guest?
-      create_payment(total: order_total)
+      create_payment(total: order_total) unless payment.present?
     else
-      create_payment(user_id: user.id, total: order_total)
+      create_payment(user_id: user.id, total: order_total) unless payment.present?
     end
   end
 
