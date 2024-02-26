@@ -2,10 +2,8 @@
 
 module Mutations
   class CreateAd < BaseMutation
-    # TODO: define return fields
-    # field :post, Types::PostType, null: false
+    description "Create an ad that shows up on the app"
 
-    # TODO: define arguments
     argument :image, String, required: true
     argument :title, String
     argument :expiration_date, GraphQL::Types::ISO8601Date
@@ -16,6 +14,8 @@ module Mutations
 
     def resolve(attributes)
       Ad.create!(attributes)
+    rescue ActiveRecord::RecordInvalid => e
+      GraphQL::ExecutionError.new("Invalid input: #{e.record.errors.full_messages.join(', ')}")
     end
   end
 end

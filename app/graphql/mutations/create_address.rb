@@ -2,6 +2,8 @@
 
 module Mutations
   class CreateAddress < BaseMutation
+    description "Create an address for a user*"
+
     argument :user_id, Integer
     argument :street, String
     argument :state, String
@@ -13,6 +15,8 @@ module Mutations
 
     def resolve(user_id:, **attributes)
       User.find(user_id).addresses.create!(attributes)
+    rescue ActiveRecord::RecordInvalid => e
+      GraphQL::ExecutionError.new("Invalid input: #{e.record.errors.full_messages.join(', ')}")
     end
   end
 end

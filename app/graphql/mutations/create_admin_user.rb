@@ -2,6 +2,8 @@
 
 module Mutations
   class CreateAdminUser < BaseMutation
+    description "Create an account that can access this graphql resource and the admin dashboard!"
+
     argument :email, String
     argument :phone, String
     argument :first_name, String
@@ -15,6 +17,8 @@ module Mutations
 
     def resolve(**attributes)
       AdminUser.create!(attributes)
+    rescue ActiveRecord::RecordInvalid => e
+      GraphQL::ExecutionError.new("Invalid input: #{e.record.errors.full_messages.join(', ')}")
     end
   end
 end
