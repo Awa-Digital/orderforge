@@ -71,6 +71,12 @@ module Types
         end
 
         # Apply sorting logic
+        if sort.present?
+          field, direction = sort.split('_')
+          if model_class.column_names.include?(field.downcase) && %w[ASC DESC].include?(direction.upcase)
+            records = records.order("#{field.downcase} #{direction.upcase}")
+          end
+        end
 
         records
       end
