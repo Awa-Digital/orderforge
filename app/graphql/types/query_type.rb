@@ -37,9 +37,8 @@ module Types
       ### Filter input type generation
       filter_input_name = "#{name.classify}FilterInput"
       model_class = name.classify.constantize
-      filter_fields = model_class.columns.inject({}) do |hash, column|
+      filter_fields = model_class.columns.each_with_object({}) do |column, hash|
         hash[column.name.to_sym] = String if column.type == :string
-        hash
       end
 
       filter_input_class = Class.new(GraphQL::Schema::InputObject) do
