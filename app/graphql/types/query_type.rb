@@ -21,8 +21,8 @@ module Types
       sort_name = "#{name.classify}SortEnum"
       sort_fields = name.classify.constantize.column_names
 
-      # Dynamically create the enum class
-      enum_class = Class.new(GraphQL::Schema::Enum) do
+      # Dynamically create the sort enum class
+      sort_class = Class.new(GraphQL::Schema::Enum) do
         # Dynamically add enum values based on the sort_fields array
         sort_fields.each do |field|
           value "#{field.upcase}_ASC", "Sort by #{field} in ascending order"
@@ -31,7 +31,7 @@ module Types
       end
 
       # insert new class into Types Module
-      Types.const_set(sort_name, enum_class)
+      Types.const_set(sort_name, sort_class)
       # --------------
 
       ### Filter input type generation
@@ -52,7 +52,7 @@ module Types
       Types.const_set(filter_input_name, filter_input_class)
       # --------------
 
-
+      # Fields
       field name.to_sym, field_name.constantize.connection_type, null: false do
         argument :sort, "Types::#{sort_name}".constantize, required: false
         argument :filter, "Types::#{filter_input_name}".constantize, required: false, as: :filter_conditions
@@ -68,7 +68,7 @@ module Types
 
         # Apply filtering logic based on `filter_conditions`
         filter_conditions&.each do |key, value|
-          records = records.where(key => value) if value.present?
+          records = records.where("LOWER(#{key}) LIKE ?", "%#{value.downcase}%") if value.present?
         end
 
         # Apply sorting logic
