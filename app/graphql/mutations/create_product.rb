@@ -13,7 +13,7 @@ module Mutations
     argument :start_time, Integer
     argument :end_time, Integer
     argument :status, String
-    
+
     type Types::ProductType
 
     def resolve(**attributes)

@@ -2,12 +2,8 @@ module Calculations
   extend ActiveSupport::Concern
   def update_totals
     update(total: order_items.sum(:subtotal))
-    if payment
-      payment.update_total(order_total)
-    else
-      generate_payment
-      payment.update_total(order_total)
-    end
+    generate_payment unless payment
+    payment.update_total(order_total)
   end
 
   def delivery_charge

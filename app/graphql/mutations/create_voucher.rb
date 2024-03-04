@@ -7,7 +7,7 @@ module Mutations
     argument :discount_code, String
     argument :influencer_id, Integer
     argument :discount_rate, Float
-    
+
     type Types::VoucherType
 
     def resolve(influencer_id, **attributes)

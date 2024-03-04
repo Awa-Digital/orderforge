@@ -5,7 +5,7 @@ module Mutations
     description "create a sub category"
     argument :title, String
     argument :category_id, Integer
-    
+
     type Types::SubcategoryType
 
     def resolve(**attributes)

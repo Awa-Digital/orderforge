@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Types
   class NestedOrderItemType < Types::BaseInputObject
     description 'Input for a nested order items'
@@ -17,7 +18,7 @@ module Mutations
     argument :recipient_name, String, required: true
     argument :recipient_phone, String, required: true
     argument :recipient_email, String, required: true
-    argument :order_items_attributes, [Types::NestedOrderItemType, null: true], required: false
+    argument :order_items_attributes, [Types::NestedOrderItemType, { null: true }], required: false
 
     type Types::OrderType
 

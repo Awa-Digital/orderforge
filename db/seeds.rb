@@ -17,5 +17,3 @@ products = [{ 'title' => 'Beef Cheese Burger', 'description' => nil, 'category_i
 products.each do |p|
   Product.create(p)
 end
-#
-#

@@ -6,7 +6,7 @@ module Mutations
     argument :user_id, Integer
     argument :product_id, Integer
     argument :rating, Float
-    
+
     type Types::RatingType
 
     def resolve(**attributes)
