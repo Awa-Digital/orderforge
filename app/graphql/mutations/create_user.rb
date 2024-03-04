@@ -2,15 +2,21 @@
 
 module Mutations
   class CreateUser < BaseMutation
-    # TODO: define return fields
-    # field :post, Types::PostType, null: false
+    description "Register a new user"
+    argument :first_name, String
+    argument :last_name, String
+    argument :email, String
+    argument :phone_number, String
+    argument :password, String
+    argument :password_confirmation, String
+    argument :avatar, String
 
-    # TODO: define arguments
-    # argument :name, String, required: true
+    type Types::UserType
 
-    # TODO: define resolve method
-    # def resolve(name:)
-    #   { post: ... }
-    # end
+    def resolve(**attributes)
+      User.create!(attributes)
+    rescue ActiveRecord::RecordInvalid => e
+      GraphQL::ExecutionError.new("Invalid input: #{e.record.errors.full_messages.join(', ')}")
+    end
   end
 end

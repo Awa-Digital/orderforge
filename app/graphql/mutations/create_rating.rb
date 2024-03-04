@@ -2,15 +2,17 @@
 
 module Mutations
   class CreateRating < BaseMutation
-    # TODO: define return fields
-    # field :post, Types::PostType, null: false
+    description "create a rating for a product"
+    argument :user_id, Integer
+    argument :product_id, Integer
+    argument :rating, Float
+    
+    type Types::RatingType
 
-    # TODO: define arguments
-    # argument :name, String, required: true
-
-    # TODO: define resolve method
-    # def resolve(name:)
-    #   { post: ... }
-    # end
+    def resolve(**attributes)
+      Rating.create!(attributes)
+    rescue ActiveRecord::RecordInvalid => e
+      GraphQL::ExecutionError.new("Invalid input: #{e.record.errors.full_messages.join(', ')}")
+    end
   end
 end

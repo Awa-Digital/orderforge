@@ -2,15 +2,18 @@
 
 module Mutations
   class CreateVoucher < BaseMutation
-    # TODO: define return fields
-    # field :post, Types::PostType, null: false
+    description "Add a new discount code"
+    argument :title, String
+    argument :discount_code, String
+    argument :influencer_id, Integer
+    argument :discount_rate, Float
+    
+    type Types::VoucherType
 
-    # TODO: define arguments
-    # argument :name, String, required: true
-
-    # TODO: define resolve method
-    # def resolve(name:)
-    #   { post: ... }
-    # end
+    def resolve(influencer_id, **attributes)
+      Influencer.find(influencer_id).vouchers.create!(attributes)
+    rescue ActiveRecord::RecordInvalid => e
+      GraphQL::ExecutionError.new("Invalid input: #{e.record.errors.full_messages.join(', ')}")
+    end
   end
 end

@@ -2,15 +2,16 @@
 
 module Mutations
   class CreateSubcategory < BaseMutation
-    # TODO: define return fields
-    # field :post, Types::PostType, null: false
+    description "create a sub category"
+    argument :title, String
+    argument :category_id, Integer
+    
+    type Types::SubcategoryType
 
-    # TODO: define arguments
-    # argument :name, String, required: true
-
-    # TODO: define resolve method
-    # def resolve(name:)
-    #   { post: ... }
-    # end
+    def resolve(**attributes)
+      Subcategory.create!(attributes)
+    rescue ActiveRecord::RecordInvalid => e
+      GraphQL::ExecutionError.new("Invalid input: #{e.record.errors.full_messages.join(', ')}")
+    end
   end
 end
