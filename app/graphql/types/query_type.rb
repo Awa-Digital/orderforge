@@ -16,7 +16,7 @@ module Types
     # loop through array names and use 'define_method(name)'
     model_names.each do |name|
       field_name = "Types::#{name.classify}Type"
-      field name.to_sym, [field_name.constantize.connection_type], null: false
+      field name.to_sym, field_name.constantize.connection_type, null: false
 
       field name.singularize.to_sym, field_name.constantize, null: false do
         argument :id, ID
