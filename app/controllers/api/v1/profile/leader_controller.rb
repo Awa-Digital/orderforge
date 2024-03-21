@@ -27,6 +27,3 @@ class Api::V1::Profile::LeaderController < Api::V1::Profile::BaseController
   end
 
 end
-
-
-arr << { image: user.avatar, name: u.first_name.camelize, amount: total_amount, rank: rank + 1 }
