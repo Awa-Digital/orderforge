@@ -15,12 +15,13 @@ class Api::V1::Profile::LeaderController < Api::V1::Profile::BaseController
       total_amount = user.orders.select(&:paid).sum(&:total)
       arr << {
         image: user.avatar,
-        name: user.full_name.camelize,
+        name: user.first_name.camelize,
         amount: total_amount,
         rank: rank + 1
       }
       rank += 1
     end
-    arr
+    arr.sort_by { |user| user[:rank] }
   end
+
 end
