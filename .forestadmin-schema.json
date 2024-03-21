@@ -4463,16 +4463,13 @@
       "integration": null,
       "is_filterable": true,
       "is_read_only": false,
-      "is_required": true,
+      "is_required": false,
       "is_sortable": true,
       "is_virtual": false,
       "reference": null,
       "inverse_of": null,
       "widget": null,
-      "validations": [{
-        "message": null,
-        "type": "is present"
-      }]
+      "validations": []
     }, {
       "field": "id",
       "type": "Number",
@@ -4496,16 +4493,13 @@
       "integration": null,
       "is_filterable": true,
       "is_read_only": false,
-      "is_required": true,
+      "is_required": false,
       "is_sortable": true,
       "is_virtual": false,
       "reference": null,
       "inverse_of": null,
       "widget": null,
-      "validations": [{
-        "message": null,
-        "type": "is present"
-      }]
+      "validations": []
     }, {
       "field": "notification_setting",
       "type": "Number",
@@ -4609,24 +4603,13 @@
       "integration": null,
       "is_filterable": true,
       "is_read_only": false,
-      "is_required": true,
+      "is_required": false,
       "is_sortable": true,
       "is_virtual": false,
       "reference": null,
       "inverse_of": null,
       "widget": null,
-      "validations": [{
-        "message": null,
-        "type": "is present"
-      }, {
-        "message": null,
-        "type": "is longer than",
-        "value": 13
-      }, {
-        "message": null,
-        "type": "is shorter than",
-        "value": 13
-      }]
+      "validations": []
     }, {
       "field": "phone_otp",
       "type": "String",
@@ -4656,6 +4639,21 @@
       "reference": "Rating.id",
       "inverse_of": "user",
       "relationship": "HasMany",
+      "widget": null,
+      "validations": []
+    }, {
+      "field": "slug",
+      "type": "String",
+      "default_value": null,
+      "enums": null,
+      "integration": null,
+      "is_filterable": true,
+      "is_read_only": false,
+      "is_required": false,
+      "is_sortable": true,
+      "is_virtual": false,
+      "reference": null,
+      "inverse_of": null,
       "widget": null,
       "validations": []
     }, {

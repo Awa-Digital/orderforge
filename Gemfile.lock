@@ -186,6 +186,8 @@ GEM
     forestadmin-jsonapi-serializers (2.0.0.pre.beta.2)
       activesupport
     formatador (1.1.0)
+    friendly_id (5.5.1)
+      activerecord (>= 4.0.0)
     fugit (1.9.0)
       et-orbi (~> 1, >= 1.2.7)
       raabro (~> 1.4)
@@ -513,6 +515,7 @@ DEPENDENCIES
   fcm
   fog-aws
   forest_liana
+  friendly_id (~> 5.5.0)
   graphql
   httparty
   jbuilder (~> 2.7)
