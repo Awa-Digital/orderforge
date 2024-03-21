@@ -19,11 +19,11 @@ class Api::V1::Profile::LeaderController < Api::V1::Profile::BaseController
       }
     end
 
-    arr.sort_by { |user| user[:amount] }.each_with_index do |user, index|
+    sorted = arr.sort_by { |user| -user[:amount] }.each_with_index do |user, index|
       user[:rank] = index + 1
     end
 
-    arr
+    sorted
   end
 
 end
