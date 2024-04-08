@@ -1,0 +1,2 @@
+class StockInventoryItem < ApplicationRecord
+end

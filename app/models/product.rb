@@ -1,4 +1,6 @@
 class Product < ApplicationRecord
+  include StateManagement
+
   mount_uploader :image, ProductUploader
 
   belongs_to :category
@@ -11,11 +13,9 @@ class Product < ApplicationRecord
 
   validates :title,
             :description,
-            :category_id,
             :amount, presence: true
 
   # NOW = Date.today.in_time_zone
-  default_scope { where(status: "active") }
 
   def as_json(options = {})
     options[:methods] = %i[available category subcategory ingredients review_rating review_count]

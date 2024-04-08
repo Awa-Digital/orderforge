@@ -1,0 +1,2 @@
+class FranchiseInventoryQuantity < ApplicationRecord
+end

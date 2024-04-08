@@ -2,6 +2,7 @@
 
 # user model
 class User < ApplicationRecord
+  include StateManagement
   mount_uploader :avatar, AvatarUploader
 
   has_many :orders, dependent: :destroy
@@ -158,5 +159,3 @@ class User < ApplicationRecord
     errors.add :otp, 'is invalid. Resend new OTP or try again' if account.otp != phone_otp
   end
 end
-
-# rubocop:enable Metrics/ClassLength

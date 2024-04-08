@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_02_26_091840) do
+ActiveRecord::Schema[7.0].define(version: 2024_04_08_095356) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -76,6 +76,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_26_091840) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "image"
+    t.string "status", default: "active"
   end
 
   create_table "delivery_areas", force: :cascade do |t|
@@ -112,10 +113,37 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_26_091840) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "franchise_addresses", force: :cascade do |t|
+    t.integer "franchise_id"
+    t.integer "region_id"
+    t.integer "location_id"
+    t.string "street"
+    t.string "longitude"
+    t.string "latitude"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "franchise_inventory_quantities", force: :cascade do |t|
+    t.integer "franchise_id"
+    t.integer "inventory_id"
+    t.decimal "quantity"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "franchise_product_prices", force: :cascade do |t|
     t.integer "franchise_id"
     t.integer "product_id"
     t.decimal "amount", precision: 8, scale: 2
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "franchise_stock_quantities", force: :cascade do |t|
+    t.integer "franchise_id"
+    t.integer "stock_id"
+    t.decimal "quantity"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -125,6 +153,18 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_26_091840) do
     t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "status", default: "active"
+  end
+
+  create_table "friendly_id_slugs", force: :cascade do |t|
+    t.string "slug", null: false
+    t.integer "sluggable_id", null: false
+    t.string "sluggable_type", limit: 50
+    t.string "scope"
+    t.datetime "created_at"
+    t.index ["slug", "sluggable_type", "scope"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope", unique: true
+    t.index ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type"
+    t.index ["sluggable_type", "sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_type_and_sluggable_id"
   end
 
   create_table "influencers", force: :cascade do |t|
@@ -135,11 +175,22 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_26_091840) do
     t.string "password_digest"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "status", default: "active"
   end
 
   create_table "ingredients", force: :cascade do |t|
     t.string "name"
     t.string "icon"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "inventories", force: :cascade do |t|
+    t.string "code"
+    t.string "name"
+    t.string "description"
+    t.string "state"
+    t.boolean "expires"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -264,6 +315,14 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_26_091840) do
     t.index ["product_id"], name: "index_product_ingredients_on_product_id"
   end
 
+  create_table "product_inventory_items", force: :cascade do |t|
+    t.integer "product_id"
+    t.integer "inventory_id"
+    t.decimal "quantity"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "products", force: :cascade do |t|
     t.string "title"
     t.text "description"
@@ -306,6 +365,24 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_26_091840) do
     t.index ["order_item_id"], name: "index_removables_on_order_item_id"
   end
 
+  create_table "stock_inventory_items", force: :cascade do |t|
+    t.integer "stock_id"
+    t.integer "inventory_id"
+    t.decimal "quantity"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "stocks", force: :cascade do |t|
+    t.string "code"
+    t.string "name"
+    t.string "description"
+    t.string "state"
+    t.boolean "expires"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "subcategories", force: :cascade do |t|
     t.string "title"
     t.datetime "created_at", null: false
@@ -326,6 +403,9 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_26_091840) do
     t.boolean "active", default: true
     t.string "avatar"
     t.decimal "spend_score", precision: 8, scale: 2, default: "0.0"
+    t.string "slug"
+    t.string "status", default: "active"
+    t.index ["slug"], name: "index_users_on_slug", unique: true
   end
 
   create_table "vouchers", force: :cascade do |t|
