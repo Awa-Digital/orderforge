@@ -3,7 +3,8 @@
     "password reset",
     "notification",
     "leaderboard",
-    "admin"
+    "admin",
+    "orders"
   ],
   "ruby.intellisense": "rubyLocate"
 }
