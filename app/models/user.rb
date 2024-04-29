@@ -41,6 +41,14 @@ class User < ApplicationRecord
     super
   end
 
+  def self.ransackable_attributes(_auth_object = nil)
+    %w[first_name last_name email phone_number]
+  end
+
+  def self.ransackable_associations(_auth_object = nil)
+    []
+  end
+
   def generate_attributes
     create_favourite unless favourite.present?
     create_notification_setting unless notification_setting.present?

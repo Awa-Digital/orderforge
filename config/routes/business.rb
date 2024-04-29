@@ -23,15 +23,23 @@ namespace :v2, path: 'v2' do
       end
 
       scope "influencers" do
+        get "search", to: "influencers#search"
         post "", to: "influencers#new"
         put "/:id", to: "influencers#update"
         delete "/:id", to: "influencers#remove"
+        scope ":id" do
+          post "/vouchers", to: "influencers#new_voucher"
+          put "/vouchers/:voucher_id", to: "influencers#update_voucher"
+          delete "/vouchers/:voucher_id", to: "influencers#remove_voucher"
+          get "/vouchers/search", to: "influencers#search_voucher"
+        end
       end
 
       scope "users" do
         post "", to: "users#new"
         put "/:id", to: "users#update"
         delete "/:id", to: "users#remove"
+        get "/search", to: "users#search"
       end
 
       scope "orders" do

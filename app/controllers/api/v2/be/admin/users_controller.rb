@@ -6,7 +6,11 @@ module Api
     module Be
       module Admin
         class UsersController < Api::V2::Be::Admin::BaseController
-          before_action :set_user, except: [:new]
+          before_action :set_user, except: [:new, :search]
+
+          def search
+            search_for_model(User, params[:page], params[:per_page])
+          end
 
           def new
             @account_verification = AccountVerification.create(phone: user_params[:phone_number], email: user_params[:email])

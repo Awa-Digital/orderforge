@@ -12,4 +12,12 @@ class Influencer < ApplicationRecord
     options[:except] = %i[password_digest]
     super
   end
+
+  def self.ransackable_attributes(_auth_object = nil)
+    %w[name instagram_handle twitter_handle email]
+  end
+
+  def self.ransackable_associations(_auth_object = nil)
+    []
+  end
 end
