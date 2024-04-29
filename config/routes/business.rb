@@ -38,18 +38,21 @@ namespace :v2, path: 'v2' do
         post "", to: "orders#new"
         put "/:id", to: "orders#update"
         delete "/:id", to: "orders#remove"
+        get "/search", to: "orders#search"
       end
 
       scope "inventories" do
         post "", to: "inventories#new"
         put "/:id", to: "inventories#update"
         delete "/:id", to: "inventories#remove"
+        get "/search", to: "inventories#search"
       end
 
       scope "stocks" do
         post "", to: "stocks#new"
         put "/:id", to: "stocks#update"
         delete "/:id", to: "stocks#remove"
+        get "/search", to: "stocks#search"
       end
     end
   end

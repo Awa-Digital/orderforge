@@ -25,13 +25,6 @@ module Responses
     }, status: :unauthorized
   end
 
-  def server_error(data)
-    render json: {
-      status: 'server error',
-      message: data[:message] || I18n.t('server_error')
-    }, status: 500
-  end
-
   def conflict(data)
     render json: {
       status: 'conflicting',

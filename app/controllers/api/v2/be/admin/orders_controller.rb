@@ -6,7 +6,11 @@ module Api
     module Be
       module Admin
         class OrdersController < Api::V2::Be::Admin::BaseController
-          before_action :set_order, except: [:new]
+          before_action :set_order, except: [:new, :search]
+
+          def search
+            search_for_model(Order, params[:page], params[:per_page])
+          end
 
           def new
             @order = Order.new(order_params)

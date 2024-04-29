@@ -6,7 +6,11 @@ module Api
     module Be
       module Admin
         class StocksController < Api::V2::Be::Admin::BaseController
-          before_action :set_stock, except: [:new]
+          before_action :set_stock, except: [:new, :search]
+
+          def search
+            search_for_model(Stock, params[:page], params[:per_page])
+          end
 
           def new
             @stock = Stock.new(stock_params)

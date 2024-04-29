@@ -6,7 +6,11 @@ module Api
     module Be
       module Admin
         class InventoriesController < Api::V2::Be::Admin::BaseController
-          before_action :set_inventory, except: [:new]
+          before_action :set_inventory, except: [:new, :search]
+
+          def search
+            search_for_model(Inventory, params[:page], params[:per_page])
+          end
 
           def new
             @inventory = Inventory.new(inventory_params)

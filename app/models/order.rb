@@ -40,6 +40,14 @@ class Order < ApplicationRecord
     super
   end
 
+  def self.ransackable_attributes(_auth_object = nil)
+    %w[reference recipient_name recipient_phone recipient_email order_no]
+  end
+
+  def self.ransackable_associations(_auth_object = nil)
+    %w[products user payment order_address]
+  end
+
   def generate_reference_id
     update(reference: "JAZ#{id}#{DateTime.now.to_i}")
     reference
