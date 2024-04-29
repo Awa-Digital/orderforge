@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_04_29_012033) do
+ActiveRecord::Schema[7.0].define(version: 2024_04_29_022307) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -88,6 +88,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_29_012033) do
     t.decimal "night_rate", precision: 8, scale: 2
     t.decimal "dawn_rate", precision: 8, scale: 2
     t.integer "region_id", default: 1
+    t.string "status", default: "active"
   end
 
   create_table "devices", force: :cascade do |t|
@@ -200,6 +201,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_29_012033) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "status", default: "active"
   end
 
   create_table "notification_settings", force: :cascade do |t|
@@ -357,6 +359,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_29_012033) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "name"
+    t.string "status", default: "active"
   end
 
   create_table "removables", force: :cascade do |t|

@@ -6,10 +6,20 @@ class DeliveryArea < ApplicationRecord
   has_many :order_addresses
   belongs_to :region
 
+  include StateManagement
+
   def as_json(options = {})
     options[:methods] = %i[price price_per_time]
     options[:except] = %i[created_at updated_at]
     super
+  end
+
+  def self.ransackable_attributes(_auth_object = nil)
+    %w[name]
+  end
+
+  def self.ransackable_associations(_auth_object = nil)
+    [:region]
   end
 
   def price

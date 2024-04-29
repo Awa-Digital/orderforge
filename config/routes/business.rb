@@ -62,6 +62,22 @@ namespace :v2, path: 'v2' do
         delete "/:id", to: "stocks#remove"
         get "/search", to: "stocks#search"
       end
+
+      scope "location" do
+        post "", to: "location#new_country"
+        delete ":id", to: "location#remove_country"
+        get "/search", to: "location#search_country"
+        get "states/search", to: "location#search_states"
+        get "cities/search", to: "location#search_cities"
+        scope ":id/states" do
+          post "", to: "location#new_region"
+          delete ":state_id", to: "location#remove_state"
+          scope ":state_id/cities" do
+            post "", to: "location#new_city"
+            delete ":city_id", to: "location#remove_city"
+          end
+        end
+      end
     end
   end
 end
