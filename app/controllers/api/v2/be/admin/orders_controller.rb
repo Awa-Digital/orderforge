@@ -10,7 +10,6 @@ module Api
 
           def new
             @order = Order.new(order_params)
-            @order.phone_otp = @account_verification.otp
             if @order.save
               success({ data: @order })
             else
@@ -35,10 +34,13 @@ module Api
 
           def order_params
             params.require(:order).permit(
-              :user_id, :recipient_name, :recipient_email, :recipient_phone,
-              order_items_attributes: [:product_id, :quantity],
-              order_address_attributes: [:house_number, :street, :city, :region_id, :location_id, :delivery_area_id]
+              :user_id, :recipient_name, :recipient_email, :recipient_phone, :address_id,
+              order_items_attributes: [:product_id, :quantity]
             )
+          end
+
+          def order_update_params
+            params.require(:order).permit(:status, :address_id, :paid, :recipient_name, :recipient_email, :recipient_phone)
           end
 
           def set_order
