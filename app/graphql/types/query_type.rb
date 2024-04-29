@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/BlockLength
+
 module Types
   class QueryType < Types::BaseObject
     # # Creating methods from a list of model names ##
@@ -13,6 +15,7 @@ module Types
     end
 
     model_names = model_names.map { |s| s.gsub(/([a-z])([A-Z])/, '\1_\2').downcase.pluralize }
+
     # loop through array names and use 'define_method(name)'
     model_names.each do |name|
       field_name = "Types::#{name.classify}Type"
@@ -73,9 +76,7 @@ module Types
         # Apply sorting logic
         if sort.present?
           field, direction = sort.split('_')
-          if model_class.column_names.include?(field.downcase) && %w[ASC DESC].include?(direction.upcase)
-            records = records.order("#{field.downcase} #{direction.upcase}")
-          end
+          records = records.order("#{field.downcase} #{direction.upcase}") if model_class.column_names.include?(field.downcase) && %w[ASC DESC].include?(direction.upcase)
         end
 
         records
@@ -87,3 +88,4 @@ module Types
     end
   end
 end
+# rubocop:enable Metrics/BlockLength
