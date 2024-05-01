@@ -869,6 +869,21 @@
       "widget": null,
       "validations": []
     }, {
+      "field": "status",
+      "type": "String",
+      "default_value": "active",
+      "enums": null,
+      "integration": null,
+      "is_filterable": true,
+      "is_read_only": false,
+      "is_required": false,
+      "is_sortable": true,
+      "is_virtual": false,
+      "reference": null,
+      "inverse_of": null,
+      "widget": null,
+      "validations": []
+    }, {
       "field": "subcategories",
       "type": ["Number"],
       "default_value": null,
@@ -1077,6 +1092,21 @@
       "reference": "Region.id",
       "inverse_of": "delivery_areas",
       "relationship": "BelongsTo",
+      "widget": null,
+      "validations": []
+    }, {
+      "field": "status",
+      "type": "String",
+      "default_value": "active",
+      "enums": null,
+      "integration": null,
+      "is_filterable": true,
+      "is_read_only": false,
+      "is_required": false,
+      "is_sortable": true,
+      "is_virtual": false,
+      "reference": null,
+      "inverse_of": null,
       "widget": null,
       "validations": []
     }, {
@@ -1495,6 +1525,21 @@
       "widget": null,
       "validations": []
     }, {
+      "field": "status",
+      "type": "String",
+      "default_value": "active",
+      "enums": null,
+      "integration": null,
+      "is_filterable": true,
+      "is_read_only": false,
+      "is_required": false,
+      "is_sortable": true,
+      "is_virtual": false,
+      "reference": null,
+      "inverse_of": null,
+      "widget": null,
+      "validations": []
+    }, {
       "field": "title",
       "type": "String",
       "default_value": null,
@@ -1730,6 +1775,21 @@
       "widget": null,
       "validations": []
     }, {
+      "field": "status",
+      "type": "String",
+      "default_value": "active",
+      "enums": null,
+      "integration": null,
+      "is_filterable": true,
+      "is_read_only": false,
+      "is_required": false,
+      "is_sortable": true,
+      "is_virtual": false,
+      "reference": null,
+      "inverse_of": null,
+      "widget": null,
+      "validations": []
+    }, {
       "field": "twitter_handle",
       "type": "String",
       "default_value": null,
@@ -1943,6 +2003,21 @@
       "field": "name",
       "type": "String",
       "default_value": null,
+      "enums": null,
+      "integration": null,
+      "is_filterable": true,
+      "is_read_only": false,
+      "is_required": false,
+      "is_sortable": true,
+      "is_virtual": false,
+      "reference": null,
+      "inverse_of": null,
+      "widget": null,
+      "validations": []
+    }, {
+      "field": "status",
+      "type": "String",
+      "default_value": "active",
       "enums": null,
       "integration": null,
       "is_filterable": true,
@@ -2645,7 +2720,7 @@
     }, {
       "field": "status",
       "type": "String",
-      "default_value": null,
+      "default_value": "initiated",
       "enums": null,
       "integration": null,
       "is_filterable": true,
@@ -2872,6 +2947,21 @@
       "widget": null,
       "validations": []
     }, {
+      "field": "location_id",
+      "type": "Number",
+      "default_value": null,
+      "enums": null,
+      "integration": null,
+      "is_filterable": true,
+      "is_read_only": false,
+      "is_required": false,
+      "is_sortable": true,
+      "is_virtual": false,
+      "reference": null,
+      "inverse_of": null,
+      "widget": null,
+      "validations": []
+    }, {
       "field": "order",
       "type": "Number",
       "default_value": null,
@@ -2885,6 +2975,21 @@
       "reference": "Order.id",
       "inverse_of": "order_address",
       "relationship": "BelongsTo",
+      "widget": null,
+      "validations": []
+    }, {
+      "field": "region_id",
+      "type": "Number",
+      "default_value": null,
+      "enums": null,
+      "integration": null,
+      "is_filterable": true,
+      "is_read_only": false,
+      "is_required": false,
+      "is_sortable": true,
+      "is_virtual": false,
+      "reference": null,
+      "inverse_of": null,
       "widget": null,
       "validations": []
     }, {
@@ -4128,6 +4233,21 @@
       "widget": null,
       "validations": []
     }, {
+      "field": "status",
+      "type": "String",
+      "default_value": "active",
+      "enums": null,
+      "integration": null,
+      "is_filterable": true,
+      "is_read_only": false,
+      "is_required": false,
+      "is_sortable": true,
+      "is_virtual": false,
+      "reference": null,
+      "inverse_of": null,
+      "widget": null,
+      "validations": []
+    }, {
       "field": "updated_at",
       "type": "Date",
       "default_value": null,
@@ -4672,6 +4792,21 @@
       "widget": null,
       "validations": []
     }, {
+      "field": "status",
+      "type": "String",
+      "default_value": "active",
+      "enums": null,
+      "integration": null,
+      "is_filterable": true,
+      "is_read_only": false,
+      "is_required": false,
+      "is_sortable": true,
+      "is_virtual": false,
+      "reference": null,
+      "inverse_of": null,
+      "widget": null,
+      "validations": []
+    }, {
       "field": "updated_at",
       "type": "Date",
       "default_value": null,
@@ -4803,6 +4938,21 @@
       "reference": "Payment.id",
       "inverse_of": "voucher",
       "relationship": "HasMany",
+      "widget": null,
+      "validations": []
+    }, {
+      "field": "status",
+      "type": "String",
+      "default_value": "active",
+      "enums": null,
+      "integration": null,
+      "is_filterable": true,
+      "is_read_only": false,
+      "is_required": false,
+      "is_sortable": true,
+      "is_virtual": false,
+      "reference": null,
+      "inverse_of": null,
       "widget": null,
       "validations": []
     }, {

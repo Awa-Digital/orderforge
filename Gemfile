@@ -91,6 +91,7 @@ gem 'sentry-rails'
 gem 'sentry-ruby', '>= 5.7.0'
 gem 'sidekiq', '~> 7.2'
 gem "sidekiq-scheduler"
+gem 'slack-ruby-client'
 gem 'typhoeus'
 
 gem "matrix", "~> 0.4.2"

@@ -86,6 +86,7 @@ class Order < ApplicationRecord
     next_order_no = Order.where(paid: true).all.count + 1
     update(status: 'paid', paid: true, order_no: next_order_no)
 
+    SlackApi.send_order_message(self)
     OrderMailer.with(reference:).coy_order_email.deliver
     puts "NOTIFIED COMPANY ABOUT ORDER"
     return if user_id.nil?
