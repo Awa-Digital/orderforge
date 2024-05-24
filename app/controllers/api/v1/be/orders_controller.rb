@@ -29,6 +29,8 @@ module Api
           @orders.map { |o| o.order_items.map { |oi| @order_items << oi } }
           @data = {}
           @order_items.each do |oi|
+            puts("Item's ID #{oi.id}")
+            puts("Product ID: #{oi&.product&.id}")
             @data[oi.product.title] = @data[oi.product.title].to_i + oi.quantity
           end
 
