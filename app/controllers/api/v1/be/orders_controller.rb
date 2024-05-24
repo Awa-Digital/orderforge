@@ -31,7 +31,8 @@ module Api
           @order_items.each do |oi|
             puts("Item's ID #{oi.id}")
             puts("Product ID: #{oi&.product&.id}")
-            @data[oi.product.title] = @data[oi.product.title].to_i + oi.quantity
+            product = Product.unscoped.find_by(id: oi.product_id)
+            @data[product.title] = @data[product.title].to_i + oi.quantity
           end
 
           success({ message: "Ordered items have been counted for #{month}-#{year}", data: @data })
