@@ -27,6 +27,13 @@ json.data do
         json.title item.product.title
         json.amount item.product.amount
         json.image item.product.image
+        json.ingredients do
+          json.array! @item.product.ingredients do |ingredient|
+            json.id ingredient.id
+            json.name ingredient.name
+            json.icon ingredient.icon
+          end
+        end
       end
     end
   end
