@@ -157,17 +157,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_29_022307) do
     t.string "status", default: "active"
   end
 
-  create_table "friendly_id_slugs", force: :cascade do |t|
-    t.string "slug", null: false
-    t.integer "sluggable_id", null: false
-    t.string "sluggable_type", limit: 50
-    t.string "scope"
-    t.datetime "created_at"
-    t.index ["slug", "sluggable_type", "scope"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope", unique: true
-    t.index ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type"
-    t.index ["sluggable_type", "sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_type_and_sluggable_id"
-  end
-
   create_table "influencers", force: :cascade do |t|
     t.string "name"
     t.string "instagram_handle"
@@ -276,7 +265,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_29_022307) do
     t.string "recipient_phone"
     t.decimal "total", precision: 8, scale: 2, default: "0.0"
     t.string "recipient_email"
-    t.datetime "processing_date", precision: nil
+    t.datetime "processing_date"
     t.integer "priority", default: 0
     t.boolean "sent_receipt_notification", default: false
     t.boolean "sent_processing_notification", default: false
@@ -308,7 +297,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_29_022307) do
     t.string "gateway"
     t.string "payment_id"
     t.integer "voucher_id"
-    t.datetime "paid_at", precision: nil
+    t.datetime "paid_at"
   end
 
   create_table "product_ingredients", force: :cascade do |t|
@@ -410,9 +399,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_29_022307) do
     t.boolean "active", default: true
     t.string "avatar"
     t.decimal "spend_score", precision: 8, scale: 2, default: "0.0"
-    t.string "slug"
     t.string "status", default: "active"
-    t.index ["slug"], name: "index_users_on_slug", unique: true
   end
 
   create_table "vouchers", force: :cascade do |t|

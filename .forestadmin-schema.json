@@ -5895,10 +5895,10 @@
   }],
   "meta": {
     "liana": "forest-rails",
-    "liana_version": "8.0.17",
+    "liana_version": "9.3.12",
     "stack": {
       "database_type": "postgresql",
-      "orm_version": "7.0.8"
+      "orm_version": "7.0.8.4"
     }
   }
 }
