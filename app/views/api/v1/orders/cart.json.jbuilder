@@ -28,7 +28,7 @@ json.data do
         json.amount item.product.amount
         json.image item.product.image
         json.ingredients do
-          json.array! @item.product.ingredients do |ingredient|
+          json.array! item.product.ingredients do |ingredient|
             json.id ingredient.id
             json.name ingredient.name
             json.icon ingredient.icon
