@@ -7,12 +7,16 @@ class Address < ApplicationRecord
             :state, presence: true
 
   def as_json(options = {})
-    options[:methods] = %i[city]
+    options[:methods] = %i[city as_string]
     options[:except] = %i[created_at updated_at user_id delivery_area_id]
     super
   end
 
   def city
     delivery_area.name
+  end
+
+  def as_string
+    "#{house_number} #{street}, #{city}, #{state}"
   end
 end
