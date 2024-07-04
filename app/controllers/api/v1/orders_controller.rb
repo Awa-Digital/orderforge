@@ -111,7 +111,7 @@ class Api::V1::OrdersController < Api::V1::BaseController
   def attach_address
     @address = @mobile_user.addresses.find_by(id: params[:address_id])
     if @address.present?
-      @mobile_user.cart.order_address.update!(JSON.parse(@address.to_json).except('id'))
+      @mobile_user.cart.order_address.update!(JSON.parse(@address.to_json).except([:id, :as_string]))
       @mobile_user.cart.order_address.update!(delivery_area_id: @address.delivery_area_id)
       success({ message: 'Address has been assigned successfully', data: @address })
     else
