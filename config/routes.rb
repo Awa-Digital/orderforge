@@ -3,9 +3,7 @@
 require "sidekiq/web"
 
 Rails.application.routes.draw do
-  # if Rails.env.development?
-  #   mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "/graphql"
-  # end
+  mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "/graphql" if Rails.env.development?
   post "/graphql", to: "graphql#execute"
   # MUST be declared before the mount ForestLiana::Engine.
 
@@ -62,6 +60,7 @@ Rails.application.routes.draw do
         post 'guest/create-and-add-to-cart', to: 'orders#create_guest_cart'
         post 'guest/update-address', to: 'orders#update_address'
         post 'update', to: 'orders#update'
+        delete 'update/:order_item_id/ingredients/:ingredient_id', to: 'orders#remove_ingredient'
         delete 'remove', to: 'orders#remove'
         post 'add/address', to: 'orders#attach_address'
         post 'add/recipient', to: 'orders#attach_recipient'

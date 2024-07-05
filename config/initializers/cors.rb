@@ -17,8 +17,14 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
   null_regex = /\Anull\z/
 
   allow do
-    hostnames = [null_regex, 'localhost:3000', 'app.forestadmin.com', 'localhost:3001', 'jazzysjuicyburger.com',
-                 'jazzysjuicyburger.herokuapp.com', 'jazzy-burger-web-app-5mxwi.ondigitalocean.app', 'app.jazzysjuicyburgers.com', 'jazzysburger.com', 'www.jazzysburger.com', 'app.jazzysburger.com']
+    hostnames = [
+      null_regex,
+      'localhost:3000', 'app.forestadmin.com', 'localhost:3001',
+      'jazzysjuicyburger.com', "admin.jazzysburger.com",
+      'jazzysjuicyburger.herokuapp.com', 'jazzy-burger-web-app-5mxwi.ondigitalocean.app',
+      'app.jazzysjuicyburgers.com', 'jazzysburger.com', 'www.jazzysburger.com',
+      'app.jazzysburger.com'
+    ]
     hostnames += ENV['CORS_ORIGINS'].split(',') if ENV['CORS_ORIGINS']
     origins hostnames
     resource '*',

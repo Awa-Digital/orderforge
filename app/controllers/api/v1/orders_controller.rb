@@ -1,13 +1,25 @@
 class Api::V1::OrdersController < Api::V1::BaseController
   skip_before_action :authenticate_user,
-                     only: %i[cart create_guest_cart update_address remove attach_recipient address_areas address_regions regions_areas]
-  before_action :authenticate_guest, only: %i[cart create_guest_cart update_address remove attach_recipient]
+                     only: %i[cart create_guest_cart add update update_address add update remove_ingredient remove attach_recipient address_areas address_regions regions_areas]
+  before_action :authenticate_guest, only: %i[cart create_guest_cart add update remove_ingredient update_address remove attach_recipient]
   before_action :set_product, only: %i[add update remove]
   before_action :set_cart, except: [:address_areas]
 
   def cart
     @cart_render = @cart
     @message = 'Cart Fetched!'
+    render 'cart'
+  end
+
+  def create_guest_cart
+    items = params[:items]
+    items.each do |item|
+      @product = Product.find_by(id: item[:product_id])
+
+      add_to_cart(item[:product_id], item[:quantity], @cart, item[:removables]) if @product.present?
+    end
+    @cart_render = Order.find(@cart.id)
+    @message = 'Items have been added to cart'
     render 'cart'
   end
 
@@ -23,15 +35,25 @@ class Api::V1::OrdersController < Api::V1::BaseController
     render 'cart'
   end
 
-  def create_guest_cart
-    items = params[:items]
-    items.each do |item|
-      @product = Product.find_by(id: item[:product_id])
-      add_to_cart(item[:product_id], item[:quantity], @cart, item[:removables]) if @product.present?
-    end
+  def add
+    @item = add_to_cart(@product.id, params[:quantity].to_i, @cart, params[:removables]) if @product.present?
     @cart_render = Order.find(@cart.id)
     @message = 'Items have been added to cart'
     render 'cart'
+  end
+
+  def update
+    @item = @cart.items.find_by(product_id: @product.id)
+    if @item.present?
+      @item.update(quantity: params[:quantity].to_i)
+      @cart.sum_total
+
+      @cart_render = Order.find(@cart.id)
+      @message = 'item has been updated on cart'
+      render 'cart'
+    else
+      notfound({ message: 'No product found with this id' })
+    end
   end
 
   def add_to_cart(product_id, quantity, cart, removables)
@@ -43,6 +65,14 @@ class Api::V1::OrdersController < Api::V1::BaseController
     rescue StandardError => e
       puts e.message
       puts 'PRODUCT DID NOT SAVE'
+    end
+  end
+
+  def remove_ingredient
+    if Removable.find_or_create_by!(order_item_id: params[:order_item_id], ingredient_id: params[:ingredient_id])
+      success({ message: 'Item included in the removed list', data: @removable })
+    else
+      unprocessable({ message: 'Item included in the removed list' })
     end
   end
 
@@ -89,7 +119,7 @@ class Api::V1::OrdersController < Api::V1::BaseController
   def attach_address
     @address = @mobile_user.addresses.find_by(id: params[:address_id])
     if @address.present?
-      @mobile_user.cart.order_address.update!(JSON.parse(@address.to_json).except('id'))
+      @mobile_user.cart.order_address.update!(JSON.parse(@address.to_json).except('id', 'as_string'))
       @mobile_user.cart.order_address.update!(delivery_area_id: @address.delivery_area_id)
       success({ message: 'Address has been assigned successfully', data: @address })
     else
@@ -164,21 +194,3 @@ class Api::V1::OrdersController < Api::V1::BaseController
     end
   end
 end
-
-# def add
-#   @cart = @mobile_user.cart
-#   @item = add_to_cart(@product.id, params[:quantity].to_i, @cart)
-#   success({ message: 'item has been added to cart', data: @item })
-# end
-
-# def update
-#   @cart = @mobile_user.cart
-#   @item = @cart.items.find_by(product_id: @product.id)
-#   if @item.present?
-#     @item.update(quantity: params[:quantity].to_i)
-#     @cart.sum_total
-#     success({ message: 'item has been updated on cart', data: @item })
-#   else
-#     notfound({ message: 'No product found with this id' })
-#   end
-# end

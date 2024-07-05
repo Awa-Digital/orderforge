@@ -27,6 +27,20 @@ json.data do
         json.title item.product.title
         json.amount item.product.amount
         json.image item.product.image
+        json.ingredients do
+          json.array! item.product.ingredients do |ingredient|
+            json.id ingredient.id
+            json.name ingredient.name
+            json.icon ingredient.icon
+          end
+        end
+      end
+      json.removables do
+        json.array! item.removables do |removable|
+          json.id removable.id
+          json.order_item_id removable.order_item_id
+          json.ingredient_id removable.ingredient_id
+        end
       end
     end
   end

@@ -2,7 +2,9 @@
   "conventionalCommits.scopes": [
     "password reset",
     "notification",
-    "leaderboard"
+    "leaderboard",
+    "admin",
+    "orders"
   ],
   "ruby.intellisense": "rubyLocate"
 }

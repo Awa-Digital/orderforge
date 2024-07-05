@@ -2,15 +2,22 @@
 
 module Mutations
   class CreateOrderAddress < BaseMutation
-    # TODO: define return fields
-    # field :post, Types::PostType, null: false
+    description "create an address for an order for a customer"
 
-    # TODO: define arguments
-    # argument :name, String, required: true
+    argument :order_id, Integer
+    argument :house_number, String
+    argument :street, String
+    argument :city, String
+    argument :state, String
+    argument :country, String
+    argument :delivery_area_id, Integer
 
-    # TODO: define resolve method
-    # def resolve(name:)
-    #   { post: ... }
-    # end
+    type Types::OrderAddressType
+
+    def resolve(**attributes)
+      OrderAddress.create!(attributes)
+    rescue ActiveRecord::RecordInvalid => e
+      GraphQL::ExecutionError.new("Invalid input: #{e.record.errors.full_messages.join(', ')}")
+    end
   end
 end

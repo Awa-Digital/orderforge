@@ -1,0 +1,2 @@
+class FranchiseAddress < ApplicationRecord
+end

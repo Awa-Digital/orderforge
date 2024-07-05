@@ -2,17 +2,19 @@
 
 module Mutations
   class CreateInfluencer < BaseMutation
+    description "Create an influencer that can market a discount code"
 
     type Types::InfluencerType
 
-    # TODO: define return fields
-    # field :post, Types::PostType, null: false
-
-    # TODO: define arguments
-    # argument :name, String, required: true
+    argument :name, String
+    argument :instagram_handle, String
+    argument :twitter_handle, String, required: false
+    argument :email, String, required: false
 
     def resolve(attributes)
       Influencer.create!(attributes)
+    rescue ActiveRecord::RecordInvalid => e
+      GraphQL::ExecutionError.new("Invalid input: #{e.record.errors.full_messages.join(', ')}")
     end
   end
 end

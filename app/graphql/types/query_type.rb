@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/BlockLength
+
 module Types
   class QueryType < Types::BaseObject
     # # Creating methods from a list of model names ##
@@ -17,45 +19,73 @@ module Types
     # loop through array names and use 'define_method(name)'
     model_names.each do |name|
       field_name = "Types::#{name.classify}Type"
-      field name.to_sym, [field_name.constantize], null: false
+
+      ### Sorting class generation
+      sort_name = "#{name.classify}SortEnum"
+      sort_fields = name.classify.constantize.column_names
+
+      # Dynamically create the sort enum class
+      sort_class = Class.new(GraphQL::Schema::Enum) do
+        # Dynamically add enum values based on the sort_fields array
+        sort_fields.each do |field|
+          value "#{field.upcase}_ASC", "Sort by #{field} in ascending order"
+          value "#{field.upcase}_DESC", "Sort by #{field} in descending order"
+        end
+      end
+
+      # insert new class into Types Module
+      Types.const_set(sort_name, sort_class)
+      # --------------
+
+      ### Filter input type generation
+      filter_input_name = "#{name.classify}FilterInput"
+      model_class = name.classify.constantize
+      filter_fields = model_class.columns.each_with_object({}) do |column, hash|
+        hash[column.name.to_sym] = String if column.type == :string
+      end
+
+      filter_input_class = Class.new(GraphQL::Schema::InputObject) do
+        filter_fields.each do |field_name, field_type|
+          argument field_name, field_type, required: false, description: "Filter by #{field_name}"
+        end
+      end
+
+      # Insert the new class into the Types module
+      Types.const_set(filter_input_name, filter_input_class)
+      # --------------
+
+      # Fields
+      field name.to_sym, field_name.constantize.connection_type, null: false do
+        argument :sort, "Types::#{sort_name}".constantize, required: false
+        argument :filter, "Types::#{filter_input_name}".constantize, required: false, as: :filter_conditions
+      end
 
       field name.singularize.to_sym, field_name.constantize, null: false do
         argument :id, ID
       end
 
-      define_method(name) do
-        name.classify.constantize.all
+      define_method(name) do |sort: nil, filter_conditions: {}|
+        # Start with all records
+        records = name.classify.constantize.all
+
+        # Apply filtering logic based on `filter_conditions`
+        filter_conditions&.each do |key, value|
+          records = records.where("LOWER(#{key}) LIKE ?", "%#{value.downcase}%") if value.present?
+        end
+
+        # Apply sorting logic
+        if sort.present?
+          field, direction = sort.split('_')
+          records = records.order("#{field.downcase} #{direction.upcase}") if model_class.column_names.include?(field.downcase) && %w[ASC DESC].include?(direction.upcase)
+        end
+
+        records
       end
 
       define_method(name.singularize) do |id:|
         name.classify.constantize.find(id)
       end
     end
-
-    field :node, Types::NodeType, null: true, description: "Fetches an object given its ID." do
-      argument :id, ID, required: true, description: "ID of the object."
-    end
-
-    def node(id:)
-      context.schema.object_from_id(id, context)
-    end
-
-    field :nodes, [Types::NodeType, { null: true }], null: true, description: "Fetches a list of objects given a list of IDs." do
-      argument :ids, [ID], required: true, description: "IDs of the objects."
-    end
-
-    def nodes(ids:)
-      ids.map { |id| context.schema.object_from_id(id, context) }
-    end
-
-    # Add root-level fields here.
-    # They will be entry points for queries on your schema.
-
-    # TODO: remove me
-    field :test_field, String, null: false,
-                               description: "An example field added by the generator"
-    def test_field
-      "Hello World!"
-    end
   end
 end
+# rubocop:enable Metrics/BlockLength

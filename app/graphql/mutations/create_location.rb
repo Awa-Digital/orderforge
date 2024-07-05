@@ -2,15 +2,16 @@
 
 module Mutations
   class CreateLocation < BaseMutation
-    # TODO: define return fields
-    # field :post, Types::PostType, null: false
+    description "create an location"
 
-    # TODO: define arguments
-    # argument :name, String, required: true
+    argument :name, String
 
-    # TODO: define resolve method
-    # def resolve(name:)
-    #   { post: ... }
-    # end
+    type Types::LocationType
+
+    def resolve(attributes)
+      Location.create!(attributes)
+    rescue ActiveRecord::RecordInvalid => e
+      GraphQL::ExecutionError.new("Invalid input: #{e.record.errors.full_messages.join(', ')}")
+    end
   end
 end

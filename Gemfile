@@ -68,10 +68,12 @@ gem 'cloudinary'
 gem 'dotenv-rails', groups: %i[development test]
 gem 'faraday-detailed_logger'
 gem 'fcm'
+gem "faker"
 gem 'fog-aws'
 gem 'forest_liana'
 gem 'friendly_id', '~> 5.5.0'
 # gem 'graphiql-rails'
+gem 'graphiql-rails'
 gem 'graphql'
 gem 'httparty'
 gem 'jwt'

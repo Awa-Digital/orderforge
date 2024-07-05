@@ -2,6 +2,7 @@
 
 # user model
 class User < ApplicationRecord
+  include StateManagement
   mount_uploader :avatar, AvatarUploader
 
   extend FriendlyId
@@ -41,6 +42,14 @@ class User < ApplicationRecord
     # options[:methods] = %i[total]
     options[:except] = %i[created_at updated_at password_digest phone_otp]
     super
+  end
+
+  def self.ransackable_attributes(_auth_object = nil)
+    %w[first_name last_name email phone_number]
+  end
+
+  def self.ransackable_associations(_auth_object = nil)
+    []
   end
 
   def generate_attributes
@@ -161,5 +170,3 @@ class User < ApplicationRecord
     errors.add :otp, 'is invalid. Resend new OTP or try again' if account.otp != phone_otp
   end
 end
-
-# rubocop:enable Metrics/ClassLength

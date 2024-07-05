@@ -6,10 +6,20 @@ class DeliveryArea < ApplicationRecord
   has_many :order_addresses
   belongs_to :region
 
+  include StateManagement
+
   def as_json(options = {})
     options[:methods] = %i[price price_per_time]
     options[:except] = %i[created_at updated_at]
     super
+  end
+
+  def self.ransackable_attributes(_auth_object = nil)
+    %w[name]
+  end
+
+  def self.ransackable_associations(_auth_object = nil)
+    [:region]
   end
 
   def price
@@ -31,22 +41,47 @@ class DeliveryArea < ApplicationRecord
 
   def check_time
     @now = Date.today.in_time_zone
-    @day_start = Time.new(@now.year, @now.month, @now.day, 8, 0)
-    @day_end = Time.new(@now.year, @now.month, @now.day, 18, 59)
-    @dusk_start = Time.new(@now.year, @now.month, @now.day, 19, 0)
-    @dusk_end = Time.new(@now.year, @now.month, @now.day, 23, 59)
-    @night_start = Time.new(@now.year, @now.month, @now.day, 0, 0)
-    @night_end = Time.new(@now.year, @now.month, @now.day, 3, 59)
-    @dawn_start = Time.new(@now.year, @now.month, @now.day, 4, 0)
-    @dawn_end = Time.new(@now.year, @now.month, @now.day, 7, 59)
-    if Time.now.in_time_zone.between?(@day_start, @day_end)
+
+    if day?(@now)
       'day'
-    elsif Time.now.in_time_zone.between?(@dusk_start, @dusk_end)
+    elsif dusk?(@now)
       'dusk'
-    elsif Time.now.in_time_zone.between?(@night_start, @night_end)
+    elsif night?(@now)
       'night'
-    elsif Time.now.in_time_zone.between?(@dawn_start, @dawn_end)
+    elsif dawn?(@now)
       'dawn'
     end
+  end
+
+  def day?(now)
+    day_start = Time.new(now.year, now.month, now.day, 8, 0)
+    day_end = Time.new(now.year, now.month, now.day, 18, 59)
+    return true if Time.now.in_time_zone.between?(day_start, day_end)
+
+    false
+  end
+
+  def dusk?(now)
+    dusk_start = Time.new(now.year, now.month, now.day, 19, 0)
+    dusk_end = Time.new(now.year, now.month, now.day, 23, 59)
+    return true if Time.now.in_time_zone.between?(dusk_start, dusk_end)
+
+    false
+  end
+
+  def night?(now)
+    night_start = Time.new(now.year, now.month, now.day, 0, 0)
+    night_end = Time.new(now.year, now.month, now.day, 3, 59)
+    return true if Time.now.in_time_zone.between?(night_start, night_end)
+
+    false
+  end
+
+  def dawn?(now)
+    dawn_start = Time.new(now.year, now.month, now.day, 4, 0)
+    dawn_end = Time.new(now.year, now.month, now.day, 7, 59)
+    return true if Time.now.in_time_zone.between?(dawn_start, dawn_end)
+
+    false
   end
 end

@@ -2,15 +2,16 @@
 
 module Mutations
   class CreateOrderItem < BaseMutation
-    # TODO: define return fields
-    # field :post, Types::PostType, null: false
+    argument :product_id, Integer
+    argument :quantity, Integer
+    argument :order_id, Integer
 
-    # TODO: define arguments
-    # argument :name, String, required: true
+    type Types::OrderItemType
 
-    # TODO: define resolve method
-    # def resolve(name:)
-    #   { post: ... }
-    # end
+    def resolve(order_id:, **attributes)
+      Order.find(order_id).order_items.create(**attributes)
+    rescue ActiveRecord::RecordInvalid => e
+      GraphQL::ExecutionError.new("Invalid input: #{e.record.errors.full_messages.join(', ')}")
+    end
   end
 end

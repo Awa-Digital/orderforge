@@ -2,15 +2,16 @@
 
 module Mutations
   class CreateRegion < BaseMutation
-    # TODO: define return fields
-    # field :post, Types::PostType, null: false
+    description "create a region"
+    argument :location_id, Integer
+    argument :name, String
 
-    # TODO: define arguments
-    # argument :name, String, required: true
+    type Types::RegionType
 
-    # TODO: define resolve method
-    # def resolve(name:)
-    #   { post: ... }
-    # end
+    def resolve(**attributes)
+      Region.create!(attributes)
+    rescue ActiveRecord::RecordInvalid => e
+      GraphQL::ExecutionError.new("Invalid input: #{e.record.errors.full_messages.join(', ')}")
+    end
   end
 end
