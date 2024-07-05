@@ -71,6 +71,8 @@ gem 'fcm'
 gem "faker"
 gem 'fog-aws'
 gem 'forest_liana'
+gem 'friendly_id', '~> 5.5.0'
+# gem 'graphiql-rails'
 gem 'graphiql-rails'
 gem 'graphql'
 gem 'httparty'
@@ -91,6 +93,7 @@ gem 'sentry-rails'
 gem 'sentry-ruby', '>= 5.7.0'
 gem 'sidekiq', '~> 7.2'
 gem "sidekiq-scheduler"
+gem 'slack-ruby-client'
 gem 'typhoeus'
 
 gem "matrix", "~> 0.4.2"

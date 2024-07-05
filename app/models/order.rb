@@ -97,7 +97,6 @@ class Order < ApplicationRecord
     update(status: 'paid', paid: true, order_no: next_order_no)
 
     OrderMailer.with(reference:).coy_order_email.deliver
-    puts "NOTIFIED COMPANY ABOUT ORDER"
     return if user_id.nil?
 
     user.update_spend_score

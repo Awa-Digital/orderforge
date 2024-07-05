@@ -29,7 +29,10 @@ module Api
           @orders.map { |o| o.order_items.map { |oi| @order_items << oi } }
           @data = {}
           @order_items.each do |oi|
-            @data[oi.product.title] = @data[oi.product.title].to_i + oi.quantity
+            puts("Item's ID #{oi.id}")
+            puts("Product ID: #{oi&.product&.id}")
+            product = Product.unscoped.find_by(id: oi.product_id)
+            @data[product.title] = @data[product.title].to_i + oi.quantity
           end
 
           success({ message: "Ordered items have been counted for #{month}-#{year}", data: @data })

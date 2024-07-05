@@ -60,7 +60,10 @@ class Payment < ApplicationRecord
 
   def complete
     update(paid: true)
+    SlackApi.send_order_message(order) # announce the order
+
     shout("Updating Involved Parties")
+
     order.generate_completion_notification
     shout("Done Updating Involved Parties")
   end

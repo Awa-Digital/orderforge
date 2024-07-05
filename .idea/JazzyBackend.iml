@@ -87,6 +87,7 @@
     <orderEntry type="library" scope="PROVIDED" name="forest_liana (v8.0.17, asdf: 3.2.0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="forestadmin-jsonapi-serializers (v2.0.0.pre.beta.2, asdf: 3.2.0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="formatador (v1.1.0, asdf: 3.2.0) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="friendly_id (v5.5.1, asdf: 3.2.0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="fugit (v1.9.0, asdf: 3.2.0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="globalid (v1.2.1, asdf: 3.2.0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="googleauth (v1.8.1, asdf: 3.2.0) [gem]" level="application" />
@@ -231,6 +232,7 @@
         <option value="controller" />
         <option value="factory_bot:model" />
         <option value="forest_liana:install" />
+        <option value="friendly_id" />
         <option value="generator" />
         <option value="graphql:enum" />
         <option value="graphql:input" />
@@ -310,6 +312,7 @@
         <option value="controller" />
         <option value="factory_bot:model" />
         <option value="forest_liana:install" />
+        <option value="friendly_id" />
         <option value="generator" />
         <option value="graphql:enum" />
         <option value="graphql:input" />
