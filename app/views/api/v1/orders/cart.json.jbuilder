@@ -38,7 +38,7 @@ json.data do
       json.removables do
         json.array! item.removables do |removable|
           json.id removable.id
-          json.product_id removable.product_id
+          json.order_item_id removable.order_item_id
           json.ingredient_id removable.ingredient_id
         end
       end
