@@ -23,9 +23,10 @@ test:
 
 production:
   <<: *default
-  database: jazzyDB_Prod
-  user: <%= ENV["PGDBUSER"] %>
-  password: <%= ENV["PGDBPASS"] %>
-  host: <%= ENV["PGHOST"] %>
-  port: 25060
-  sslmode: require
+  # database: jazzyDB_Prod
+  # user: <%= ENV["PGDBUSER"] %>
+  # password: <%= ENV["PGDBPASS"] %>
+  # host: <%= ENV["PGHOST"] %>
+  # port: 25060
+  # sslmode: require
+  url: <%= ENV['DATABASE_URL'] %>
