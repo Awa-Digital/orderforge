@@ -69,8 +69,7 @@ class Api::V1::OrdersController < Api::V1::BaseController
   end
 
   def remove_ingredient
-    if Removable.find_or_create_by!(order_item_id: params[:order_item_id])
-      @removable.update(ingredient_id: params[:ingredient_id])
+    if Removable.find_or_create_by!(order_item_id: params[:order_item_id], ingredient_id: params[:ingredient_id])
       success({ message: 'Item included in the removed list', data: @removable })
     else
       unprocessable({ message: 'Item included in the removed list' })
