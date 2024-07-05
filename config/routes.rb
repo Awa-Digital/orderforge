@@ -60,6 +60,7 @@ Rails.application.routes.draw do
         post 'guest/create-and-add-to-cart', to: 'orders#create_guest_cart'
         post 'guest/update-address', to: 'orders#update_address'
         post 'update', to: 'orders#update'
+        delete 'update/:order_item_id/ingredients/:ingredient_id', to: 'orders#remove_ingredient'
         delete 'remove', to: 'orders#remove'
         post 'add/address', to: 'orders#attach_address'
         post 'add/recipient', to: 'orders#attach_recipient'

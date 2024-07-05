@@ -1,7 +1,7 @@
 class Api::V1::OrdersController < Api::V1::BaseController
   skip_before_action :authenticate_user,
-                     only: %i[cart create_guest_cart add update update_address add update remove attach_recipient address_areas address_regions regions_areas]
-  before_action :authenticate_guest, only: %i[cart create_guest_cart add update update_address remove attach_recipient]
+                     only: %i[cart create_guest_cart add update update_address add update remove_ingredient remove attach_recipient address_areas address_regions regions_areas]
+  before_action :authenticate_guest, only: %i[cart create_guest_cart add update remove_ingredient update_address remove attach_recipient]
   before_action :set_product, only: %i[add update remove]
   before_action :set_cart, except: [:address_areas]
 
@@ -65,6 +65,15 @@ class Api::V1::OrdersController < Api::V1::BaseController
     rescue StandardError => e
       puts e.message
       puts 'PRODUCT DID NOT SAVE'
+    end
+  end
+
+  def remove_ingredient
+    if Removable.find_or_create_by!(order_item_id: params[:order_item_id])
+      @removable.update(ingredient_id: params[:ingredient_id])
+      success({ message: 'Item included in the removed list', data: @removable })
+    else
+      unprocessable({ message: 'Item included in the removed list' })
     end
   end
 
