@@ -35,6 +35,13 @@ json.data do
           end
         end
       end
+      json.removables do
+        json.array! item.removables do |removable|
+          json.id removable.id
+          json.product_id removable.product_id
+          json.ingredient_id removable.ingredient_id
+        end
+      end
     end
   end
   json.delivery_address @cart.delivery_address
