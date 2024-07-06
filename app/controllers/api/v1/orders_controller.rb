@@ -1,8 +1,8 @@
 class Api::V1::OrdersController < Api::V1::BaseController
   skip_before_action :authenticate_user,
-                     only: %i[cart create_guest_cart add get_paid_cart update update_address add update remove_ingredient remove attach_recipient address_areas address_regions regions_areas]
-  before_action :authenticate_guest, only: %i[cart create_guest_cart  get_paid_cartadd update remove_ingredient update_address remove attach_recipient]
-  before_action :set_product, only: %i[add update remove]
+                     only: %i[cart create_guest_cart add get_paid_cart update update_address remove_ingredient remove attach_recipient address_areas address_regions regions_areas]
+  before_action :authenticate_guest, only: %i[cart create_guest_cart get_paid_cart add update remove_ingredient update_address remove attach_recipient]
+  before_action :set_product, only: %i[add add_for_signed_in_user update remove]
   before_action :set_cart, except: [:address_areas, :get_paid_cart]
 
   def cart
@@ -45,6 +45,13 @@ class Api::V1::OrdersController < Api::V1::BaseController
     puts "••••••• Cart •••••••"
     puts @cart.id
     puts "••••••• Cart •••••••"
+    @item = add_to_cart(@product.id, params[:quantity].to_i, @cart, params[:removables]) if @product.present?
+    @cart_render = Order.find(@cart.id)
+    @message = 'Items have been added to cart'
+    render 'cart'
+  end
+
+  def add_for_signed_in_user
     @item = add_to_cart(@product.id, params[:quantity].to_i, @cart, params[:removables]) if @product.present?
     @cart_render = Order.find(@cart.id)
     @message = 'Items have been added to cart'
