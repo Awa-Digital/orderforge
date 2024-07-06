@@ -42,9 +42,6 @@ class Api::V1::OrdersController < Api::V1::BaseController
   end
 
   def add
-    puts "••••••• Cart •••••••"
-    puts @cart.id
-    puts "••••••• Cart •••••••"
     @item = add_to_cart(@product.id, params[:quantity].to_i, @cart, params[:removables]) if @product.present?
     @cart_render = Order.find(@cart.id)
     @message = 'Items have been added to cart'
@@ -191,9 +188,7 @@ class Api::V1::OrdersController < Api::V1::BaseController
 
   def set_cart
     @cart = if @mobile_user.present?
-              puts "••••••• User Cart •••••••"
               puts @mobile_user.cart.id
-              puts "••••••• User •••••••"
               @mobile_user.cart
             else
               @order = Order.find_by(id: params[:order_id])

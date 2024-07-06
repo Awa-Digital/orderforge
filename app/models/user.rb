@@ -100,11 +100,6 @@ class User < ApplicationRecord
 
   def cart
     @cart = orders.find_by(status: 'initiated')
-
-    puts "••••••• Cart From Model •••••••"
-    puts @cart.id
-    puts "••••••• Cart •••••••"
-
     if @cart.present?
       @cart
     else
@@ -113,10 +108,7 @@ class User < ApplicationRecord
   end
 
   def start_cart
-
-    puts "••••••• Starting new Cart •••••••"
     orders.find_or_create_by!(status: 'initiated')
-    puts "••••••• Cart •••••••"
   end
 
   def full_name
