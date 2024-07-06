@@ -55,6 +55,7 @@ Rails.application.routes.draw do
 
       scope 'cart' do
         get '', to: 'orders#cart'
+        get 'track/:reference', to: "orders#get_paid_cart"
         post 'add', to: 'orders#add'
         post 'create-and-add-to-cart', to: 'orders#add_multi'
         post 'guest/create-and-add-to-cart', to: 'orders#create_guest_cart'

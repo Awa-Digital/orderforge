@@ -22,6 +22,7 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
       'localhost:3000', 'app.forestadmin.com', 'localhost:3001',
       'jazzysjuicyburger.com', "admin.jazzysburger.com",
       'jazzysjuicyburger.herokuapp.com', 'jazzy-burger-web-app-5mxwi.ondigitalocean.app',
+      'https://jb-customer-web-new-gccee.ondigitalocean.app',
       'app.jazzysjuicyburgers.com', 'jazzysburger.com', 'www.jazzysburger.com',
       'app.jazzysburger.com'
     ]
