@@ -16,8 +16,8 @@ module Types
     model_names = model_names.map { |s| s.gsub(/([a-z])([A-Z])/, '\1_\2').downcase.pluralize }
 
     # loop through array names and use 'define_method(name)'
-    puts "Query Types::::"
-    puts model_names
+    # puts "Query Types::::"
+    # puts model_names
 
     model_names.each do |name|
       begin
