@@ -1,14 +1,20 @@
 class Api::V1::OrdersController < Api::V1::BaseController
   skip_before_action :authenticate_user,
-                     only: %i[cart create_guest_cart add update update_address add update remove_ingredient remove attach_recipient address_areas address_regions regions_areas]
-  before_action :authenticate_guest, only: %i[cart create_guest_cart add update remove_ingredient update_address remove attach_recipient]
+                     only: %i[cart create_guest_cart add get_paid_cart update update_address add update remove_ingredient remove attach_recipient address_areas address_regions regions_areas]
+  before_action :authenticate_guest, only: %i[cart create_guest_cart  get_paid_cartadd update remove_ingredient update_address remove attach_recipient]
   before_action :set_product, only: %i[add update remove]
-  before_action :set_cart, except: [:address_areas]
+  before_action :set_cart, except: [:address_areas, :get_paid_cart]
 
   def cart
     @cart_render = @cart
     @message = 'Cart Fetched!'
     render 'cart'
+  end
+
+  def get_paid_cart
+    @cart = Order.find_by(reference: params[:reference], paid: true)
+    return notfound(message: "Cart not found") unless @cart
+    success({data: @cart, message: "Cart Fetched!"})
   end
 
   def create_guest_cart
