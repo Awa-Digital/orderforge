@@ -102,7 +102,7 @@ class User < ApplicationRecord
     @cart = orders.find_by(status: 'initiated')
 
     puts "••••••• Cart From Model •••••••"
-    puts @cart
+    puts @cart.id
     puts "••••••• Cart •••••••"
 
     if @cart.present?
