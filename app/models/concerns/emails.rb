@@ -5,7 +5,7 @@ module Emails
   extend ActiveSupport::Concern
 
   def order_tracking_url
-    "#{ENV.fetch('APP_BASE_URL', nil)}/order-details/#{reference}"
+    "#{ENV.fetch('APP_BASE_URL', nil)}/cart/track/#{reference}"
   end
 
   def send_order_receipt_email
