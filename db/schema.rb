@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_04_29_022307) do
+ActiveRecord::Schema[7.0].define(version: 2024_07_08_085143) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -88,6 +88,21 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_29_022307) do
     t.decimal "night_rate", precision: 8, scale: 2
     t.decimal "dawn_rate", precision: 8, scale: 2
     t.integer "region_id", default: 1
+    t.string "status", default: "active"
+  end
+
+  create_table "department_roles", force: :cascade do |t|
+    t.bigint "department_id"
+    t.bigint "role_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "status", default: "active"
+  end
+
+  create_table "departments", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "status", default: "active"
   end
 
@@ -276,7 +291,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_29_022307) do
     t.string "recipient_phone"
     t.decimal "total", precision: 8, scale: 2, default: "0.0"
     t.string "recipient_email"
-    t.datetime "processing_date"
+    t.datetime "processing_date", precision: nil
     t.integer "priority", default: 0
     t.boolean "sent_receipt_notification", default: false
     t.boolean "sent_processing_notification", default: false
@@ -308,7 +323,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_29_022307) do
     t.string "gateway"
     t.string "payment_id"
     t.integer "voucher_id"
-    t.datetime "paid_at"
+    t.datetime "paid_at", precision: nil
   end
 
   create_table "product_ingredients", force: :cascade do |t|
@@ -371,6 +386,34 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_29_022307) do
     t.index ["order_item_id"], name: "index_removables_on_order_item_id"
   end
 
+  create_table "roles", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "status", default: "active"
+  end
+
+  create_table "staff_departments", force: :cascade do |t|
+    t.bigint "staff_id"
+    t.bigint "department_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "status", default: "active"
+  end
+
+  create_table "staffs", force: :cascade do |t|
+    t.bigint "franchise_id"
+    t.string "first_name"
+    t.string "last_name"
+    t.string "email"
+    t.string "phone"
+    t.string "avatar"
+    t.string "password_digest"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "status", default: "active"
+  end
+
   create_table "stock_inventory_items", force: :cascade do |t|
     t.integer "stock_id"
     t.integer "inventory_id"
@@ -410,8 +453,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_29_022307) do
     t.boolean "active", default: true
     t.string "avatar"
     t.decimal "spend_score", precision: 8, scale: 2, default: "0.0"
-    t.string "status", default: "active"
     t.string "slug"
+    t.string "status", default: "active"
     t.index ["slug"], name: "index_users_on_slug", unique: true
   end
 
