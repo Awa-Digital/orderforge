@@ -43,6 +43,7 @@ Rails.application.routes.draw do
       end
 
       scope 'products' do
+        get "categories", to: "products#categories"
         get 'all', to: 'products#index'
         get 'hot-deals', to: 'products#hot_deals'
         get 'grouped', to: 'products#grouped'

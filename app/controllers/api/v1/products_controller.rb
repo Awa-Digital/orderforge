@@ -5,11 +5,15 @@ module Api
     class ProductsController < Api::V1::BaseController
       before_action :set_product, only: %i[show like unlike]
       before_action :set_products, only: %i[index grouped search]
-      skip_before_action :authenticate_user, only: %i[index hot_deals grouped show search]
-      before_action :authenticate_guest, only: %i[index hot_deals grouped show search]
+      skip_before_action :authenticate_user, only: %i[index categories hot_deals grouped show search]
+      before_action :authenticate_guest, only: %i[index hot_deals categories grouped show search]
 
       def index
         success({ message: 'products fetched successfully', data: @products })
+      end
+
+      def categories
+        success({ message: 'categories fetched successfully', data: Category.all })
       end
 
       def grouped
@@ -80,11 +84,36 @@ module Api
       end
 
       def set_products
-        @products = if @mobile_user.present?
-                      @mobile_user.products
-                    else
-                      Product.all.select(&:available)
-                    end
+        products = if @mobile_user.present?
+                     @mobile_user.products
+                   else
+                     Product.all.select(&:available)
+                   end
+
+        products = filter_by_category(products) if params[:category_id].present?
+        products = filter_by_price_range(products) if params[:min_price].present? || params[:max_price].present?
+        products = sort_by_price(products) if params[:sort_by].present?
+
+        @products = products
+      end
+
+      def filter_by_category(products)
+        products.select { |product| product.category_id == params[:category_id].to_i }
+      end
+
+      def filter_by_price_range(products)
+        start_price = params[:min_price].present? ? params[:min_price].to_f : -Float::INFINITY
+        end_price = params[:max_price].present? ? params[:max_price].to_f : Float::INFINITY
+
+        products.select { |product| product.amount >= start_price && product.amount <= end_price }
+      end
+
+      def sort_by_price(products)
+        sort_order = params[:sort_by].casecmp('asc').zero? ? :asc : :desc
+
+        products.sort_by!(&:amount)
+        products.reverse! if sort_order == :desc
+        products
       end
     end
   end
