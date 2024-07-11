@@ -20,6 +20,12 @@ namespace :v2, path: 'v2' do
         post "", to: "franchise#new"
         put "/:id", to: "franchise#update"
         delete "/:id", to: "franchise#remove"
+        scope "/:id/staffs" do
+          post "", to: "staffs#new"
+          put "/:staff_id", to: "staffs#update"
+          delete "/:staff_id", to: "staffs#remove"
+          delete "/:staff_id/departments/:department_id", to: "staffs#remove_from_department"
+        end
       end
 
       scope "influencers" do
