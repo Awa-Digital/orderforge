@@ -10,6 +10,7 @@ class Product < ApplicationRecord
   has_many :favourite_items
   has_many :order_items
   has_many :ratings
+  has_many :product_purchase_counters
 
   validates :title,
             :description,
