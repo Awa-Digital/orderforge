@@ -7,8 +7,10 @@ module Authentication
       token = authorization_header.split[1]
       secret_key = ENV.fetch('SECRET_KEY_BASE', nil)
       begin
+        puts '---- ----- ----- Authenticating User authorization_header is valid.'
         decoded_token = JWT.decode(token, secret_key)
         current_user = User.find(decoded_token[0]['user_id'])
+
         if !current_user
           unauthorized({ message: 'User not found' })
         elsif current_user.active
@@ -28,11 +30,28 @@ module Authentication
     end
   end
 
+  def decoder(authorization_header)
+    token = authorization_header.split[1]
+    secret_key = ENV.fetch('SECRET_KEY_BASE', nil)
+    decoded_token = JWT.decode(token, secret_key)
+    User.find(decoded_token[0]['user_id'])
+  rescue JWT::ExpiredSignature, StandardError
+    raise StandardError
+  end
+
   def authenticate_guest
     authorization_header = request.headers[:authorization]
     if authorization_header
-      authenticate_user
+      begin
+        decoder(authorization_header)
+      rescue StandardError
+        puts "---- ----- ----- Header found but skipping authentication as #{authorization_header} is invalid."
+        @mobile_user = nil
+      else
+        authenticate_user
+      end
     else
+      puts '---- ------ ----- No Header found.'
       @mobile_user = nil
     end
   end
