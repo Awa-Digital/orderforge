@@ -77,10 +77,13 @@ class Product < ApplicationRecord
                              raise ArgumentError, "Invalid time frame: #{time_frame}"
                            end
 
-    Product.joins(:product_purchase_counters)
-           .where(product_purchase_counters: { created_at: start_date..end_date })
-           .select('products.*, COUNT(product_purchase_counters.id) AS purchase_count')
-           .group('products.id')
-           .order('purchase_count DESC')
+    products = Product.joins(:product_purchase_counters)
+                      .where(product_purchase_counters: { created_at: start_date..end_date })
+                      .select('products.*, COUNT(product_purchase_counters.id) AS purchase_count')
+                      .group('products.id')
+                      .order('purchase_count DESC')
+
+    # Filter products based on the available method
+    products.select(&:available)
   end
 end
