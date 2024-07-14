@@ -64,4 +64,23 @@ class Product < ApplicationRecord
   def review_count
     ratings.count
   end
+
+  def self.hot_products(time_frame = :week)
+    start_date, end_date = case time_frame
+                           when :week
+                             [1.week.ago.beginning_of_week, 1.week.ago.end_of_week]
+                           when :month
+                             [1.month.ago.beginning_of_month, 1.month.ago.end_of_month]
+                           when :all_time
+                             [Time.at(0), Time.current]
+                           else
+                             raise ArgumentError, "Invalid time frame: #{time_frame}"
+                           end
+
+    Product.joins(:product_purchase_counters)
+           .where(product_purchase_counters: { created_at: start_date..end_date })
+           .select('products.*, COUNT(product_purchase_counters.id) AS purchase_count')
+           .group('products.id')
+           .order('purchase_count DESC')
+  end
 end

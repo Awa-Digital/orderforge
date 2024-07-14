@@ -102,6 +102,19 @@ class Order < ApplicationRecord
     user.update_spend_score
     update(processing_date: calculate_processing_date)
     Order.update_priorities
+    increment_products_counter
+  end
+
+  def increment_products_counter
+    order_items.each do |order_item|
+      order_item.quantity.times do
+        ProductPurchaseCounter.create(
+          product_id: order_item.product_id,
+          order_item_id: order_item.id
+        )
+      end
+    end
+    nil
   end
 
   def generate_pdf_receipt
@@ -116,7 +129,10 @@ class Order < ApplicationRecord
   end
 
   def self.update_priorities
-    orders = Order.find(Payment.paid_only.sort_by(&:paid_at).pluck(:order_id)).select { |o| o.status == 'paid' }
+    orders = Order.joins(:payment)
+                  .where(payments: { paid: true })
+                  .where(status: 'paid')
+                  .order('payments.paid_at')
     priority = 1
     orders.each do |o|
       o.update(priority:)
