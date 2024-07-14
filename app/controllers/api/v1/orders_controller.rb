@@ -14,7 +14,8 @@ class Api::V1::OrdersController < Api::V1::BaseController
   def get_paid_cart
     @cart = Order.find_by(reference: params[:reference], paid: true)
     return notfound(message: "Cart not found") unless @cart
-    success({data: @cart, message: "Cart Fetched!"})
+
+    success({ data: @cart, message: "Cart Fetched!" })
   end
 
   def create_guest_cart
@@ -172,7 +173,7 @@ class Api::V1::OrdersController < Api::V1::BaseController
 
   def regions_areas
     region = Region.find(params[:region_id])
-    areas = region.delivery_areas.all.reject { |x| x.day_rate.nil? }.sort_by(&:name)
+    areas = region.delivery_areas.all.reject { |x| x.price.nil? }.sort_by(&:name)
     success({ message: 'Areas Fetched', data: areas })
   end
 
