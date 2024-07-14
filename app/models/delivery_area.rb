@@ -8,6 +8,13 @@ class DeliveryArea < ApplicationRecord
 
   include StateManagement
 
+  TIME_PERIODS = {
+    day: { start: [8, 0], end: [18, 59] },
+    dusk: { start: [19, 0], end: [23, 59] },
+    night: { start: [0, 0], end: [3, 59] },
+    dawn: { start: [4, 0], end: [7, 59] }
+  }.freeze
+
   def as_json(options = {})
     options[:methods] = %i[price price_per_time]
     options[:except] = %i[created_at updated_at]
@@ -23,65 +30,26 @@ class DeliveryArea < ApplicationRecord
   end
 
   def price
-    day_rate
+    price_per_time
   end
 
   def price_per_time
-    case check_time
-    when 'day'
-      day_rate || 2000
-    when 'dusk'
-      dusk_rate || 2000
-    when 'night'
-      night_rate || 2000
-    when 'dawn'
-      dawn_rate || 2000
-    end
+    send("#{check_time}_rate")
   end
 
   def check_time
-    @now = Date.today.in_time_zone
-
-    if day?(@now)
-      'day'
-    elsif dusk?(@now)
-      'dusk'
-    elsif night?(@now)
-      'night'
-    elsif dawn?(@now)
-      'dawn'
+    current_time = Time.now.in_time_zone
+    TIME_PERIODS.each do |period, range|
+      return period if within_time_range?(current_time, range[:start], range[:end])
     end
   end
 
-  def day?(now)
-    day_start = Time.new(now.year, now.month, now.day, 8, 0)
-    day_end = Time.new(now.year, now.month, now.day, 18, 59)
-    return true if Time.now.in_time_zone.between?(day_start, day_end)
+  private
 
-    false
-  end
-
-  def dusk?(now)
-    dusk_start = Time.new(now.year, now.month, now.day, 19, 0)
-    dusk_end = Time.new(now.year, now.month, now.day, 23, 59)
-    return true if Time.now.in_time_zone.between?(dusk_start, dusk_end)
-
-    false
-  end
-
-  def night?(now)
-    night_start = Time.new(now.year, now.month, now.day, 0, 0)
-    night_end = Time.new(now.year, now.month, now.day, 3, 59)
-    return true if Time.now.in_time_zone.between?(night_start, night_end)
-
-    false
-  end
-
-  def dawn?(now)
-    dawn_start = Time.new(now.year, now.month, now.day, 4, 0)
-    dawn_end = Time.new(now.year, now.month, now.day, 7, 59)
-    return true if Time.now.in_time_zone.between?(dawn_start, dawn_end)
-
-    false
+  def within_time_range?(current_time, start_time, end_time)
+    today = current_time.to_date
+    start_time = Time.new(today.year, today.month, today.day, *start_time).in_time_zone
+    end_time = Time.new(today.year, today.month, today.day, *end_time).in_time_zone
+    current_time.between?(start_time, end_time)
   end
 end
