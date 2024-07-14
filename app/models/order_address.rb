@@ -15,6 +15,6 @@ class OrderAddress < ApplicationRecord
   end
 
   def price
-    delivery_area.price_per_time
+    delivery_area&.price_per_time
   end
 end
