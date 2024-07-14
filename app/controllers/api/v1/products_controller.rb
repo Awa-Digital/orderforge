@@ -26,7 +26,7 @@ module Api
       end
 
       def hot_deals
-        @hot_deals = Product.hot_products(:all_time)
+        @hot_deals = Product.hot_products(:all_time).first(8)
         success({ message: 'hot deals fetched successfully', data: @hot_deals })
       end
 
