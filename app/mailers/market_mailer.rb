@@ -1,5 +1,5 @@
 class MarketMailer < ApplicationMailer
-  before_action :awadigital_email
+  before_action :notify_email
 
   layout 'market'
 

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "sidekiq/web"
+require 'sidekiq-scheduler/web'
 
 Rails.application.routes.draw do
   mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "/graphql" if Rails.env.development?
