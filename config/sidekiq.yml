@@ -2,8 +2,16 @@
 :timeout: 60
 :verbose: true
 :queues:
-- critical
-- default
-- mailers
-- active_storage_analysis
-- active_storage_purge
+  - critical
+  - default
+  - mailers
+  - active_storage_analysis
+  - active_storage_purge
+
+:scheduler:
+  :enabled: true
+  :schedule:
+    clear_abandoned_cart_task:
+      cron: "0 0 * * *" # Runs every day at midnight
+      class: "ClearAbandonedCartTaskJob"
+      description: "This job clears carts abandoned for more than 2 weeks from database"

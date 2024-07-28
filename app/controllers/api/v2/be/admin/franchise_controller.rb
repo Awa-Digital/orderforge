@@ -9,7 +9,7 @@ module Api
           before_action :set_franchise, except: [:new]
 
           def new
-            @franchise = Franchise.new(franchise_params)
+            @franchise = ::Franchise.new(franchise_params)
             if @franchise.save
               success({ data: @franchise })
             else
@@ -37,7 +37,7 @@ module Api
           end
 
           def set_franchise
-            @franchise = Franchise.find_by(id: params[:id])
+            @franchise = ::Franchise.find_by(id: params[:id])
             notfound({ resource: "franchise" }) if @franchise.nil?
           end
         end

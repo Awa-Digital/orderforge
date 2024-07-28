@@ -6,8 +6,6 @@ class TermiiSms
   end
 
   def send_otp(recipient, otp)
-    url = '/api/sms/send'
-
     datas = {
       'to' => recipient,
       'from' => 'N-Alert',
@@ -17,37 +15,32 @@ class TermiiSms
       'api_key' => ENV.fetch('TERMII_KEY', nil)
     }
 
+    send_msg(datas)
+  end
+
+  def send_marketing_sms(recipient, text)
+    datas = {
+      'to' => recipient,
+      'from' => 'N-Alert',
+      'sms' => text,
+      'type' => 'plain',
+      'channel' => 'dnd',
+      'api_key' => ENV.fetch('TERMII_KEY', nil)
+    }
+
+    send_msg(datas)
+  end
+
+  def send_msg(data)
+    url = '/api/sms/send'
+
     response = @conn.post do |req|
       req.url url
-      req.body = datas.to_json
+      req.body = data.to_json
     end
 
     raise "An error with this response code #{response.status} has occurred. Response: #{response.body}" unless response.status == 200 || response.status == 201
 
     JSON.parse(response.body)
   end
-
-  # def otp_whatsapp(recipient, otp)
-  #   url = "/api/sms/send"
-
-  # 	datas = {
-  #     "to" => recipient,
-  #     "from" => "N-Alert",
-  #     "sms" => "Your Yaaaga confirmation code is #{otp}. Valid for 10 minutes, one-time use only.",
-  #     "type" => "plain",
-  #     "channel" => "whatsapp",
-  #     "api_key" => ENV["TERMII_KEY"]
-  #   }
-
-  #   response = @conn.post do |req|
-  # 		req.url url
-  # 		req.body = datas.to_json
-  # 	end
-
-  # 	if response.status == 200 || response.status == 201
-  # 		response = JSON.parse(response.body)
-  # 	else
-  # 		raise "An error with this response code #{response.status} has occurred. Response: #{response.body}"
-  # 	end
-  # end
 end

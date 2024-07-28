@@ -26,6 +26,12 @@ module JazzyBackend
 
     config.middleware.use Rack::Attack
 
+    # This also configures session_options for use below
+    # Required for all session management (regardless of session_store)
+    config.session_store :cookie_store, key: '_interslice_session'
+    config.middleware.use ActionDispatch::Cookies
+    config.middleware.use config.session_store, config.session_options
+
     config.active_job.queue_adapter = :sidekiq
     config.api_only = true
 
