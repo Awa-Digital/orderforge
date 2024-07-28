@@ -18,6 +18,10 @@ class ApplicationMailer < ActionMailer::Base
     noreply: {
       user_name: ENV.fetch('NOREPLY_EMAIL', nil),
       password: ENV.fetch('NOREPLY_PASSWORD', nil)
+    },
+    awadigital: {
+      user_name: ENV.fetch('AWADIGITAL_EMAIL', nil),
+      password: ENV.fetch('AWADIGITAL_EMAIL_PASSWORD', nil)
     }
   }.freeze
 
@@ -37,5 +41,9 @@ class ApplicationMailer < ActionMailer::Base
 
   def noreply_email
     @delivery_options = EMAIL[:noreply]
+  end
+
+  def awadigital_email
+    @delivery_options = EMAIL[:awadigital]
   end
 end
