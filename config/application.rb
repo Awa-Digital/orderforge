@@ -26,6 +26,8 @@ module JazzyBackend
 
     config.middleware.use Rack::Attack
 
+    config.middleware.use ActionDispatch::Flash
+
     # This also configures session_options for use below
     # Required for all session management (regardless of session_store)
     config.session_store :cookie_store, key: '_interslice_session'
