@@ -2707,6 +2707,22 @@
       "widget": null,
       "validations": []
     }, {
+      "field": "product_inventory_item",
+      "type": ["Number"],
+      "default_value": null,
+      "enums": null,
+      "integration": null,
+      "is_filterable": false,
+      "is_read_only": false,
+      "is_required": false,
+      "is_sortable": true,
+      "is_virtual": false,
+      "reference": "ProductInventoryItem.id",
+      "inverse_of": "inventory",
+      "relationship": "HasMany",
+      "widget": null,
+      "validations": []
+    }, {
       "field": "state",
       "type": "String",
       "default_value": null,
@@ -4663,6 +4679,22 @@
       "widget": null,
       "validations": []
     }, {
+      "field": "product_inventory_item",
+      "type": ["Number"],
+      "default_value": null,
+      "enums": null,
+      "integration": null,
+      "is_filterable": false,
+      "is_read_only": false,
+      "is_required": false,
+      "is_sortable": true,
+      "is_virtual": false,
+      "reference": "ProductInventoryItem.id",
+      "inverse_of": "product",
+      "relationship": "HasMany",
+      "widget": null,
+      "validations": []
+    }, {
       "field": "product_purchase_counters",
       "type": ["Number"],
       "default_value": null,
@@ -4905,7 +4937,7 @@
       "widget": null,
       "validations": []
     }, {
-      "field": "inventory_id",
+      "field": "inventory",
       "type": "Number",
       "default_value": null,
       "enums": null,
@@ -4915,12 +4947,13 @@
       "is_required": false,
       "is_sortable": true,
       "is_virtual": false,
-      "reference": null,
-      "inverse_of": null,
+      "reference": "Inventory.id",
+      "inverse_of": "product_inventory_item",
+      "relationship": "BelongsTo",
       "widget": null,
       "validations": []
     }, {
-      "field": "product_id",
+      "field": "product",
       "type": "Number",
       "default_value": null,
       "enums": null,
@@ -4930,8 +4963,9 @@
       "is_required": false,
       "is_sortable": true,
       "is_virtual": false,
-      "reference": null,
-      "inverse_of": null,
+      "reference": "Product.id",
+      "inverse_of": "product_inventory_item",
+      "relationship": "BelongsTo",
       "widget": null,
       "validations": []
     }, {

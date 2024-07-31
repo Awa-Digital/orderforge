@@ -42,6 +42,7 @@ class DeliveryArea < ApplicationRecord
     TIME_PERIODS.each do |period, range|
       return period if within_time_range?(current_time, range[:start], range[:end])
     end
+    :day
   end
 
   private

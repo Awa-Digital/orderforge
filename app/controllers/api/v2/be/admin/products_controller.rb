@@ -39,7 +39,7 @@ module Api
           private
 
           def product_params
-            params.require(:product).permit(:title, :description, :image, :amount, :category_id, :subcategory_id, :start_time, :end_time)
+            params.require(:product).permit(:title, :description, :image, :amount, :category_id, :subcategory_id, :start_time, :end_time, product_inventory_items_attributes: [:inventory_id, :quantity])
           end
 
           def set_product
