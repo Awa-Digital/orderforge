@@ -1,6 +1,8 @@
 class Inventory < ApplicationRecord
   include StateManagement
 
+  has_many :product_inventory_item
+
   validates_uniqueness_of :code
 
   def self.ransackable_attributes(_auth_object = nil)
