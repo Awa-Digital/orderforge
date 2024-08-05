@@ -11,10 +11,10 @@ class Product < ApplicationRecord
   has_many :order_items
   has_many :ratings
   has_many :product_purchase_counters
-  has_many :product_inventory_item
+  has_many :product_inventory_items
   has_many :inventories, through: :product_inventory_items
 
-  accepts_nested_attributes_for :product_inventory_item
+  accepts_nested_attributes_for :product_inventory_items
 
   validates :title,
             :description,

@@ -4632,6 +4632,22 @@
       "widget": null,
       "validations": []
     }, {
+      "field": "inventories",
+      "type": ["Number"],
+      "default_value": null,
+      "enums": null,
+      "integration": null,
+      "is_filterable": false,
+      "is_read_only": false,
+      "is_required": false,
+      "is_sortable": true,
+      "is_virtual": false,
+      "reference": "Inventory.id",
+      "inverse_of": null,
+      "relationship": "HasMany",
+      "widget": null,
+      "validations": []
+    }, {
       "field": "liked",
       "type": "Boolean",
       "default_value": null,
@@ -4679,7 +4695,7 @@
       "widget": null,
       "validations": []
     }, {
-      "field": "product_inventory_item",
+      "field": "product_inventory_items",
       "type": ["Number"],
       "default_value": null,
       "enums": null,
@@ -4964,7 +4980,7 @@
       "is_sortable": true,
       "is_virtual": false,
       "reference": "Product.id",
-      "inverse_of": "product_inventory_item",
+      "inverse_of": "product_inventory_items",
       "relationship": "BelongsTo",
       "widget": null,
       "validations": []
