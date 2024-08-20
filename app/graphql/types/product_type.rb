@@ -4,6 +4,7 @@ module Types
   class ProductType < Types::BaseObject
     field :id, ID, null: false
     field :title, String
+    field :status, String
     field :description, String
     field :image, String
     field :category_id, Integer
@@ -14,6 +15,6 @@ module Types
     field :subcategory_id, Integer
     field :start_time, Integer
     field :end_time, Integer
-    field :status, String
+    field :inventories, [Types::InventoryType]
   end
 end
