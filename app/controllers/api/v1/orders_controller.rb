@@ -106,6 +106,10 @@ class Api::V1::OrdersController < Api::V1::BaseController
     @cart.order_address.update!(
       JSON.parse(address.to_json)
     )
+
+    @franchise = FranchiseAddress.find_by(region_id: @cart.order_address.delivery_area.region_id)
+    @cart.update!(franchise_id: @franchise.id)
+
     success({ message: 'Address has been updated successfully', data: @cart.order_address })
   end
 
@@ -136,6 +140,10 @@ class Api::V1::OrdersController < Api::V1::BaseController
     if @address.present?
       @mobile_user.cart.order_address.update!(JSON.parse(@address.to_json).except('id', 'as_string'))
       @mobile_user.cart.order_address.update!(delivery_area_id: @address.delivery_area_id)
+
+      @franchise = FranchiseAddress.find_by(region_id: @address.delivery_area.region_id)
+      @mobile_user.cart.update!(franchise_id: @franchise.id)
+
       success({ message: 'Address has been assigned successfully', data: @address })
     else
       notfound({ message: 'No address found with this id for this user' })

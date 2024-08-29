@@ -13,6 +13,7 @@ class Product < ApplicationRecord
   has_many :product_purchase_counters
   has_many :product_inventory_items
   has_many :inventories, through: :product_inventory_items
+  has_many :franchise_product_prices
 
   accepts_nested_attributes_for :product_inventory_items
 
@@ -20,10 +21,12 @@ class Product < ApplicationRecord
             :description,
             :amount, presence: true
 
+  after_create :generate_franchise_product_prices
+
   # NOW = Date.today.in_time_zone
 
   def as_json(options = {})
-    options[:methods] = %i[available category subcategory ingredients review_rating review_count]
+    options[:methods] = %i[available category subcategory ingredients review_rating review_count price]
     options[:except] = %i[created_at updated_at user_id subcategory_id category_id]
     super
   end
@@ -34,6 +37,16 @@ class Product < ApplicationRecord
 
   def self.ransackable_associations(_auth_object = nil)
     %w[category ingredients product_ingredients subcategory]
+  end
+
+  def generate_franchise_product_prices
+    Franchise.all.each do |franchise|
+      franchise_product_prices.find_or_create_by(franchise_id: franchise.id)
+    end
+  end
+
+  def price(franchise_id = Franchise.first.id)
+    franchise_product_prices.find_by(franchise_id:).amount || 0.0
   end
 
   def available

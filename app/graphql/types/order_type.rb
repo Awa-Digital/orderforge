@@ -27,6 +27,6 @@ module Types
     field :products, [Types::ProductType]
     field :order_status_stamps, [Types::OrderStatusStampType]
     field :payment, Types::PaymentType
-    field :order_addresses, Types::OrderAddressType
+    field :order_address, Types::OrderAddressType
   end
 end

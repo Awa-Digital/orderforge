@@ -9,7 +9,7 @@ module Api
       before_action :authenticate_guest, only: %i[index hot_deals categories grouped show search]
 
       def index
-        success({ message: 'products fetched successfully', data: @products })
+        render "products"
       end
 
       def categories
@@ -26,12 +26,13 @@ module Api
       end
 
       def hot_deals
-        @hot_deals = Product.hot_products(:all_time).first(8)
-        success({ message: 'hot deals fetched successfully', data: @hot_deals })
+        @products = Product.hot_products(:all_time).first(8)
+        @message = 'hot deals fetched successfully'
+        render "products"
       end
 
       def show
-        success({ message: 'product found', data: @product })
+        render 'show'
       end
 
       def like
@@ -41,7 +42,8 @@ module Api
 
       def favourites
         @products = @mobile_user.favourites
-        success({ message: 'favorites fetched successfully', data: @products })
+        @message = 'favorites fetched successfully'
+        render 'products'
       end
 
       def unlike
@@ -53,14 +55,8 @@ module Api
         product_ids = @products.map(&:id)
         scoped_products = Product.where(id: product_ids)
         @products = scoped_products.ransack(params[:q]).result(distinct: true).page(params[:page]).per(params[:per_page])
-
-        results = {
-          products: @products, total_results: @products.count,
-          results_per_page: @products.limit_value,
-          total_pages: @products.total_pages,
-          next_page: @products.next_page, last_page: @products.last_page?
-        }
-        success({ message: 'products found', data: results })
+        @message = "products found"
+        render 'search'
       end
 
       private
