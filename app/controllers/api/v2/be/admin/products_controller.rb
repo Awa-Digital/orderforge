@@ -12,7 +12,7 @@ module Api
             @product = Product.new(product_params)
             @product.image = make_image(product_params[:image], @product.title) if product_params[:image].present?
             if @product.save
-              success({ data: @product })
+              success({ data: { product: @product, inventories: @product.inventories } })
             else
               unprocessable({ errors: @product.errors })
             end
@@ -39,7 +39,8 @@ module Api
           private
 
           def product_params
-            params.require(:product).permit(:title, :description, :image, :amount, :category_id, :subcategory_id, :start_time, :end_time, product_inventory_items_attributes: [:inventory_id, :quantity])
+            params.require(:product).permit(:title, :description, :image, :amount, :category_id, :subcategory_id, :start_time, :end_time,
+                                            product_inventory_items_attributes: [:inventory_id, :quantity])
           end
 
           def set_product

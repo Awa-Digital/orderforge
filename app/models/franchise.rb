@@ -4,8 +4,6 @@ class Franchise < ApplicationRecord
   has_one :franchise_address
   has_many :staffs
 
-  include StateManagement
-
   validates :title, uniqueness: true
 
   accepts_nested_attributes_for :franchise_address

@@ -9,6 +9,7 @@ class Order < ApplicationRecord
   has_one :order_address, dependent: :destroy
   # belongs_to :address, optional: true
   belongs_to :user, optional: true
+  belongs_to :franchise, optional: true
   accepts_nested_attributes_for :order_items
   accepts_nested_attributes_for :order_address
 
