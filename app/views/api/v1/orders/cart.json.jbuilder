@@ -26,7 +26,9 @@ json.data do
       json.product do
         json.id item.product.id
         json.title item.product.title
-        json.amount item.product.amount
+        amount = @cart&.franchise_id ? item.product.price(@cart&.franchise_id) : item.product.price
+        json.amount amount > 0.0 ? amount : item.product.amount
+        # json.amount item.product.amount
         json.image item.product.image
         json.ingredients do
           json.array! item.product.ingredients do |ingredient|
