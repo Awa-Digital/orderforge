@@ -13,7 +13,8 @@ class OrderItem < ApplicationRecord
   end
 
   def calculate_subtotal
-    self.subtotal = (quantity * product.amount)
+    amount = order&.franchise_id ? product.price(order&.franchise_id) : product.price
+    self.subtotal = (quantity * (amount > 0.0 ? amount : product.amount))
   end
 
   def update_parents

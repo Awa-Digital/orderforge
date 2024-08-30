@@ -86,6 +86,24 @@ module Api
         products = sort_by_price(products) if params[:sort_by].present?
 
         @products = products
+        set_cart
+      end
+
+      def set_cart
+        @cart = if @mobile_user.present?
+                  puts @mobile_user.cart.id
+                  @mobile_user.cart
+                else
+                  @order = Order.find_by(id: params[:order_id])
+                  create_or_find_order(@order)
+                end
+      end
+
+      def create_or_find_order(order)
+        return nil unless order.present?
+        return nil unless order.status == 'initiated'
+
+        order
       end
 
       def filter_by_category(products)

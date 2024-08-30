@@ -1760,7 +1760,7 @@
       "is_sortable": true,
       "is_virtual": false,
       "reference": "FranchiseAddress.id",
-      "inverse_of": null,
+      "inverse_of": "franchise",
       "relationship": "HasOne",
       "widget": null,
       "validations": []
@@ -1884,7 +1884,7 @@
       "widget": null,
       "validations": []
     }, {
-      "field": "franchise_id",
+      "field": "franchise",
       "type": "Number",
       "default_value": null,
       "enums": null,
@@ -1894,8 +1894,9 @@
       "is_required": false,
       "is_sortable": true,
       "is_virtual": false,
-      "reference": null,
-      "inverse_of": null,
+      "reference": "Franchise.id",
+      "inverse_of": "franchise_address",
+      "relationship": "BelongsTo",
       "widget": null,
       "validations": []
     }, {
@@ -1959,7 +1960,7 @@
       "widget": null,
       "validations": []
     }, {
-      "field": "region_id",
+      "field": "region",
       "type": "Number",
       "default_value": null,
       "enums": null,
@@ -1969,8 +1970,9 @@
       "is_required": false,
       "is_sortable": true,
       "is_virtual": false,
-      "reference": null,
+      "reference": "Region.id",
       "inverse_of": null,
+      "relationship": "BelongsTo",
       "widget": null,
       "validations": []
     }, {

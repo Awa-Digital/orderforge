@@ -1,5 +1,11 @@
 module Calculations
   extend ActiveSupport::Concern
+
+  def recalculate
+    order_items.map(&:calculate_subtotal)
+    update_totals
+  end
+
   def update_totals
     update(total: order_items.sum(:subtotal))
     generate_payment unless payment

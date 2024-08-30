@@ -109,6 +109,7 @@ class Api::V1::OrdersController < Api::V1::BaseController
 
     @franchise = FranchiseAddress.find_by(region_id: @cart.order_address.delivery_area.region_id)
     @cart.update!(franchise_id: @franchise.id)
+    @cart.recalculate
 
     success({ message: 'Address has been updated successfully', data: @cart.order_address })
   end
@@ -143,6 +144,7 @@ class Api::V1::OrdersController < Api::V1::BaseController
 
       @franchise = FranchiseAddress.find_by(region_id: @address.delivery_area.region_id)
       @mobile_user.cart.update!(franchise_id: @franchise.id)
+      @mobile_user.cart.recalculate
 
       success({ message: 'Address has been assigned successfully', data: @address })
     else
@@ -211,10 +213,10 @@ class Api::V1::OrdersController < Api::V1::BaseController
       if order.status == 'initiated'
         order
       else
-        Order.create(status: 'initiated')
+        Order.create(status: 'initiated', franchise_id: Franchise.first.id)
       end
     else
-      Order.create(status: 'initiated')
+      Order.create(status: 'initiated', franchise_id: Franchise.first.id)
     end
   end
 end
