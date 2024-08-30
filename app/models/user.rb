@@ -108,7 +108,7 @@ class User < ApplicationRecord
   end
 
   def start_cart
-    last_order = orders.find_by(paid: true)&.last
+    last_order = orders.where(paid: true)&.last
     recent_franchise_id = last_order&.franchise_id ? last_order.franchise_id : Franchise.first.id
 
     orders.find_or_create_by!(status: 'initiated', franchise_id: recent_franchise_id)
