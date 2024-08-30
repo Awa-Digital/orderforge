@@ -5,6 +5,7 @@ module Api
     class ProductsController < Api::V1::BaseController
       before_action :set_product, only: %i[show like unlike]
       before_action :set_products, only: %i[index grouped search]
+      before_action :set_cart
       skip_before_action :authenticate_user, only: %i[index categories hot_deals grouped show search]
       before_action :authenticate_guest, only: %i[index hot_deals categories grouped show search]
 
@@ -86,7 +87,6 @@ module Api
         products = sort_by_price(products) if params[:sort_by].present?
 
         @products = products
-        set_cart
       end
 
       def set_cart
