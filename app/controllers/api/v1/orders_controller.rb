@@ -191,8 +191,8 @@ class Api::V1::OrdersController < Api::V1::BaseController
   def regions_areas
     puts "Time Zone: #{Time.now.in_time_zone}"
     region = Region.find(params[:region_id])
-    puts "Region: #{region}"
-    puts "Delivery Areas: #{region.delivery_areas}"
+    puts "Region: #{region.to_json}"
+    puts "Delivery Areas: #{region.delivery_areas.to_json}"
     areas = region.delivery_areas.all.reject { |x| x.price.nil? }.sort_by(&:name)
     success({ message: 'Areas Fetched', data: areas })
   end
