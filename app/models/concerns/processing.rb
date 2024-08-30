@@ -6,7 +6,7 @@ module Processing
 
   # LAUNCH_DATE = DateTime.new(2022, 12, 5)
 
-  NOW = DateTime.now.in_time_zone
+  NOW = DateTime.current.in_time_zone
   CLOSING_TIME = DateTime.new(NOW.year, NOW.month, NOW.day, 18, 59)
   NEXT_STEPS = {
     'initiated' => 'paid',
@@ -49,9 +49,9 @@ module Processing
   end
 
   def calculate_processing_date
-    return DateTime.now unless order_type == 'next_day_order'
+    return DateTime.current unless order_type == 'next_day_order'
 
-    DateTime.now + 1.day
+    DateTime.current + 1.day
   end
 
   def next_step

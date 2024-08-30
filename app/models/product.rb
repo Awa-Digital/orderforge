@@ -53,7 +53,7 @@ class Product < ApplicationRecord
     @now = Date.today.in_time_zone
     @start_time = Time.new(@now.year, @now.month, @now.day, start_time, 0)
     @end_time = Time.new(@now.year, @now.month, @now.day, end_time, 59)
-    Time.now.in_time_zone.between?(@start_time, @end_time)
+    Time.current.in_time_zone.between?(@start_time, @end_time)
   end
 
   def like(user)

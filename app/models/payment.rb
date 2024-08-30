@@ -29,7 +29,7 @@ class Payment < ApplicationRecord
   end
 
   def update_reference
-    update!(reference: "#{order.reference}.T#{DateTime.now.to_i}")
+    update!(reference: "#{order.reference}.T#{DateTime.current.to_i}")
   end
 
   def update_total(amount)
@@ -63,7 +63,7 @@ class Payment < ApplicationRecord
 
     begin
       SlackApi.send_order_message(order) # announce the order
-    rescue => e
+    rescue StandardError => e
       puts e
     end
 

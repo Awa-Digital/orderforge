@@ -13,7 +13,7 @@ class PasswordResetToken < ApplicationRecord
   end
 
   def valid!
-    (updated_at + 15.minutes) >= Time.now
+    (updated_at + 15.minutes) >= Time.current
   end
 
   def expire

@@ -14,7 +14,7 @@ class AccountVerification < ApplicationRecord
   end
 
   def generate_email_token
-    update(email_token: Digest::SHA256.hexdigest(email + Time.now.to_s))
+    update(email_token: Digest::SHA256.hexdigest(email + Time.current.to_s))
   end
 
   def valid_account?

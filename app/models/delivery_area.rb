@@ -38,11 +38,8 @@ class DeliveryArea < ApplicationRecord
   end
 
   def check_time
-    current_time = Time.now.in_time_zone
-    puts "Current time: #{current_time}"
+    current_time = Time.current.in_time_zone
     TIME_PERIODS.each do |period, range|
-      puts "Period: #{period}"
-      puts "Range: #{range}"
       return period if within_time_range?(current_time, range[:start], range[:end])
     end
     :day
@@ -54,8 +51,6 @@ class DeliveryArea < ApplicationRecord
     today = current_time.to_date
     start_time = Time.new(today.year, today.month, today.day, *start_time).in_time_zone
     end_time = Time.new(today.year, today.month, today.day, *end_time).in_time_zone
-    # puts "Today: #{today}, Start Time:  #{start_time}, #{end_time}"
-    puts "Inside Current Time: #{current_time.between?(start_time, end_time)}"
     current_time.between?(start_time, end_time)
   end
 end
