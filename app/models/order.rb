@@ -50,7 +50,7 @@ class Order < ApplicationRecord
   end
 
   def generate_reference_id
-    update(reference: "JAZ#{id}#{DateTime.now.to_i}")
+    update(reference: "JAZ#{id}#{DateTime.current.to_i}")
     reference
   end
 

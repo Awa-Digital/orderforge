@@ -4,7 +4,7 @@ json.message @message
 @items = @cart.items.order(created_at: :desc)
 json.data do
   json.order_id @cart.id
-  json.franhise @cart.franchise
+  json.franchise @cart.franchise
   json.order_status @cart.status
   json.order_reference @cart.reference
   json.order_total @cart.order_total

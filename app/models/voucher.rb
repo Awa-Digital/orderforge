@@ -4,7 +4,7 @@ class Voucher < ApplicationRecord
 
   include StateManagement
 
-  default_scope -> { where('expiration_date > ?', DateTime.now) }
+  default_scope -> { where('expiration_date > ?', DateTime.current) }
   validates_uniqueness_of :discount_code
 
   def as_json(options = {})

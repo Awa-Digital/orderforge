@@ -38,7 +38,7 @@ class DeliveryArea < ApplicationRecord
   end
 
   def check_time
-    current_time = Time.now.in_time_zone
+    current_time = Time.current.in_time_zone
     TIME_PERIODS.each do |period, range|
       return period if within_time_range?(current_time, range[:start], range[:end])
     end

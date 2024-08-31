@@ -1,9 +1,10 @@
 class Api::V1::OrdersController < Api::V1::BaseController
   skip_before_action :authenticate_user,
-                     only: %i[cart create_guest_cart add get_paid_cart update update_address update_franchise remove_ingredient remove attach_recipient address_areas address_regions regions_areas]
-  before_action :authenticate_guest, only: %i[cart create_guest_cart get_paid_cart add update remove_ingredient update_address update_franchise remove attach_recipient]
+                     only: %i[cart create_guest_cart add get_paid_cart update update_address update_franchise remove_ingredient remove attach_recipient address_areas address_regions franchises
+                              regions_areas]
+  before_action :authenticate_guest, only: %i[cart create_guest_cart get_paid_cart add update remove_ingredient update_address update_franchise franchises remove attach_recipient]
   before_action :set_product, only: %i[add add_for_signed_in_user update remove]
-  before_action :set_cart, except: [:address_areas, :get_paid_cart]
+  before_action :set_cart, except: [:address_areas, :get_paid_cart, :franchises]
 
   def cart
     @cart_render = @cart
@@ -188,11 +189,12 @@ class Api::V1::OrdersController < Api::V1::BaseController
     success({ message: 'Regions Fetched', data: areas })
   end
 
+  def franchises
+    success({ message: 'Franchises', data: Franchise.all })
+  end
+
   def regions_areas
-    puts "Time Zone: #{Time.now.in_time_zone}"
     region = Region.find(params[:region_id])
-    puts "Region: #{region}"
-    puts "Delivery Areas: #{region.delivery_areas}"
     areas = region.delivery_areas.all.reject { |x| x.price.nil? }.sort_by(&:name)
     success({ message: 'Areas Fetched', data: areas })
   end

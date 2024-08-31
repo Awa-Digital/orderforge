@@ -13,7 +13,7 @@ module Api
                             email: user.email,
                             phone: user.phone_number,
                             avatar: user.avatar,
-                            exp: (Time.now + 1.month).to_i
+                            exp: (Time.current + 1.month).to_i
                           }, secret)
     end
 
