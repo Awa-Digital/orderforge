@@ -17,8 +17,12 @@ class OrderMailer < ApplicationMailer
     @order = Order.find_by(reference: params[:reference])
     @preheader = 'A user just paid for an order'
 
-    mail(to: 'orders@jazzysburger.com', cc: 'dispatch@jazzysburger.com', subject: "An order has been placed  - #{@order.reference}",
-         delivery_method_options: @delivery_options)
+    cc_emails = @order.franchise&.email ? ['dispatch@jazzysburger.com', @order.franchise.email] : 'dispatch@jazzysburger.com'
+    mail(
+      to: 'orders@jazzysburger.com',
+      cc: cc_emails, subject: "An order has been placed  - #{@order.reference}",
+      delivery_method_options: @delivery_options
+    )
   rescue Net::SMTPAuthenticationError => e
     Sentry.capture_exception(Net::SMTPAuthenticationError.new(e))
     Sentry.capture_message(e)
