@@ -1,3 +1,4 @@
+# rubocop:disable Metrics/MethodLength
 # frozen_string_literal: true
 
 module Authentication
@@ -56,3 +57,4 @@ module Authentication
     end
   end
 end
+# rubocop:enable Metrics/MethodLength

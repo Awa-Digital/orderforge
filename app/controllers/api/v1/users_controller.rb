@@ -110,8 +110,8 @@ class Api::V1::UsersController < Api::V1::BaseController
 
   def reset_password
     @token = PasswordResetToken.find_by(token: params[:token])
-    if @token
-      if @token.valid! && @token.user.update(password: params[:password],
+    if @token&.valid!
+      if @token.user.update(password: params[:password],
                                              password_confirmation: params[:password_confirmation])
         @token.expire
         success({ message: 'Password reset complete' })
@@ -120,7 +120,7 @@ class Api::V1::UsersController < Api::V1::BaseController
         unprocessable({ message: "Password's don't match" })
       end
     else
-      unauthorized({ message: 'Password reset token not found or expired, request reset again' })
+      unauthorized({ message: 'Password reset token expired or invalid, request new password reset instructions.' })
     end
   end
 
