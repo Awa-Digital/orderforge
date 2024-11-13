@@ -24,7 +24,8 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
       'jazzysjuicyburger.herokuapp.com', 'jazzy-burger-web-app-5mxwi.ondigitalocean.app',
       'https://jb-customer-web-new-gccee.ondigitalocean.app',
       'app.jazzysjuicyburgers.com', 'jazzysburger.com', 'www.jazzysburger.com',
-      'app.jazzysburger.com'
+      'app.jazzysburger.com',
+      'admin.jazzysburger.com'
     ]
     hostnames += ENV['CORS_ORIGINS'].split(',') if ENV['CORS_ORIGINS']
     origins hostnames
