@@ -5,7 +5,7 @@ json.data do
     json.title category.title
     json.image category.image
     json.subcategories do
-      subcats = category.subcategories.order(title: :desc).select{ |x| x.products.positive? }
+      subcats = category.subcategories.order(title: :desc).select{ |x| x.products.length.positive? }
       json.array! subcats do |subcategory|
         json.title subcategory.title
         json.products do
