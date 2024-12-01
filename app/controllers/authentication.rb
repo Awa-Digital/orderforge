@@ -52,7 +52,7 @@ module Authentication
         authenticate_user
       end
     else
-      puts '---- ------ ----- No Header found.'
+      puts "---- ------ ----- This is a guest user's request."
       @mobile_user = nil
     end
   end
