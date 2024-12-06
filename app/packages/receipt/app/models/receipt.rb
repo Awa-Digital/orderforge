@@ -60,7 +60,7 @@ class Receipt
     @order.order_items.map do |item|
       [
         item.product.title,
-        ActionController::Base.helpers.number_to_currency(item.product.amount, unit: '₦'),
+        ActionController::Base.helpers.number_to_currency(@order&.franchise_id ? item.product.price(@order&.franchise_id) : item.product.price, unit: '₦'),
         item.quantity,
         ActionController::Base.helpers.number_to_currency(item.subtotal, unit: '₦')
       ]

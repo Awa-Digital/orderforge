@@ -69,10 +69,7 @@ class SlackApi
           type: 'section',
           text: {
             type: 'mrkdwn',
-            text: "*#{item.product.title}*\n• #{item.quantity}x at `₦#{number_to_currency(item.product.amount,
-                                                                                          unit: '₦')}` each\n• Subtotal: *₦#{number_to_currency(
-                                                                                            item.subtotal, unit: '₦'
-                                                                                          )}*"
+            text: "*#{item.product.title}*\n• #{item.quantity}x at `₦#{number_to_currency(order&.franchise_id ? item.product.price(order&.franchise_id) : item.product.price, unit: '₦')}` each\n• Subtotal: *₦#{number_to_currency(item.subtotal, unit: '₦')}*"
           }
         }
 

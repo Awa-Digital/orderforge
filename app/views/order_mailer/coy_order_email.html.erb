@@ -29,9 +29,13 @@
           <td class="item-title">
             <p class="item-title-title"><%= item.product.title %></p>
             <p class="item-quantity-info">
-              <%= item.quantity%>x at <%=
-              number_to_currency(item.product.amount, unit: '₦', separator: '.',
-              delimiter: ',', precision: 2) %>
+              <%= item.quantity%>x at <%= number_to_currency(
+                @order&.franchise_id ? item.product.price(@order&.franchise_id) : item.product.price,
+                unit: '₦',
+                separator: '.',
+                delimiter: ',',
+                precision: 2
+              ) %>
             </p>
           </td>
           <td class="item-subtotal">
