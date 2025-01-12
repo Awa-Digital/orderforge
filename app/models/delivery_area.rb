@@ -22,7 +22,7 @@ class DeliveryArea < ApplicationRecord
   end
 
   def self.ransackable_attributes(_auth_object = nil)
-    %w[name]
+    [:name, :id, :created_at, :updated_at, :day_rate, :dusk_rate, :night_rate, :dawn_rate, :status, :region_id]
   end
 
   def self.ransackable_associations(_auth_object = nil)
