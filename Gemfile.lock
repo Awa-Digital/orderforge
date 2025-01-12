@@ -88,13 +88,9 @@ GEM
       tzinfo (~> 2.0)
     addressable (2.8.7)
       public_suffix (>= 2.0.2, < 7.0)
-    aes_key_wrap (1.1.0)
     arbre (2.1.0)
       activesupport (>= 7.0)
-    arel-helpers (2.14.0)
-      activerecord (>= 3.1.0, < 8)
     ast (2.4.2)
-    attr_required (1.0.2)
     backport (1.2.0)
     base64 (0.2.0)
     bcrypt (3.1.20)
@@ -107,7 +103,6 @@ GEM
       parser (>= 2.4)
       smart_properties
     bigdecimal (3.1.8)
-    bindata (2.5.0)
     bindex (0.8.1)
     bootsnap (1.18.3)
       msgpack (~> 1.2)
@@ -141,7 +136,6 @@ GEM
       railties (>= 6.0.0)
     csv (3.3.0)
     date (3.3.4)
-    deepsort (0.5.0)
     devise (4.9.4)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
@@ -209,23 +203,6 @@ GEM
     fog-xml (0.1.4)
       fog-core
       nokogiri (>= 1.5.11, < 2.0.0)
-    forest_liana (9.3.12)
-      arel-helpers
-      bcrypt
-      deepsort
-      forestadmin-jsonapi-serializers (>= 0.14.0)
-      groupdate (>= 5.0.0)
-      httparty
-      ipaddress
-      json
-      json-jwt (>= 1.16.0)
-      jwt
-      openid_connect (= 1.4.2)
-      rack-cors
-      rails (>= 4.0)
-      useragent
-    forestadmin-jsonapi-serializers (2.0.0.pre.beta.2)
-      activesupport
     formatador (1.1.0)
     formtastic (5.0.0)
       actionpack (>= 6.0.0)
@@ -251,8 +228,6 @@ GEM
       railties
     graphql (2.3.7)
       base64
-    groupdate (6.4.0)
-      activesupport (>= 6.1)
     has_scope (0.8.2)
       actionpack (>= 5.2)
       activesupport (>= 5.2)
@@ -264,7 +239,6 @@ GEM
       csv
       mini_mime (>= 1.0.0)
       multi_xml (>= 0.5.2)
-    httpclient (2.8.3)
     i18n (1.14.5)
       concurrent-ruby (~> 1.0)
     image_processing (1.12.2)
@@ -279,19 +253,11 @@ GEM
       has_scope (>= 0.6)
       railties (>= 7.0)
       responders (>= 2)
-    ipaddress (0.8.3)
     jaro_winkler (1.5.6)
     jbuilder (2.12.0)
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
     json (2.7.2)
-    json-jwt (1.16.6)
-      activesupport (>= 4.2)
-      aes_key_wrap
-      base64
-      bindata
-      faraday (~> 2.0)
-      faraday-follow_redirects
     jwt (2.8.2)
       base64
     kaminari (1.2.2)
@@ -363,17 +329,6 @@ GEM
     nokogiri (1.16.6-x86_64-linux)
       racc (~> 1.4)
     observer (0.1.2)
-    openid_connect (1.4.2)
-      activemodel
-      attr_required (>= 1.0.0)
-      json-jwt (>= 1.15.0)
-      net-smtp
-      rack-oauth2 (~> 1.21)
-      swd (~> 1.3)
-      tzinfo
-      validate_email
-      validate_url
-      webfinger (~> 1.2)
     orm_adapter (0.5.0)
     os (1.1.4)
     packwerk (3.2.1)
@@ -415,12 +370,6 @@ GEM
       rack (>= 2.0.0)
     rack-mini-profiler (2.3.4)
       rack (>= 1.2.0)
-    rack-oauth2 (1.21.3)
-      activesupport
-      attr_required
-      httpclient
-      json-jwt (>= 1.11.0)
-      rack (>= 2.1.0)
     rack-test (2.1.0)
       rack (>= 1.3)
     rails (7.0.8.4)
@@ -589,10 +538,6 @@ GEM
       sprockets (>= 3.0.0)
     ssrf_filter (1.1.2)
     strscan (3.1.0)
-    swd (1.3.0)
-      activesupport (>= 3)
-      attr_required (>= 0.0.5)
-      httpclient (>= 2.4)
     tailwindcss-rails (3.2.0)
       railties (>= 7.0.0)
       tailwindcss-ruby
@@ -616,13 +561,6 @@ GEM
       concurrent-ruby (~> 1.0)
     unicode-display_width (2.6.0)
     uri (0.13.0)
-    useragent (0.16.10)
-    validate_email (0.1.6)
-      activemodel (>= 3.0)
-      mail (>= 2.2.5)
-    validate_url (1.0.15)
-      activemodel (>= 3.0.0)
-      public_suffix
     warden (1.2.9)
       rack (>= 2.0.9)
     web-console (4.2.1)
@@ -634,9 +572,6 @@ GEM
       nokogiri (~> 1.6)
       rubyzip (>= 1.3.0)
       selenium-webdriver (~> 4.0, < 4.11)
-    webfinger (1.2.0)
-      activesupport
-      httpclient (>= 2.4)
     websocket (1.2.10)
     websocket-driver (0.7.6)
       websocket-extensions (>= 0.1.0)
@@ -679,7 +614,6 @@ DEPENDENCIES
   faraday-detailed_logger
   fcm
   fog-aws
-  forest_liana
   formtastic (>= 5.0.0)
   friendly_id (~> 5.5.0)
   graphiql-rails

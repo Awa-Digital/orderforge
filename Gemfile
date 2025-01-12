@@ -57,7 +57,7 @@ gem "faker"
 gem 'faraday-detailed_logger'
 gem 'fcm'
 gem 'fog-aws'
-gem 'forest_liana'
+# gem 'forest_liana'
 gem "formtastic", ">= 5.0.0"
 gem 'friendly_id', '~> 5.5.0'
 gem 'graphiql-rails'
