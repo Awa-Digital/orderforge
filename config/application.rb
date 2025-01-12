@@ -21,17 +21,19 @@ module JazzyBackend
     #
     config.time_zone = 'Africa/Lagos'
 
+    config.autoload_paths << Rails.root.join('app/services')
     config.autoload_paths += Dir[Rails.root / 'app/packages/*/app/*']
     config.autoload_paths += Dir[Rails.root / 'app/packages/*/spec/*']
 
     config.middleware.use Rack::Attack
 
     config.middleware.use ActionDispatch::Flash
+    config.middleware.use Rack::MethodOverride
 
     # This also configures session_options for use below
     # Required for all session management (regardless of session_store)
-    config.session_store :cookie_store, key: '_interslice_session'
     config.middleware.use ActionDispatch::Cookies
+    config.session_store :cookie_store, key: '_interslice_session'
     config.middleware.use config.session_store, config.session_options
 
     config.active_job.queue_adapter = :sidekiq

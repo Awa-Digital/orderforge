@@ -4,18 +4,22 @@ require "sidekiq/web"
 require 'sidekiq-scheduler/web'
 
 Rails.application.routes.draw do
+  ActiveAdmin.routes(self)
+  devise_for :admin_users, ActiveAdmin::Devise.config
+
   mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "/graphql" if Rails.env.development?
   post "/graphql", to: "graphql#execute"
   # MUST be declared before the mount ForestLiana::Engine.
 
-  namespace :forest do
-    post '/actions/print-receipt' => 'orders#print_receipt'
-    post '/actions/verify-payment' => 'orders#verify_payment'
-    post '/actions/mark-as-processing' => 'orders#mark_as_processing'
-    post '/actions/mark-as-delivering' => 'orders#mark_as_delivering'
-    post '/actions/mark-as-complete' => 'orders#mark_as_complete'
-  end
-  mount ForestLiana::Engine => '/forest'
+  # namespace :forest do
+  #   post '/actions/print-receipt' => 'orders#print_receipt'
+  #   post '/actions/verify-payment' => 'orders#verify_payment'
+  #   post '/actions/mark-as-processing' => 'orders#mark_as_processing'
+  #   post '/actions/mark-as-delivering' => 'orders#mark_as_delivering'
+  #   post '/actions/mark-as-complete' => 'orders#mark_as_complete'
+  # end
+
+  # mount ForestLiana::Engine => '/forest'
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 
   # sidekiq routes

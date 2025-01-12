@@ -262,3 +262,4 @@ puts "Seed data populated successfully."
 #     recipient_name: Faker::Name.name,
 #     recipient_phone: Faker::PhoneNumber.cell_phone,
 #     recipient_email: Faker::Internet.email
+AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password') if Rails.env.development?

@@ -9,7 +9,7 @@ module Mutations
     argument :first_name, String
     argument :last_name, String
     argument :super_user, Boolean
-    argument :password_digest, String
+    # argument :password_digest, String
     argument :avatar, String
     argument :status, String
 

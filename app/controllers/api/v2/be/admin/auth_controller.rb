@@ -11,7 +11,7 @@ module Api
           def login
             @user = AdminUser.find_by(email: admin_user_params[:email])
             return unauthorized({ message: 'account does not exist' }) unless @user
-            return unauthorized({ message: 'incorrect account/password' }) unless @user.authenticate(admin_user_params[:password])
+            return unauthorized({ message: 'incorrect account/password' }) unless @user.valid_password?(admin_user_params[:password])
 
             assign_auth_token(@user)
           end

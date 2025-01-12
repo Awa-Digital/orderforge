@@ -14,4 +14,16 @@ class Category < ApplicationRecord
     options[:except] = %i[created_at updated_at]
     super
   end
+
+  def self.ransackable_attributes(_auth_object = nil)
+    %w[
+      created_at
+      description
+      id
+      image
+      status
+      title
+      updated_at
+    ]
+  end
 end

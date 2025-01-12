@@ -45,3 +45,5 @@ en:
   onboarding:
     password_set: "Password has been set for this account"
     conflict: "Account already exists"
+  active:
+    powered_by: "Powered by AwaDigital"

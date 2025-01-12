@@ -1,4 +1,12 @@
 class FranchiseProductPrice < ApplicationRecord
   belongs_to :franchise
   belongs_to :product
+
+  def self.ransackable_attributes(auth_object = nil)
+    ["amount", "created_at", "franchise_id", "id", "product_id", "updated_at"]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    ["franchise", "product"]
+  end
 end

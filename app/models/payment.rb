@@ -16,6 +16,15 @@ class Payment < ApplicationRecord
     super
   end
 
+  def self.ransackable_attributes(_auth_object = nil)
+    %w[checkout_url created_at discount_id gateway gateway_reference id order_id paid paid_at payment_charges payment_id reference total updated_at
+       user_id voucher_id]
+  end
+
+  def self.ransackable_associations(_auth_object = nil)
+    %w[order user voucher]
+  end
+
   def set_paid
     self.paid = false
   end

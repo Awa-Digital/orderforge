@@ -1,0 +1,28 @@
+{
+  "name": "app",
+  "private": "true",
+  "dependencies": {
+    "@activeadmin/activeadmin": "4.0.0-beta15",
+    "@popperjs/core": "^2.11.8",
+    "autoprefixer": "^10.4.20",
+    "bootstrap": "^5.3.3",
+    "bootstrap-icons": "^1.11.3",
+    "bulma": "^1.0.3",
+    "nodemon": "^3.1.9",
+    "postcss": "^8.4.49",
+    "postcss-cli": "^11.0.0",
+    "postcss-import": "^16.1.0",
+    "postcss-nesting": "^13.0.1",
+    "sass": "^1.83.1",
+    "tailwindcss": "^3.4.17"
+  },
+  "scripts": {
+    "build:css": "tailwindcss -i ./app/assets/stylesheets/active_admin.css -o ./app/assets/builds/active_admin.css --minify -c tailwind-active_admin.config.js",
+    "build:css:compile": "sass ./app/assets/stylesheets/application.bootstrap.scss:./app/assets/builds/application.css --no-source-map --load-path=node_modules",
+    "build:css:prefix": "postcss ./app/assets/builds/application.css --use=autoprefixer --output=./app/assets/builds/application.css",
+    "watch:css": "nodemon --watch ./app/assets/stylesheets/ --ext scss --exec \"yarn build:css\""
+  },
+  "browserslist": [
+    "defaults"
+  ]
+}

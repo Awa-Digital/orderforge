@@ -44,13 +44,7 @@ class User < ApplicationRecord
     super
   end
 
-  def self.ransackable_attributes(_auth_object = nil)
-    %w[first_name last_name email phone_number]
-  end
-
-  def self.ransackable_associations(_auth_object = nil)
-    []
-  end
+  scope :by_state, ->(state) { joins(:addresses).where(addresses: { state: state }).distinct }
 
   def generate_attributes
     create_favourite unless favourite.present?
@@ -171,5 +165,9 @@ class User < ApplicationRecord
 
     errors.add :phone_number, 'is not valid' unless account.valid_phone?
     errors.add :otp, 'is invalid. Resend new OTP or try again' if account.otp != phone_otp
+  end
+
+  def self.ransackable_attributes(auth_object = nil)
+    ["active", "avatar", "created_at", "email", "first_name", "id", "last_name", "password_digest", "phone_number", "phone_otp", "slug", "spend_score", "status", "updated_at"]
   end
 end

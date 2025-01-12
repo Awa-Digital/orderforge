@@ -19,4 +19,12 @@ class Address < ApplicationRecord
   def as_string
     "#{house_number} #{street}, #{city}, #{state}"
   end
+
+  def self.ransackable_attributes(auth_object = nil)
+    ["country", "created_at", "delivery_area_id", "house_number", "id", "state", "street", "updated_at", "user_id"]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    ["delivery_area", "user"]
+  end
 end

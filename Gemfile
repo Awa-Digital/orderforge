@@ -5,24 +5,12 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '3.2.0'
 
-# Bundle edge Rails instead: gem 'rails', github: 'rails/rails', branch: 'main'
-gem 'rails', '~> 7.0.4', '>= 7.0.5.1'
-# Use sqlite3 as the database for Active Record
-# gem 'sqlite3', '~> 1.4'
-# Use Puma as the app server
-gem 'puma', '~> 5.0'
-# Use SCSS for stylesheets
-gem 'sass-rails', '>= 6'
-# Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
-# gem 'webpacker', '~> 5.0'
-# Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
-gem 'turbolinks', '~> 5'
-# Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 2.7'
-# Use Redis adapter to run Action Cable in production
-# gem 'redis', '~> 4.0'
-# Use Active Model has_secure_password
 gem 'bcrypt', '~> 3.1.7'
+gem 'jbuilder', '~> 2.7'
+gem 'puma', '~> 5.0'
+gem 'rails', '~> 7.0.4', '>= 7.0.5.1'
+gem 'sass-rails', '>= 6'
+gem 'turbolinks', '~> 5'
 
 gem 'pg'
 
@@ -40,43 +28,46 @@ group :development, :test do
 end
 
 group :development do
-  # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
-  gem 'web-console', '>= 4.1.0'
-  # Display performance information such as SQL time and flame graphs for each request in your browser.
-  # Can be configured to work on production as well see: https://github.com/MiniProfiler/rack-mini-profiler/blob/master/README.md
   gem 'listen', '~> 3.3'
   gem 'rack-mini-profiler', '~> 2.0'
-  # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
+  gem 'web-console', '>= 4.1.0'
+
+  # Linting features
+  gem 'rubocop'
+  gem 'rubocop-rails'
+  gem 'solargraph'
 end
 
 group :test do
-  # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '>= 3.26'
   gem 'selenium-webdriver'
-  # Easy installation and use of web drivers to run system tests with browsers
   gem 'webdrivers'
 end
 
-# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
-
 # Custom Gems
 gem 'aasm'
+gem "activeadmin", "4.0.0.beta15"
 gem 'carrierwave'
 gem 'cloudinary'
+gem 'cssbundling-rails'
+gem 'devise'
 gem 'dotenv-rails', groups: %i[development test]
+gem "faker"
 gem 'faraday-detailed_logger'
 gem 'fcm'
-gem "faker"
 gem 'fog-aws'
 gem 'forest_liana'
+gem "formtastic", ">= 5.0.0"
 gem 'friendly_id', '~> 5.5.0'
 gem 'graphiql-rails'
 gem 'graphql'
 gem 'httparty'
+gem 'importmap-rails'
+gem 'inherited_resources'
 gem 'jwt'
 gem 'kaminari'
+gem "matrix", "~> 0.4.2"
 gem 'packwerk'
 gem 'paystack'
 gem 'phone'
@@ -87,12 +78,13 @@ gem 'rack-cors'
 gem 'ransack', github: 'activerecord-hackery/ransack'
 gem "redis"
 gem 'rmagick'
+gem "sassc-rails"
 gem 'sendgrid-ruby'
 gem 'sentry-rails'
 gem 'sentry-ruby', '>= 5.7.0'
 gem 'sidekiq', '~> 7.2'
 gem "sidekiq-scheduler"
 gem 'slack-ruby-client'
+gem 'tailwindcss-rails'
 gem 'typhoeus'
-
-gem "matrix", "~> 0.4.2"
+gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]

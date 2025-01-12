@@ -13,4 +13,8 @@ class ProductUploader < CarrierWave::Uploader::Base
   end
 
   process resize_to_fit: [428, 428]
+
+  version :thumb do
+    process resize_to_fill: [100, 100]
+  end
 end

@@ -32,11 +32,21 @@ class Product < ApplicationRecord
   end
 
   def self.ransackable_attributes(_auth_object = nil)
-    %w[amount description image title]
+    %w[
+      id
+      status
+      amount
+      description
+      title
+      created_at
+      updated_at
+      start_time
+      end_time
+    ]
   end
 
   def self.ransackable_associations(_auth_object = nil)
-    %w[category ingredients product_ingredients subcategory]
+    %w[category ingredients product_ingredients subcategory franchise_product_prices]
   end
 
   def generate_franchise_product_prices

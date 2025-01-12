@@ -7,4 +7,8 @@ class Subcategory < ApplicationRecord
     options[:except] = %i[created_at category_id updated_at]
     super
   end
+
+  def self.ransackable_attributes(_auth_object = nil)
+    %w[category_id created_at id title updated_at]
+  end
 end

@@ -14,6 +14,10 @@ class OrderAddress < ApplicationRecord
     delivery_area.name
   end
 
+  def as_string
+    "#{house_number} #{street}, #{city}, #{state}"
+  end
+
   def price
     delivery_area&.price_per_time
   end
