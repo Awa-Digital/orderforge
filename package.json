@@ -22,6 +22,11 @@
     "build:css:prefix": "postcss ./app/assets/builds/application.css --use=autoprefixer --output=./app/assets/builds/application.css",
     "watch:css": "nodemon --watch ./app/assets/stylesheets/ --ext scss --exec \"yarn build:css\""
   },
+  "engines": {
+    "node": "^20.10.0",
+    "npm": "^10.2.3",
+    "yarn": "^1.22.19"
+  },
   "browserslist": [
     "defaults"
   ]
