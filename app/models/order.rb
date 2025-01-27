@@ -20,6 +20,12 @@ class Order < ApplicationRecord
   after_create :generate_reference_id, :generate_payment, :generate_cart_address, :set_recipient
   after_update :send_update_notifications
 
+  scope :paid, -> { where(paid: true) }
+  scope :today, lambda {
+    joins(:payment)
+      .where(paid: true)
+      .where(payments: { paid_at: Time.zone.now.all_day })
+  }
   scope :to_be_processed_today, -> { select(&:processed_today) }
   scope :stale_orders, lambda {
     where(status: ["initiated"])

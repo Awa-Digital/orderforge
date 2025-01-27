@@ -12,6 +12,8 @@ ActiveAdmin.register OrderItem do
 
   # For security, limit the actions that should be available
   actions :all, except: []
+  belongs_to :order
+  navigation_menu :order
 
   # Add or remove filters to toggle their visibility
   filter :id

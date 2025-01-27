@@ -15,25 +15,18 @@ ActiveAdmin.register Ad do
 
   # Add or remove filters to toggle their visibility
   filter :id
-  filter :image
   filter :title
   filter :expiration_date
-  filter :created_at
-  filter :updated_at
-  filter :product
-  filter :url
 
   # Add or remove columns to toggle their visibility in the index action
   index do
     selectable_column
     id_column
-    column :image
+    column :image do |resource|
+      image_tag resource.image.url
+    end
     column :title
     column :expiration_date
-    column :created_at
-    column :updated_at
-    column :product
-    column :url
     actions
   end
 

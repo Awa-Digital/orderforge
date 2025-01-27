@@ -24,8 +24,6 @@ ActiveAdmin.register DeliveryArea do
     selectable_column
     id_column
     column :name
-    column :created_at
-    column :updated_at
     column :day_rate
     column :dusk_rate
     column :night_rate

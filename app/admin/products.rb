@@ -28,11 +28,11 @@ ActiveAdmin.register Product do
   index do
     selectable_column
     id_column
-    column :title
     column :image do |resource|
       image_tag(resource.image.url) if resource.image.present?
     end
-    column :amount do |resource|
+    column :title
+    column "Default Amount", :amount do |resource|
       number_to_currency(resource.amount, unit: '₦', separator: '.', delimiter: ',', precision: 2)
     end
     column :category
@@ -47,14 +47,15 @@ ActiveAdmin.register Product do
   show do
     attributes_table_for(resource) do
       row :id
-      row :title
-      row :description
-      # row :image
       row :image do |resource|
         image_tag(resource.image.url) if resource.image.present?
       end
+      row :title
+      row :description
       row :category
-      row :amount
+      row :amount do |resource|
+        number_to_currency(resource.amount, unit: '₦', separator: '.', delimiter: ',', precision: 2)
+      end
       row :created_at
       row :updated_at
       row :subcategory
@@ -63,22 +64,37 @@ ActiveAdmin.register Product do
       row :status
     end
 
-
     panel "Prices" do
       table_for product.franchise_product_prices do
         column :id
         column :franchise
-        column :product
         column :amount do |resource|
           number_to_currency(resource.amount, unit: '₦', separator: '.', delimiter: ',', precision: 2)
         end
-        column :created_at
         column :updated_at
         column "Actions" do |resource|
           links = []
-          links << link_to("View", admin_franchise_product_price_path(resource))
-          links << link_to("Edit", edit_admin_franchise_product_price_path(resource))
-          links << link_to("Delete", admin_franchise_product_price_path(resource), method: :delete, data: { confirm: "Are you sure?" })
+          links << link_to(
+            "View",
+            admin_product_franchise_product_price_path(
+              product_id: resource.product,
+              id: resource.id
+            )
+          )
+          links << link_to(
+            "Edit",
+            edit_admin_product_franchise_product_price_path(
+              product_id: resource.product,
+              id: resource.id
+            )
+          )
+          links << link_to(
+            "Delete",
+            admin_product_franchise_product_price_path(
+              product_id: resource.product,
+              id: resource.id
+            ), method: :delete, data: { confirm: "Are you sure?" }
+          )
           safe_join(links, " | ")
         end
       end

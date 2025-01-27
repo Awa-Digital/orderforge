@@ -7,7 +7,7 @@ class Payment < ApplicationRecord
 
   before_create :set_paid
 
-  scope :paid_at_today, -> { select(&:paid_on_today) }
+  scope :paid_at_today, -> { where(paid: true, paid_at: Time.zone.now.all_day) }
   scope :paid_only, -> { where(paid: true) }
 
   def as_json(options = {})

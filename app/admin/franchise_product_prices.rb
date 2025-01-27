@@ -4,6 +4,8 @@ ActiveAdmin.register FranchiseProductPrice do
 
   # For security, limit the actions that should be available
   actions :all, except: []
+  belongs_to :product
+  navigation_menu :product
 
   # Add or remove filters to toggle their visibility
   filter :id

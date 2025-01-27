@@ -12,6 +12,7 @@ ActiveAdmin.register Address do
 
   # For security, limit the actions that should be available
   actions :all, except: []
+  menu false
 
   # Add or remove filters to toggle their visibility
   filter :id

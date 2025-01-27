@@ -1,6 +1,7 @@
 ActiveAdmin.register Payment do
   # Specify parameters which should be permitted for assignment
   permit_params :total, :payment_charges, :discount_id, :order_id, :paid, :user_id, :reference, :gateway_reference, :checkout_url, :gateway, :payment_id, :voucher_id, :paid_at
+  includes :order, :user
 
   # or consider:
   #
@@ -13,11 +14,15 @@ ActiveAdmin.register Payment do
   # For security, limit the actions that should be available
   actions :all, except: []
 
+  scope "Paid Today", :paid_at_today
+  scope :all
+
+  config.sort_order = 'paid_at_desc'
+
   # Add or remove filters to toggle their visibility
   filter :id
   filter :total
   filter :payment_charges
-  filter :discount
   filter :paid
   filter :created_at
   filter :updated_at
@@ -34,20 +39,13 @@ ActiveAdmin.register Payment do
   index do
     selectable_column
     id_column
-    column :total
-    column :payment_charges
-    column :discount
+    column :total do |resource|
+      number_to_currency(resource.total, unit: '₦', separator: '.', delimiter: ',', precision: 2)
+    end
     column :order
     column :paid
-    column :created_at
-    column :updated_at
-    column :user
     column :reference
-    column :gateway_reference
-    column :checkout_url
     column :gateway
-    column :payment
-    column :voucher
     column :paid_at
     actions
   end
