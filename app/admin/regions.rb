@@ -2,7 +2,7 @@ ActiveAdmin.register Region do
   # Specify parameters which should be permitted for assignment
   permit_params :location_id, :name, :status
 
-  menu parent: "Available Locations", label: "Available Cities"
+  menu parent: "Available Locations", label: "Operating States"
 
   # or consider:
   #
@@ -17,9 +17,6 @@ ActiveAdmin.register Region do
 
   # Add or remove filters to toggle their visibility
   filter :id
-  filter :location
-  filter :created_at
-  filter :updated_at
   filter :name
   filter :status
 
@@ -29,7 +26,6 @@ ActiveAdmin.register Region do
     id_column
     column :name
     column :location
-    column :updated_at
     column :status
     actions
   end
@@ -43,6 +39,42 @@ ActiveAdmin.register Region do
       row :updated_at
       row :name
       row :status
+    end
+
+    panel "Delivery Areas" do
+      table_for region.delivery_areas do
+        column :name
+        column :day_rate
+        column :dusk_rate
+        column :night_rate
+        column :dawn_rate
+        column :status
+        column "Actions" do |resource|
+          links = []
+          links << link_to(
+            "View",
+            admin_region_delivery_area_path(
+              region_id: resource.region.id,
+              id: resource.id
+            )
+          )
+          links << link_to(
+            "Edit",
+            edit_admin_region_delivery_area_path(
+              region_id: resource.region.id,
+              id: resource.id
+            )
+          )
+          links << link_to(
+            "Delete",
+            admin_region_delivery_area_path(
+              region_id: resource.region.id,
+              id: resource.id
+            ), method: :delete, data: { confirm: "Are you sure?" }
+          )
+          safe_join(links, " | ")
+        end
+      end
     end
   end
 

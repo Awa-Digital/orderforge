@@ -12,6 +12,8 @@ ActiveAdmin.register DeliveryArea do
 
   # For security, limit the actions that should be available
   actions :all, except: []
+  belongs_to :region
+  navigation_menu :region
 
   # Add or remove filters to toggle their visibility
   filter :id
@@ -58,7 +60,7 @@ ActiveAdmin.register DeliveryArea do
       f.input :dusk_rate
       f.input :night_rate
       f.input :dawn_rate
-      f.input :region
+      f.input :region, input_html: { disabled: true, readonly: true }
       f.input :status
     end
     f.actions

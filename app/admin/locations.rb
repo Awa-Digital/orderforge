@@ -2,7 +2,7 @@ ActiveAdmin.register Location do
   # Specify parameters which should be permitted for assignment
   permit_params :name, :status
 
-  menu parent: "Available Locations", label: "Available Countries"
+  menu parent: "Available Locations", label: "Countries"
 
   # or consider:
   #
@@ -27,8 +27,6 @@ ActiveAdmin.register Location do
     selectable_column
     id_column
     column :name
-    column :created_at
-    column :updated_at
     column :status
     actions
   end
