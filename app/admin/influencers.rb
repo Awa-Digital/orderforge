@@ -32,7 +32,7 @@ ActiveAdmin.register Influencer do
     column :updated_at
     column :status
     column :affiliate_link do |resource|
-      link_to "Open Link", "https://jazzysburger.com?affiliate=#{resource.slug}"
+      link_to "Open Link", "https://jazzysburger.com?ref=#{resource.slug}"
     end
     actions
   end
@@ -48,7 +48,7 @@ ActiveAdmin.register Influencer do
       row :updated_at
       row :status
       row :affiliate_link do |resource|
-        link_to "Open Link", "https://jazzysburger.com?affiliate=#{resource.slug}"
+        link_to "Open Link", "https://jazzysburger.com?ref=#{resource.slug}"
       end
     end
   end
