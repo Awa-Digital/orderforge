@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_01_11_134553) do
+ActiveRecord::Schema[7.0].define(version: 2025_01_31_082028) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -78,6 +78,14 @@ ActiveRecord::Schema[7.0].define(version: 2025_01_11_134553) do
     t.datetime "updated_at", null: false
     t.integer "product_id"
     t.string "url"
+  end
+
+  create_table "affiliate_views", force: :cascade do |t|
+    t.string "ip"
+    t.string "user_agent"
+    t.string "influencer_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "auths", force: :cascade do |t|
@@ -212,6 +220,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_01_11_134553) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "status", default: "active"
+    t.string "slug"
   end
 
   create_table "ingredients", force: :cascade do |t|
@@ -320,6 +329,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_01_11_134553) do
     t.boolean "sent_guest_receipt_notification", default: false
     t.string "order_no", default: "unassigned"
     t.integer "franchise_id"
+    t.string "influencer_id"
   end
 
   create_table "password_reset_tokens", force: :cascade do |t|

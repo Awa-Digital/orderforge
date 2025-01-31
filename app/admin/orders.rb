@@ -11,6 +11,8 @@ ActiveAdmin.register Order do
 
   config.sort_order = 'updated_at_desc'
 
+  belongs_to :influencer, optional: true
+
   sidebar 'Business Management', only: %i[show edit] do
     ul class: 'flex flex-col gap-4' do
       li link_to '🛒 Order Address', admin_order_order_address_path(order_id: resource.id, id: resource.order_address.id), class: 'action-item-button'

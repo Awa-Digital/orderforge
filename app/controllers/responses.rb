@@ -43,7 +43,7 @@ module Responses
   def notfound(data)
     render json: {
       status: 'not found',
-      message: data[:message] || I18n.t('not_found', data: data[:resource]),
+      message: data[:message] || I18n.t('not_found', data: data[:resource] || 'resource'),
       data: data[:data]
     }, status: :not_found
   end

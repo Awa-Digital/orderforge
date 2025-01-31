@@ -27,6 +27,7 @@ Rails.application.routes.draw do
   # end sidekiq routes
 
   namespace :api, defaults: { format: :json } do
+    post 'record_visit', to: 'affiliate#register_view'
     draw('business')
     # API for Mobile App
     namespace :v1, path: 'v1' do

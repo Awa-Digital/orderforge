@@ -218,6 +218,10 @@ class Api::V1::OrdersController < Api::V1::BaseController
               @order = Order.find_by(id: params[:order_id])
               create_or_find_order(@order)
             end
+
+    # add influencer to cart if present
+    affiliate = Influencer.find_by(slug: params[:affiliate_slug])
+    @cart.update(influencer_id: affiliate.id) if affiliate
   end
 
   def create_or_find_order(order)
