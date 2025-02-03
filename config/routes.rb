@@ -32,6 +32,7 @@ Rails.application.routes.draw do
     # API for Mobile App
     namespace :v1, path: 'v1' do
       scope 'auth' do
+        post "influencer/signup", to: "users#signup_influencer"
         post 'signup', to: 'users#signup'
         post 'signup/otp', to: 'users#verify_account'
         post 'verify', to: 'users#verify_email'

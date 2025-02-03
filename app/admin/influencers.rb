@@ -12,7 +12,7 @@ ActiveAdmin.register Influencer do
   sidebar 'Influencer Management', only: %i[show edit] do
     ul class: 'flex flex-col gap-4' do
       li link_to '🛒 Orders', admin_influencer_orders_path(resource), class: 'action-item-button'
-      li link_to '👀 Page Views', admin_influencer_affiliate_views_path(resource), class: 'action-item-button'
+      li link_to "👀 Page Views (#{resource.generated_views})", admin_influencer_affiliate_views_path(resource), class: 'action-item-button'
     end
   end
 
@@ -47,6 +47,10 @@ ActiveAdmin.register Influencer do
       row :created_at
       row :updated_at
       row :status
+      row :phone_number
+      row :tiktok_handle
+      row :facebook_page_handle
+      row :followers_count
       row :affiliate_link do |resource|
         link_to "Open Link", "https://jazzysburger.com?ref=#{resource.slug}"
       end
