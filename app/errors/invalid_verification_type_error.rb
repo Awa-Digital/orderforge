@@ -1,0 +1,2 @@
+class InvalidVerificationTypeError < StandardError
+end

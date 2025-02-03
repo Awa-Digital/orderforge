@@ -15,15 +15,12 @@ class Api::V1::Profile::LeaderController < Api::V1::Profile::BaseController
       arr << {
         image: user.avatar,
         name: user.first_name.camelize,
-        amount: total_amount,
+        amount: total_amount
       }
     end
 
-    sorted = arr.sort_by { |user| -user[:amount] }.each_with_index do |user, index|
+    arr.sort_by { |user| -user[:amount] }.each_with_index do |user, index|
       user[:rank] = index + 1
     end
-
-    sorted
   end
-
 end

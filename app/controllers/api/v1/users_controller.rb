@@ -16,20 +16,6 @@ class Api::V1::UsersController < Api::V1::BaseController
     end
   end
 
-  def signup_influencer
-    @user = Influencer.new(influencer_params)
-    @user.email = influencer_params[:email].downcase.gsub(' ', '')
-    @user.password = params[:password]
-    @user.password_confirmation = params[:password_confirmation]
-    begin
-      @user.save!
-    rescue StandardError
-      unprocessable({ message: "Something went wrong while creating account", data: @user.errors })
-    else
-      influencer_token(@user)
-    end
-  end
-
   def verify_account
     account = AccountVerification.find_or_initialize_by(email: params[:email], phone: params[:phone_number])
     if account.valid_account?
@@ -67,19 +53,6 @@ class Api::V1::UsersController < Api::V1::BaseController
     @token = generate_auth_token(user)
     success({ message: "#{user.first_name}, welcome to Jazzy's Juicy Burger!",
               data: { user:, auth: { token: @token } } })
-  end
-
-  def influencer_token(user)
-    @token = generate_influencer_token(user)
-    success({
-              message: "#{user.name}, welcome to Jazzy's Juicy Burger!",
-              data: {
-                user:,
-                auth: {
-                  token: @token
-                }
-              }
-            })
   end
 
   def login
@@ -167,22 +140,6 @@ class Api::V1::UsersController < Api::V1::BaseController
   def user_params
     params.require(:user).permit(:first_name, :last_name, :email, :phone_number, :password, :password_confirmation,
                                  :phone_otp, :avatar)
-  end
-
-  def influencer_params
-    params
-      .require(:influencer)
-      .permit(
-        :name,
-        :email,
-        :password,
-        :phone_number,
-        :tiktok_handle,
-        :instagram_handle,
-        :facebook_page_handle,
-        :twitter_handle,
-        :followers_count
-      )
   end
 end
 # rubocop:enable Metrics/ClassLength

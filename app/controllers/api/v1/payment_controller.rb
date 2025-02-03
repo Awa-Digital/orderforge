@@ -39,7 +39,7 @@ module Api
         if payment.present? && payment.paid == true
           unprocessable({ message: 'Cart has already been paid for' })
         elsif payment.total == 0.0
-          unprocessable({ message: 'Cart is empty', data:  cart })
+          unprocessable({ message: 'Cart is empty', data: cart })
         else
           confirm_payment_status(payment, cart)
         end

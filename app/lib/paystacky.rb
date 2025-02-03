@@ -20,6 +20,9 @@ class Paystacky
     end
   end
 
+  def bank_list
+  end
+
   def verify(trans)
     transactions = PaystackTransactions.new(@paystack_obj)
     result = transactions.verify(trans.reference)

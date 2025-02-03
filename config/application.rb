@@ -24,6 +24,7 @@ module JazzyBackend
     config.autoload_paths << Rails.root.join('app/services')
     config.autoload_paths += Dir[Rails.root / 'app/packages/*/app/*']
     config.autoload_paths += Dir[Rails.root / 'app/packages/*/spec/*']
+    config.eager_load_paths << Rails.root.join('app', 'errors')
 
     config.middleware.use Rack::Attack
 

@@ -32,7 +32,7 @@ Rails.application.routes.draw do
     # API for Mobile App
     namespace :v1, path: 'v1' do
       scope 'auth' do
-        post "influencer/signup", to: "users#signup_influencer"
+        post "influencer/signup", to: "influencer#signup"
         post 'signup', to: 'users#signup'
         post 'signup/otp', to: 'users#verify_account'
         post 'verify', to: 'users#verify_email'
@@ -43,6 +43,13 @@ Rails.application.routes.draw do
         post 'reset/update', to: 'users#reset_password'
         delete 'disable', to: 'users#disable'
         put 'avatar/update', to: 'users#update_avatar'
+      end
+
+      scope 'influencer' do
+        get "user", to: "influencer#user"
+        get "bank-list", to: "influencer#bank_list"
+        get "resolve-account", to: "influencer#resolve_account"
+        post "save-bank-account", to: "influencer#save_bank"
       end
 
       scope 'ads' do

@@ -3,6 +3,7 @@ class Influencer < ApplicationRecord
   has_many :vouchers
   has_many :orders
   has_many :affiliate_views
+  has_one :bank_detail, as: :bankable, dependent: :destroy
 
   has_secure_password validations: false
 
@@ -14,9 +15,10 @@ class Influencer < ApplicationRecord
             :phone_number, presence: true
 
   before_create :generate_slug
+  after_create :generate_bank_detail
 
   def as_json(options = {})
-    options[:methods] = %i[affiliate_link]
+    options[:methods] = %i[affiliate_link bank_detail]
     options[:except] = %i[password_digest]
     super
   end
@@ -27,6 +29,25 @@ class Influencer < ApplicationRecord
 
   def self.ransackable_associations(_auth_object = nil)
     []
+  end
+
+  def generate_bank_detail
+    create_bank_detail
+  end
+
+  def add_bank(bank, account)
+    data = {
+      bank_code: bank["code"],
+      bank_name: bank["name"],
+      currency: bank["currency"],
+      country: bank["country"],
+      account_number: account["account_number"],
+      account_name: account["account_name"]
+    }
+
+    raise "Could not save bank details" unless bank_detail.update(data)
+
+    bank_detail.register_recipient
   end
 
   private

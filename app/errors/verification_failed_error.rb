@@ -1,0 +1,2 @@
+class VerificationFailedError < StandardError
+end
