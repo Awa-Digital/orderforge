@@ -48,7 +48,7 @@ Rails.application.routes.draw do
       scope 'influencer' do
         get "user", to: "influencer#user"
         get "bank-list", to: "influencer#bank_list"
-        get "resolve-account", to: "influencer#resolve_account"
+        post "resolve-account", to: "influencer#resolve_account"
         post "save-bank-account", to: "influencer#save_bank"
       end
 
