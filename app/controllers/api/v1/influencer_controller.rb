@@ -65,16 +65,10 @@ class Api::V1::InfluencerController < Api::V1::BaseController
     @user = Influencer.find_by(email: params[:email].downcase.gsub(' ', ''))
     return unauthorized({ message: 'invalid username, email or password' }) unless @user
 
-    if @user.authenticate(params[:password])
-      if @user.inactive
-        shout('Deleted Account')
-        unauthorized({ message: 'invalid username, email or password' })
-      else
-        influencer_token(@user)
-      end
-    else
-      unauthorized({ message: 'invalid username, email or password' })
-    end
+    byebug
+    return unauthorized({ message: 'invalid username, email or password' }) unless @user.authenticate(params[:password])
+
+    influencer_token(@user)
   end
 
   def influencer_token(user)

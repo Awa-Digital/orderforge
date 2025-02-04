@@ -33,6 +33,7 @@ Rails.application.routes.draw do
     namespace :v1, path: 'v1' do
       scope 'auth' do
         post "influencer/signup", to: "influencer#signup"
+        post "influencer/login", to: "influencer#login"
         post 'signup', to: 'users#signup'
         post 'signup/otp', to: 'users#verify_account'
         post 'verify', to: 'users#verify_email'
