@@ -18,7 +18,7 @@ class Influencer < ApplicationRecord
   after_create :generate_bank_detail
 
   def as_json(options = {})
-    options[:methods] = %i[affiliate_link bank_detail]
+    options[:methods] = %i[affiliate_link bank_detail generated_orders]
     options[:except] = %i[password_digest]
     super
   end
@@ -33,6 +33,10 @@ class Influencer < ApplicationRecord
 
   def generate_bank_detail
     create_bank_detail
+  end
+
+  def generated_orders
+    orders.count
   end
 
   def add_bank(bank, account)
