@@ -4,6 +4,7 @@ class Influencer < ApplicationRecord
   has_many :orders
   has_many :affiliate_views
   has_one :bank_detail, as: :bankable, dependent: :destroy
+  has_many :transactions, as: :transactionable
 
   has_secure_password validations: false
 
@@ -52,6 +53,34 @@ class Influencer < ApplicationRecord
     raise "Could not save bank details" unless bank_detail.update(data)
 
     bank_detail.register_recipient
+  end
+
+  def credit_wallet(order)
+    amount = order.total * 0.2
+    update(balance: balance + amount)
+    transactions.create(
+      transaction_type: "credit",
+      amount: amount,
+      reference: "#{order.reference}-influencer-credit",
+      narration: "Commission for Payment on Order ##{order.id}"
+    )
+  end
+
+  def withdraw(amount)
+    return nil unless balance >= amount
+
+    transaction = transactions.create(
+      transaction_type: "debit",
+      amount: amount,
+      reference: "influencer-#{id}-debit-#{DateTime.now}".gsub(":", "-").gsub("+", "-"),
+      narration: "Withdrawal from Earned Commissions"
+    )
+
+    Integrations::Paystack::Accounts.transfer(bank_detail, transaction)
+  rescue StandardError => e
+    puts e
+  else
+    update(balance: balance - amount)
   end
 
   private

@@ -51,6 +51,7 @@ Rails.application.routes.draw do
         get "bank-list", to: "influencer#bank_list"
         post "resolve-account", to: "influencer#resolve_account"
         post "save-bank-account", to: "influencer#save_bank"
+        post "withdraw", to: "influencer#withdraw"
       end
 
       scope 'ads' do

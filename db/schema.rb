@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_02_03_180133) do
+ActiveRecord::Schema[7.0].define(version: 2025_02_13_125441) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -241,6 +241,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_02_03_180133) do
     t.string "tiktok_handle"
     t.string "facebook_page_handle"
     t.integer "followers_count"
+    t.decimal "balance", precision: 8, scale: 2, default: "0.0"
   end
 
   create_table "ingredients", force: :cascade do |t|
@@ -350,6 +351,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_02_03_180133) do
     t.string "order_no", default: "unassigned"
     t.integer "franchise_id"
     t.string "influencer_id"
+    t.boolean "paid_influencer"
   end
 
   create_table "password_reset_tokens", force: :cascade do |t|
@@ -497,6 +499,19 @@ ActiveRecord::Schema[7.0].define(version: 2025_02_03_180133) do
     t.datetime "updated_at", null: false
     t.bigint "category_id"
     t.index ["category_id"], name: "index_subcategories_on_category_id"
+  end
+
+  create_table "transactions", force: :cascade do |t|
+    t.string "transactionable"
+    t.string "transactionable_type"
+    t.string "amount"
+    t.string "reference"
+    t.string "recipient_code"
+    t.string "narration"
+    t.string "transaction_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "transactionable_id"
   end
 
   create_table "users", force: :cascade do |t|

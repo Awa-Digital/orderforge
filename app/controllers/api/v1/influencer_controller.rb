@@ -21,6 +21,16 @@ class Api::V1::InfluencerController < Api::V1::BaseController
     success(data: { user: @user })
   end
 
+  def withdraw
+    return unprocessable(message: "You don't have enough money") unless @user.balance > 99
+
+    @user.withdraw(@user.balance)
+  rescue StandardError => e
+    puts e
+  else
+    success(message: "Withdrawal Successful")
+  end
+
   def bank_list
     list = Integrations::Paystack::Accounts.bank_list
     success({ data: list })
