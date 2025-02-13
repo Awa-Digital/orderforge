@@ -26,7 +26,7 @@ class Api::V1::InfluencerController < Api::V1::BaseController
 
     @user.withdraw(@user.balance)
   rescue StandardError => e
-    puts e
+    unprocessable(message: e)
   else
     success(message: "Withdrawal Successful")
   end

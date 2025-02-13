@@ -67,7 +67,7 @@ class Influencer < ApplicationRecord
   end
 
   def withdraw(amount)
-    return nil unless balance >= amount
+    raise "Insufficient fund" unless balance >= amount
 
     transaction = transactions.create(
       transaction_type: "debit",
