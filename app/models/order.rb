@@ -25,7 +25,7 @@ class Order < ApplicationRecord
   scope :today, lambda {
     joins(:payment)
       .where(paid: true)
-      .where(payments: { paid_at: Time.zone.now.all_day })
+      .where(payments: { paid_at: Time.zone.now.all_day }).order(updated_at: :desc)
   }
   scope :to_be_processed_today, -> { select(&:processed_today) }
   scope :stale_orders, lambda {

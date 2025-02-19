@@ -22,6 +22,7 @@ Metrics/BlockLength:
   Exclude:
     - config/routes/**/*
     - config/routes.rb
+    - app/admin/*.rb
 
 Style/ClassAndModuleChildren:
   Enabled: false

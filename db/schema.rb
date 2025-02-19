@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_02_13_125441) do
+ActiveRecord::Schema[7.0].define(version: 2025_02_19_105242) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -242,6 +242,9 @@ ActiveRecord::Schema[7.0].define(version: 2025_02_13_125441) do
     t.string "facebook_page_handle"
     t.integer "followers_count"
     t.decimal "balance", precision: 8, scale: 2, default: "0.0"
+    t.string "verification_type"
+    t.boolean "verified", default: false
+    t.string "verification_document"
   end
 
   create_table "ingredients", force: :cascade do |t|

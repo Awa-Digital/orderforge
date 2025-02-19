@@ -134,7 +134,9 @@ class Api::V1::InfluencerController < Api::V1::BaseController
         :instagram_handle,
         :facebook_page_handle,
         :twitter_handle,
-        :followers_count
+        :followers_count,
+        :verification_document,
+        :verification_type
       )
   end
 end
