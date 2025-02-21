@@ -8,6 +8,9 @@ class Api::V1::InfluencerController < Api::V1::BaseController
     @user.email = influencer_params[:email].downcase.gsub(' ', '')
     @user.password = influencer_params[:password]
     @user.password_confirmation = influencer_params[:password]
+
+    unprocessable({ message: 'Add a valid verification document' }) unless (@user.verification_document = make_image(influencer_params[:verification_document]))
+
     begin
       @user.save!
     rescue StandardError

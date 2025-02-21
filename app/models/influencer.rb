@@ -1,5 +1,7 @@
 class Influencer < ApplicationRecord
   include StateManagement
+  mount_uploader :verification_document, VerificationUploader
+
   has_many :vouchers
   has_many :orders
   has_many :affiliate_views
@@ -13,6 +15,8 @@ class Influencer < ApplicationRecord
   validates :name,
             :instagram_handle,
             :email,
+            :verification_type,
+            :verification_document,
             :phone_number, presence: true
 
   before_create :generate_slug

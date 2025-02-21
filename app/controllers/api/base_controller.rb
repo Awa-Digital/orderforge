@@ -29,10 +29,18 @@ module Api
                           }, secret)
     end
 
-    def make_image(imagex)
+    def make_image(imagex, file_name = "uploaded-file")
       image_data = imagex.sub(/.*?,/, '')
-      new_file = File.open('ximage.png', 'wb')
-      new_file.write(Base64.decode64(image_data))
+      decoded_bytes = Base64.decode64(image_data) # Decode Base64
+
+      # Get file format using RMagick
+      img = Magick::Image.from_blob(decoded_bytes).first
+      extension = img.format.downcase # Ensure lowercase file extension
+
+      # Save file with detected extension
+      new_file = File.open("#{file_name}.#{extension}", 'wb')
+      new_file.write(decoded_bytes)
+
       new_file
     end
   end
