@@ -26,8 +26,6 @@ ActiveAdmin.register Influencer do
     selectable_column
     id_column
     column :name
-    # column :instagram_handle
-    # column :twitter_handle
     column :email
     column :updated_at
     column :status
@@ -51,6 +49,11 @@ ActiveAdmin.register Influencer do
       row :tiktok_handle
       row :facebook_page_handle
       row :followers_count
+      row :verified
+      row :verification_type
+      row :verification_document do |resource|
+        image_tag(resource.verification_document.url) if resource.verification_document.present?
+      end
       row :affiliate_link do |resource|
         link_to "Open Link", "https://jazzysburger.com?ref=#{resource.slug}"
       end
@@ -65,6 +68,7 @@ ActiveAdmin.register Influencer do
       f.input :instagram_handle
       f.input :twitter_handle
       f.input :email
+      f.input :verified
       f.input :password
       f.input :password_confirmation
       f.input :status, as: :select, collection: %w[active deactivated], include_blank: false
