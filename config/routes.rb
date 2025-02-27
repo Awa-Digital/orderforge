@@ -52,6 +52,7 @@ Rails.application.routes.draw do
         post "resolve-account", to: "influencer#resolve_account"
         post "save-bank-account", to: "influencer#save_bank"
         post "withdraw", to: "influencer#withdraw"
+        put "update-verification-video", to: "influencer#update_verification_video"
       end
 
       scope 'ads' do

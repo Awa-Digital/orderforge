@@ -24,6 +24,11 @@ class Api::V1::InfluencerController < Api::V1::BaseController
     success(data: { user: @user })
   end
 
+  def update_verification_video
+    @user.update(verification_video_url: influencer_params[:verification_video_url])
+    success(message: "Verification video updated successfully", data: { user: @user })
+  end
+
   def withdraw
     return unprocessable(message: "You don't have enough money") unless @user.balance > 99
 
@@ -139,7 +144,8 @@ class Api::V1::InfluencerController < Api::V1::BaseController
         :twitter_handle,
         :followers_count,
         :verification_document,
-        :verification_type
+        :verification_type,
+        :verification_video_url
       )
   end
 end

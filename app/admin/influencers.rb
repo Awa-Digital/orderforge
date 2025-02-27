@@ -50,6 +50,8 @@ ActiveAdmin.register Influencer do
       row :facebook_page_handle
       row :followers_count
       row :verified
+      row :verification_video_url
+      row :verification_video_link
       row :verification_type
       row :verification_document do |resource|
         image_tag(resource.verification_document.url) if resource.verification_document.present?
