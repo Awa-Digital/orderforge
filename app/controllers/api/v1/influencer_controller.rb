@@ -25,7 +25,7 @@ class Api::V1::InfluencerController < Api::V1::BaseController
   end
 
   def update_verification_video
-    @user.update(verification_video_url: influencer_params[:verification_video_url])
+    @user.update!(verification_video_url: influencer_params[:verification_video_url])
     success(message: "Verification video updated successfully", data: { user: @user })
   end
 
