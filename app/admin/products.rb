@@ -18,7 +18,7 @@ ActiveAdmin.register Product do
   filter :title
   filter :description
   filter :category
-  filter :amount
+  filter :amount, if: proc { current_admin_user.super_user? }
   filter :subcategory
   filter :start_time
   filter :end_time
@@ -32,8 +32,19 @@ ActiveAdmin.register Product do
       image_tag(resource.image.url) if resource.image.present?
     end
     column :title
-    column "Default Amount", :amount do |resource|
-      number_to_currency(resource.amount, unit: '₦', separator: '.', delimiter: ',', precision: 2)
+    if current_admin_user.super_user?
+      column "Default Amount", :amount do |resource|
+        number_to_currency(resource.amount, unit: '₦', separator: '.', delimiter: ',', precision: 2)
+      end
+    else
+      column "Price" do |resource|
+        franchise_price = resource.franchise_product_prices.find_by(franchise_id: current_admin_user.franchise_id)
+        if franchise_price&.amount.present?
+          number_to_currency(franchise_price.amount, unit: '₦', separator: '.', delimiter: ',', precision: 2)
+        else
+          "Not set"
+        end
+      end
     end
     column :category
     column :subcategory
@@ -53,8 +64,19 @@ ActiveAdmin.register Product do
       row :title
       row :description
       row :category
-      row :amount do |resource|
-        number_to_currency(resource.amount, unit: '₦', separator: '.', delimiter: ',', precision: 2)
+      if current_admin_user.super_user?
+        row :amount do |resource|
+          number_to_currency(resource.amount, unit: '₦', separator: '.', delimiter: ',', precision: 2)
+        end
+      else
+        row "Price" do |resource|
+          franchise_price = resource.franchise_product_prices.find_by(franchise_id: current_admin_user.franchise_id)
+          if franchise_price&.amount.present?
+            number_to_currency(franchise_price.amount, unit: '₦', separator: '.', delimiter: ',', precision: 2)
+          else
+            "Not set"
+          end
+        end
       end
       row :created_at
       row :updated_at
@@ -64,38 +86,40 @@ ActiveAdmin.register Product do
       row :status
     end
 
-    panel "Prices" do
-      table_for product.franchise_product_prices do
-        column :id
-        column :franchise
-        column :amount do |resource|
-          number_to_currency(resource.amount, unit: '₦', separator: '.', delimiter: ',', precision: 2)
-        end
-        column :updated_at
-        column "Actions" do |resource|
-          links = []
-          links << link_to(
-            "View",
-            admin_product_franchise_product_price_path(
-              product_id: resource.product,
-              id: resource.id
+    if current_admin_user.super_user?
+      panel "Prices" do
+        table_for product.franchise_product_prices do
+          column :id
+          column :franchise
+          column :amount do |resource|
+            number_to_currency(resource.amount, unit: '₦', separator: '.', delimiter: ',', precision: 2)
+          end
+          column :updated_at
+          column "Actions" do |resource|
+            links = []
+            links << link_to(
+              "View",
+              admin_product_franchise_product_price_path(
+                product_id: resource.product,
+                id: resource.id
+              )
             )
-          )
-          links << link_to(
-            "Edit",
-            edit_admin_product_franchise_product_price_path(
-              product_id: resource.product,
-              id: resource.id
+            links << link_to(
+              "Edit",
+              edit_admin_product_franchise_product_price_path(
+                product_id: resource.product,
+                id: resource.id
+              )
             )
-          )
-          links << link_to(
-            "Delete",
-            admin_product_franchise_product_price_path(
-              product_id: resource.product,
-              id: resource.id
-            ), method: :delete, data: { confirm: "Are you sure?" }
-          )
-          safe_join(links, " | ")
+            links << link_to(
+              "Delete",
+              admin_product_franchise_product_price_path(
+                product_id: resource.product,
+                id: resource.id
+              ), method: :delete, data: { confirm: "Are you sure?" }
+            )
+            safe_join(links, " | ")
+          end
         end
       end
     end
@@ -109,7 +133,7 @@ ActiveAdmin.register Product do
       f.input :description
       f.input :image
       f.input :category
-      f.input :amount
+      f.input :amount if current_admin_user.super_user?
       f.input :liked
       f.input :subcategory
       f.input :start_time

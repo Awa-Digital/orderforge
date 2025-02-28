@@ -1,6 +1,8 @@
 ActiveAdmin.register Voucher do
   # Specify parameters which should be permitted for assignment
   menu label: "Discounts"
+  menu if: proc { current_admin_user.super_user? }
+
   permit_params :title, :discount_code, :influencer_id, :discount_rate, :expiration_date, :status
 
   # or consider:

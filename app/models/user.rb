@@ -37,6 +37,8 @@ class User < ApplicationRecord
   before_destroy :remove_account_verification
 
   # scope :favourites, -> (user) { where(products.liked:  true)}
+  scope :spenders, -> { where("spend_score > ?", 100) }
+  scope :associated_with_franchise, ->(franchise_id) { where("associated_franchises @> ARRAY[?]::integer[]", [franchise_id]) }
 
   def as_json(options = {})
     # options[:methods] = %i[total]
@@ -155,6 +157,17 @@ class User < ApplicationRecord
     update_attribute :spend_score, orders.where(paid: true).sum(&:order_total)
   end
 
+  def update_associated_franchises(franchise_id)
+    return if associated_franchises.include?(franchise_id)
+
+    self.associated_franchises = (associated_franchises || []) + [franchise_id]
+    save
+  end
+
+  def self.ransackable_attributes(_auth_object = nil)
+    %w[active avatar created_at email first_name id last_name password_digest phone_number phone_otp slug spend_score status updated_at associated_franchises]
+  end
+
   private
 
   def otp_validation
@@ -165,9 +178,5 @@ class User < ApplicationRecord
 
     errors.add :phone_number, 'is not valid' unless account.valid_phone?
     errors.add :otp, 'is invalid. Resend new OTP or try again' if account.otp != phone_otp
-  end
-
-  def self.ransackable_attributes(auth_object = nil)
-    ["active", "avatar", "created_at", "email", "first_name", "id", "last_name", "password_digest", "phone_number", "phone_otp", "slug", "spend_score", "status", "updated_at"]
   end
 end

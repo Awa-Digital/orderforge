@@ -14,8 +14,32 @@ ActiveAdmin.register Payment do
   # For security, limit the actions that should be available
   actions :all, except: []
 
-  scope "Paid Today", :paid_at_today
-  scope :all
+  # Add controller customization to scope payments by franchise
+  controller do
+    def scoped_collection
+      if current_admin_user.super_user?
+        super
+      else
+        super.joins(:order).where(orders: { franchise_id: current_admin_user.franchise_id })
+      end
+    end
+  end
+
+  scope "Paid Today", :paid_at_today do |payments|
+    if current_admin_user.super_user?
+      payments.paid_at_today
+    else
+      payments.paid_at_today.joins(:order).where(orders: { franchise_id: current_admin_user.franchise_id })
+    end
+  end
+
+  scope :all do |payments|
+    if current_admin_user.super_user?
+      payments.all
+    else
+      payments.joins(:order).where(orders: { franchise_id: current_admin_user.franchise_id })
+    end
+  end
 
   config.sort_order = 'paid_at_desc'
 

@@ -1,5 +1,6 @@
 ActiveAdmin.register Influencer do
   menu label: "Affiliates"
+  menu if: proc { current_admin_user.super_user? }
 
   permit_params :name,
                 :instagram_handle,

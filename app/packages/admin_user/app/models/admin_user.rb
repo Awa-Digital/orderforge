@@ -6,11 +6,15 @@ class AdminUser < ApplicationRecord
   devise :database_authenticatable,
          :recoverable, :rememberable, :validatable
 
+  belongs_to :franchise, optional: true
+
   # has_secure_password
   validates :email,
             :phone,
             :first_name,
             :last_name, presence: true
+
+  validate :must_be_super_user_or_have_franchise
 
   aasm column: 'status' do
     state :active, initial: true
@@ -35,6 +39,7 @@ class AdminUser < ApplicationRecord
       created_at
       email
       first_name
+      franchise_id
       id
       last_name
       phone
@@ -45,5 +50,17 @@ class AdminUser < ApplicationRecord
       super_user
       updated_at
     ]
+  end
+
+  def self.ransackable_associations(_auth_object = nil)
+    ["franchise"]
+  end
+
+  private
+
+  def must_be_super_user_or_have_franchise
+    return unless !super_user && franchise_id.blank?
+
+    errors.add(:base, "Admin user must either be a super user or belong to a franchise")
   end
 end

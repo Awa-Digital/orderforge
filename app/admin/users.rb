@@ -13,6 +13,14 @@ ActiveAdmin.register User do
   # For security, limit the actions that should be available
   actions :all, except: []
 
+  scope :all, if: proc { current_admin_user.super_user }
+  scope :spenders, if: proc { current_admin_user.super_user }
+  scope :my_franchise_customers,
+        default: -> { !current_admin_user.super_user },
+        if: proc { !current_admin_user.super_user } do |users|
+    users.associated_with_franchise(current_admin_user.franchise_id)
+  end
+
   # Add or remove filters to toggle their visibility
   filter :id
   filter :first_name
@@ -34,14 +42,12 @@ ActiveAdmin.register User do
     end
     column :first_name
     column :last_name
-    column :email
     column :phone_number do |resource|
       resource.phone_number.gsub(/(\d{3})(\d{3})(\d{3})(\d{4})/, '+\1 \2 \3 \4')
     end
     column :spend_score do |resource|
       number_to_currency(resource.spend_score, unit: '₦', separator: '.', delimiter: ',', precision: 2)
     end
-    column :status
     actions
   end
 
@@ -58,10 +64,29 @@ ActiveAdmin.register User do
       row :updated_at
       row :phone_otp
       row :active
-      row :avatar
-      row :spend_score
+      row :avatar do |resource|
+        image_tag(resource.avatar.url) if resource.avatar.present?
+      end
+      row :spend_score do |resource|
+        number_to_currency(resource.spend_score, unit: '₦', separator: '.', delimiter: ',', precision: 2)
+      end
       row :slug
       row :status
+      row :associated_franchises do |user|
+        if user.associated_franchises.present?
+          franchises = Franchise.where(id: user.associated_franchises)
+          displayed_franchises = franchises.first(3).map(&:title)
+          remaining_count = franchises.size - 3
+
+          if remaining_count.positive?
+            displayed_franchises.join(", ") + " +#{remaining_count} more"
+          else
+            displayed_franchises.join(", ")
+          end
+        else
+          "No associated franchises"
+        end
+      end
     end
   end
 
@@ -82,5 +107,11 @@ ActiveAdmin.register User do
       f.input :status
     end
     f.actions
+  end
+
+  controller do
+    def find_resource
+      scoped_collection.friendly.find(params[:id])
+    end
   end
 end

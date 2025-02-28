@@ -3,6 +3,7 @@ ActiveAdmin.register Region do
   permit_params :location_id, :name, :status
 
   menu parent: "Available Locations", label: "Operating States"
+  menu if: proc { current_admin_user.super_user? }
 
   # or consider:
   #

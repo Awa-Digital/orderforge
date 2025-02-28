@@ -3,6 +3,7 @@ ActiveAdmin.register Location do
   permit_params :name, :status
 
   menu parent: "Available Locations", label: "Countries"
+  menu if: proc { current_admin_user.super_user? }
 
   # or consider:
   #

@@ -131,6 +131,7 @@ class Order < ApplicationRecord
     return if user_id.nil?
 
     user.update_spend_score
+    user.update_associated_franchises(franchise_id) if franchise_id.present?
     update(processing_date: calculate_processing_date)
     Order.update_priorities
     increment_products_counter

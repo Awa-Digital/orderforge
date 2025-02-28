@@ -1,4 +1,6 @@
 ActiveAdmin.register Ad do
+  menu if: proc { current_admin_user.super_user? }
+
   # Specify parameters which should be permitted for assignment
   permit_params :image, :title, :expiration_date, :product_id, :url
 

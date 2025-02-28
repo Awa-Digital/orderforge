@@ -5,9 +5,40 @@ ActiveAdmin.register Order do
 
   actions :all, except: []
 
-  scope "Today's Orders", :today, default: true
-  scope "All Paid Orders", :paid
-  scope 'All Orders', :all
+  # Add controller customization to scope orders by franchise
+  controller do
+    def scoped_collection
+      if current_admin_user.super_user?
+        super
+      else
+        super.where(franchise_id: current_admin_user.franchise_id)
+      end
+    end
+  end
+
+  scope "Today's Orders", :today, default: true do |orders|
+    if current_admin_user.super_user?
+      orders.today
+    else
+      orders.today.where(franchise_id: current_admin_user.franchise_id)
+    end
+  end
+
+  scope "All Paid Orders", :paid do |orders|
+    if current_admin_user.super_user?
+      orders.paid
+    else
+      orders.paid.where(franchise_id: current_admin_user.franchise_id)
+    end
+  end
+
+  scope 'All Orders', :all do |orders|
+    if current_admin_user.super_user?
+      orders.all
+    else
+      orders.where(franchise_id: current_admin_user.franchise_id)
+    end
+  end
 
   config.sort_order = 'updated_at_desc'
 
@@ -23,7 +54,7 @@ ActiveAdmin.register Order do
   filter :status
   filter :updated_at
   filter :reference
-  filter :franchise
+  filter :franchise, if: proc { current_admin_user.super_user? }
 
   # Add or remove columns to toggle their visibility in the index action
   index do
