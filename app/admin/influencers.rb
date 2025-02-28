@@ -1,10 +1,15 @@
 ActiveAdmin.register Influencer do
+  menu label: "Affiliates"
+
   permit_params :name,
                 :instagram_handle,
                 :twitter_handle,
                 :email,
                 :password,
                 :password_confirmation,
+                :verified,
+                :verification_video_url,
+                :verification_document,
                 :status
 
   actions :all, except: []
@@ -14,6 +19,36 @@ ActiveAdmin.register Influencer do
       li link_to '🛒 Orders', admin_influencer_orders_path(resource), class: 'action-item-button'
       li link_to "👀 Page Views (#{resource.generated_views})", admin_influencer_affiliate_views_path(resource), class: 'action-item-button'
     end
+  end
+
+  action_item :verify, only: :show do
+    unless resource.verified
+      link_to 'Approve Affiliate 🚀',
+              verify_admin_influencer_path(resource),
+              method: :put,
+              class: 'action-item-button'
+    end
+  end
+
+  # Define the custom member action
+  member_action :verify, method: :put do
+    resource.update!(verified: true)
+    InfluencerMailer.with(id: resource.id).approval.deliver
+    redirect_to admin_influencer_path(resource), notice: 'Affiliate approved successfully!'
+  end
+
+  batch_action :approve, confirm: 'Are you sure??' do |ids|
+    failed = 0
+    success = 0
+    batch_action_collection.find(ids).each do |influencer|
+      influencer.update!(verified: true)
+      InfluencerMailer.with(id: resource.id).approval.deliver
+      success += 1
+    rescue StandardError
+      failed += 1
+    end
+
+    redirect_to collection_path, alert: "#{success} Affiliates were approved, #{failed} Failed."
   end
 
   filter :id
@@ -28,7 +63,7 @@ ActiveAdmin.register Influencer do
     column :name
     column :email
     column :updated_at
-    column :status
+    column :verified
     column :affiliate_link do |resource|
       link_to "Open Link", "https://jazzysburger.com?ref=#{resource.slug}"
     end

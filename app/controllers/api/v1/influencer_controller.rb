@@ -16,6 +16,7 @@ class Api::V1::InfluencerController < Api::V1::BaseController
     rescue StandardError
       unprocessable({ message: "Something went wrong while creating account", data: @user.errors })
     else
+      InfluencerMailer.with(id: @user.id).welcome.deliver
       influencer_token(@user)
     end
   end

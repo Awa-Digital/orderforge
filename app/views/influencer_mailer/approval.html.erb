@@ -1,0 +1,56 @@
+<!-- Email Container -->
+<div style="max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif; color: #333333; line-height: 1.6;">
+  <!-- Approval Section -->
+  <div style="padding: 20px;">
+    <h2 style="color: #1a1a1a; margin-bottom: 20px;">🎉 Congratulations <%= @user.name %>!</h2>
+    <p style="margin-bottom: 15px;">Your Jazzy's Burger Affiliate account has been approved!</p>
+    <p style="margin-bottom: 25px;">You can now start sharing your unique affiliate link and earn commissions on every successful order. Here's everything you need to know to get started.</p>
+  </div>
+
+  <!-- Affiliate Link Section -->
+  <div style="padding: 20px; background-color: #e8f5e9; border-radius: 8px; margin-bottom: 30px;">
+    <h3 style="color: #1a1a1a; margin-bottom: 15px;">Your Affiliate Link</h3>
+    <p style="margin: 0; word-break: break-all; background-color: #ffffff; padding: 15px; border-radius: 4px; border: 1px solid #c8e6c9;">
+      <a href="https://jazzysburger.com?ref=<%= @user.slug %>" style="color: #2e7d32; text-decoration: none; font-weight: bold;">https://jazzysburger.com?ref=<%= @user.slug %></a>
+    </p>
+  </div>
+
+  <!-- Next Steps Section -->
+  <div style="padding: 20px; background-color: #f9f9f9; border-radius: 8px;">
+    <h3 style="color: #1a1a1a; margin-bottom: 20px;">Start Earning Now</h3>
+    
+    <div style="margin-bottom: 15px;">
+      <p style="margin: 0;">
+        💫 <strong>Share Your Link:</strong> Share your unique affiliate link on your social media platforms
+      </p>
+    </div>
+
+    <div style="margin-bottom: 15px;">
+      <p style="margin: 0;">
+        📱 <strong>Track Orders:</strong> Monitor your orders and earnings in real-time on your <a href="https://jazzysburger.com/affiliate" style="color: #333333;">affiliate dashboard</a>
+      </p>
+    </div>
+
+    <div style="margin-bottom: 15px;">
+      <p style="margin: 0;">
+        💰 <strong>Get Paid:</strong> Earn commission for every successful order through your link
+      </p>
+    </div>
+  </div>
+
+  <!-- Tips Section -->
+  <div style="padding: 20px; margin-top: 20px; background-color: #e3f2fd; border-radius: 8px;">
+    <h3 style="color: #1a1a1a; margin-bottom: 15px;">Pro Tips</h3>
+    <ul style="margin: 0; padding-left: 20px; color: #1976d2;">
+      <li style="margin-bottom: 10px;">Share your personal experience with Jazzy's Burger</li>
+      <li style="margin-bottom: 10px;">Post during peak meal times for better engagement</li>
+      <li style="margin-bottom: 10px;">Use high-quality food photos in your posts</li>
+      <li style="margin-bottom: 0;">Engage with your followers' comments about their orders</li>
+    </ul>
+  </div>
+
+  <!-- Footer -->
+  <div style="padding: 20px; margin-top: 20px; text-align: center; color: #666;">
+    <p style="margin: 0;">Need help? Our affiliate support team is always here to assist you!</p>
+  </div>
+</div>
