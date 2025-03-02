@@ -20,11 +20,11 @@ class Address < ApplicationRecord
     "#{house_number} #{street}, #{city}, #{state}"
   end
 
-  def self.ransackable_attributes(auth_object = nil)
-    ["country", "created_at", "delivery_area_id", "house_number", "id", "state", "street", "updated_at", "user_id"]
+  def self.ransackable_attributes(_auth_object = nil)
+    %w[country created_at delivery_area_id house_number id state street updated_at user_id]
   end
 
-  def self.ransackable_associations(auth_object = nil)
-    ["delivery_area", "user"]
+  def self.ransackable_associations(_auth_object = nil)
+    %w[delivery_area user]
   end
 end

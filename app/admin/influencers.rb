@@ -86,7 +86,13 @@ ActiveAdmin.register Influencer do
       row :facebook_page_handle
       row :followers_count
       row :verified
-      row :verification_video_url
+      row :verification_video_url do |resource|
+        if resource.verification_video_url.present?
+          link_to 'View Video', resource.verification_video_url, target: '_blank'
+        else
+          'No video uploaded'
+        end
+      end
       row :verification_video_link
       row :verification_type
       row :verification_document do |resource|
