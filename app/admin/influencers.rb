@@ -65,6 +65,9 @@ ActiveAdmin.register Influencer do
     column :email
     column :updated_at
     column :verified
+    column "Uploaded?" do |resource|
+      resource.verification_video_url.present?
+    end
     column :affiliate_link do |resource|
       link_to "Open Link", "https://jazzysburger.com?ref=#{resource.slug}"
     end
