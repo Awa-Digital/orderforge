@@ -2,8 +2,7 @@ ActiveAdmin.register Region do
   # Specify parameters which should be permitted for assignment
   permit_params :location_id, :name, :status
 
-  menu parent: "Available Locations", label: "Operating States"
-  menu if: proc { current_admin_user.super_user? }
+  menu parent: "Available Locations", label: "Operating States", if: proc { current_admin_user.super_user? }
 
   # or consider:
   #

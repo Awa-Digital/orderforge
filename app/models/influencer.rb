@@ -22,6 +22,9 @@ class Influencer < ApplicationRecord
   before_create :generate_slug
   after_create :generate_bank_detail
 
+  scope :verified, -> { where(verified: true) }
+  scope :pending, -> { where(verified: false).where.not(verification_video_url: nil) }
+
   def as_json(options = {})
     options[:methods] = %i[affiliate_link bank_detail generated_orders]
     options[:except] = %i[password_digest]
@@ -41,7 +44,7 @@ class Influencer < ApplicationRecord
   end
 
   def generated_orders
-    orders.count
+    orders.where(paid: true).count
   end
 
   def add_bank(bank, account)

@@ -15,6 +15,10 @@ ActiveAdmin.register Influencer do
 
   actions :all, except: []
 
+  scope :verified, default: true
+  scope "Pending Verification", :pending
+  scope :all
+
   sidebar 'Influencer Management', only: %i[show edit] do
     ul class: 'flex flex-col gap-4' do
       li link_to '🛒 Orders', admin_influencer_orders_path(resource), class: 'action-item-button'
@@ -65,12 +69,7 @@ ActiveAdmin.register Influencer do
     column :email
     column :updated_at
     column :verified
-    column "Uploaded?" do |resource|
-      resource.verification_video_url.present?
-    end
-    column :affiliate_link do |resource|
-      link_to "Open Link", "https://jazzysburger.com?ref=#{resource.slug}"
-    end
+    column "Views", :generated_views
     actions
   end
 
