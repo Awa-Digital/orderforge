@@ -4,6 +4,8 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :null_session
   before_action :authenticate_user
   skip_before_action :authenticate_user, if: -> { request.path.start_with?('/admin') }
+  skip_before_action :authenticate_user, if: -> { ENV['ADMIN_APP'] == 'true' }
+
   before_action :redirect_to_admin_path_if_needed
 
   include Responses

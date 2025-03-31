@@ -4,8 +4,7 @@ require "sidekiq/web"
 require 'sidekiq-scheduler/web'
 
 Rails.application.routes.draw do
-  ActiveAdmin.routes(self)
-  devise_for :admin_users, ActiveAdmin::Devise.config
+  # ActiveAdmin.routes(self)
 
   mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "/graphql" if Rails.env.development?
   post "/graphql", to: "graphql#execute"
@@ -25,6 +24,14 @@ Rails.application.routes.draw do
   # sidekiq routes
   mount Sidekiq::Web => '/sidekiq'
   # end sidekiq routes
+  # admin routes
+  if ENV['ADMIN_APP'] == 'true'
+    ActiveAdmin.routes(self)
+    devise_for :admin_users, ActiveAdmin::Devise.config
+
+    root to: 'admin/dashboard#index'
+  end
+  # end admin routes
 
   namespace :api, defaults: { format: :json } do
     post 'record_visit', to: 'affiliate#register_view'
