@@ -3,11 +3,11 @@
 module Api
   module V1
     class ProductsController < Api::V1::BaseController
+      before_action :set_cart
       before_action :set_product, only: %i[show like unlike]
       before_action :set_products, only: %i[index grouped search]
       skip_before_action :authenticate_user, only: %i[index categories hot_deals grouped show search]
       before_action :authenticate_guest, only: %i[index hot_deals categories grouped show search]
-      before_action :set_cart
 
       def index
         render "products"
@@ -27,7 +27,9 @@ module Api
       end
 
       def hot_deals
-        @products = Product.hot_products(:all_time).first(8)
+        @products = Product.hot_products(:all_time)
+        @products = @products.select { |product| product.available_for_franchise(@cart.franchise_id) } if @cart.present? && @cart.franchise_id.present?
+        @products = @products.first(8)
         @message = 'hot deals fetched successfully'
         render "products"
       end
@@ -56,6 +58,7 @@ module Api
         product_ids = @products.map(&:id)
         scoped_products = Product.where(id: product_ids)
         @products = scoped_products.ransack(params[:q]).result(distinct: true).page(params[:page]).per(params[:per_page])
+        @products = @products.select { |product| product.available_for_franchise(@cart.franchise_id) } if @cart.present? && @cart.franchise_id.present?
         @message = "products found"
         render 'search'
       end
@@ -76,12 +79,9 @@ module Api
       end
 
       def set_products
-        products = if @mobile_user.present?
-                     @mobile_user.products
-                   else
-                     Product.all.select(&:available)
-                   end
+        products = @mobile_user.present? ? @mobile_user.products : Product.all.select(&:available)
 
+        products = products.select { |product| product.available_for_franchise(@cart.franchise_id) } if @cart.present? && @cart.franchise_id.present?
         products = filter_by_category(products) if params[:category_id].present?
         products = filter_by_price_range(products) if params[:min_price].present? || params[:max_price].present?
         products = sort_by_price(products) if params[:sort_by].present?

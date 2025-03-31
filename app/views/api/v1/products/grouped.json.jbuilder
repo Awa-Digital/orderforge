@@ -5,11 +5,13 @@ json.data do
     json.title category.title
     json.image category.image
     json.subcategories do
-      subcats = category.subcategories.order(title: :desc).select{ |x| x.products.length.positive? }
+      subcats = category.subcategories.order(title: :desc).select { |x| x.products.length.positive? }
       json.array! subcats do |subcategory|
         json.title subcategory.title
         json.products do
-          json.array! subcategory.products.select(&:available) do |product|
+          prods = subcategory.products.select(&:available)
+          prods = prods.select { |x| x.available_for_franchise(@cart&.franchise_id) } if @cart.present? && @cart.franchise_id.present?
+          json.array! prods do |product|
             json.id product.id
             json.title product.title
             amount = @cart&.franchise_id ? product.price(@cart&.franchise_id) : product.price

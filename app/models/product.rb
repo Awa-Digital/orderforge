@@ -96,6 +96,10 @@ class Product < ApplicationRecord
     Time.current.in_time_zone.between?(@start_time, @end_time)
   end
 
+  def available_for_franchise(franchise_id)
+    franchise_product_prices.find_by(franchise_id:).available
+  end
+
   def like(user)
     user.favourite.favourite_items.find_or_create_by(
       product_id: id

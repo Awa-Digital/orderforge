@@ -2,7 +2,6 @@ document.addEventListener("DOMContentLoaded", function () {
   document.querySelectorAll(".availability-toggle").forEach(function (toggle) {
     toggle.addEventListener("click", function (e) {
       e.preventDefault();
-      console.log("clicked", this.dataset);
       const franchisePriceId = this.dataset.franchisePriceId;
       const url = this.dataset.url;
 
