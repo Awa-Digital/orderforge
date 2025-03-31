@@ -44,7 +44,9 @@ class Influencer < ApplicationRecord
   end
 
   def generated_orders
-    orders.where(paid: true).count
+    orders
+      .where(paid: true)
+      .count
   end
 
   def add_bank(bank, account)

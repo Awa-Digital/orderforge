@@ -1,19 +1,8 @@
 ActiveAdmin.register Product do
-  # Specify parameters which should be permitted for assignment
   permit_params :title, :description, :image, :category_id, :amount, :liked, :subcategory_id, :start_time, :end_time, :status
 
-  # or consider:
-  #
-  # permit_params do
-  #   permitted = [:title, :description, :image, :category_id, :amount, :liked, :subcategory_id, :start_time, :end_time, :status]
-  #   permitted << :other if params[:action] == 'create' && current_user.admin?
-  #   permitted
-  # end
-
-  # For security, limit the actions that should be available
   actions :all, except: []
 
-  # Add or remove filters to toggle their visibility
   filter :id
   filter :title
   filter :description
@@ -24,7 +13,6 @@ ActiveAdmin.register Product do
   filter :end_time
   filter :status
 
-  # Add or remove columns to toggle their visibility in the index action
   index do
     selectable_column
     id_column
@@ -54,7 +42,16 @@ ActiveAdmin.register Product do
     actions
   end
 
-  # Add or remove rows to toggle their visibility in the show action
+  member_action :toggle_availability, method: :put do
+    franchise_price = resource.franchise_product_prices.find_by(id: params[:franchise_price_id])
+    if franchise_price
+      franchise_price.update(available: !franchise_price.available)
+      render json: { available: franchise_price.available }
+    else
+      render json: { error: 'Franchise price not found' }, status: :not_found
+    end
+  end
+
   show do
     attributes_table_for(resource) do
       row :id
@@ -94,7 +91,51 @@ ActiveAdmin.register Product do
           column :amount do |resource|
             number_to_currency(resource.amount, unit: '₦', separator: '.', delimiter: ',', precision: 2)
           end
-          column :updated_at
+          # column :updated_at
+          column :available, class: "text-center" do |resource|
+            link_to toggle_availability_admin_product_path(resource: resource.product, franchise_price_id: resource.id),
+                    method: :put, data: { confirm: "Are you sure?" } do
+              div class: "mx-auto cursor-pointer availability-toggle w-[24px] h-[24px] rounded-md flex items-center justify-center #{resource.available ? 'bg-green-500 text-white' : 'border-slate-500 border'}",
+                  data: {
+                    franchise_price_id: resource.id,
+                    url: toggle_availability_admin_product_path(
+                      resource: resource.product,
+                      franchise_price_id: resource.id
+                    )
+                  } do
+                    div class: "availability-toggle-icon" do
+                      if resource.available
+                        svg xmlns: "http://www.w3.org/2000/svg",
+                            width: "20",
+                            height: "20",
+                            viewBox: "0 0 24 24",
+                            fill: "none",
+                            stroke: "currentColor",
+                            'stroke-width': "2",
+                            'stroke-linecap': "round",
+                            'stroke-linejoin': "round" do
+                          tag(:path, d: "M20 6 9 17l-5-5")
+                        end
+                      else
+                        svg xmlns: "http://www.w3.org/2000/svg",
+                            width: "20",
+                            height: "20",
+                            class: "lucide lucide-x",
+                            viewBox: "0 0 24 24",
+                            fill: "none",
+                            stroke: "currentColor",
+                            'stroke-width': "2",
+                            'stroke-linecap': "round",
+                            'stroke-linejoin': "round" do
+                          tag(:path, d: "M18 6 6 18")
+                          tag(:path, d: "M6 6l12 12")
+                        end
+                      end
+                    end
+              end
+            end
+          end
+
           column "Actions" do |resource|
             links = []
             links << link_to(
