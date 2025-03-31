@@ -103,35 +103,35 @@ ActiveAdmin.register Product do
                       franchise_price_id: resource.id
                     )
                   } do
-                    div class: "availability-toggle-icon" do
-                      if resource.available
-                        svg xmlns: "http://www.w3.org/2000/svg",
-                            width: "20",
-                            height: "20",
-                            viewBox: "0 0 24 24",
-                            fill: "none",
-                            stroke: "currentColor",
-                            'stroke-width': "2",
-                            'stroke-linecap': "round",
-                            'stroke-linejoin': "round" do
-                          tag(:path, d: "M20 6 9 17l-5-5")
-                        end
-                      else
-                        svg xmlns: "http://www.w3.org/2000/svg",
-                            width: "20",
-                            height: "20",
-                            class: "lucide lucide-x",
-                            viewBox: "0 0 24 24",
-                            fill: "none",
-                            stroke: "currentColor",
-                            'stroke-width': "2",
-                            'stroke-linecap': "round",
-                            'stroke-linejoin': "round" do
-                          tag(:path, d: "M18 6 6 18")
-                          tag(:path, d: "M6 6l12 12")
-                        end
-                      end
+                div class: "availability-toggle-icon" do
+                  if resource.available
+                    svg xmlns: "http://www.w3.org/2000/svg",
+                        width: "20",
+                        height: "20",
+                        viewBox: "0 0 24 24",
+                        fill: "none",
+                        stroke: "currentColor",
+                        'stroke-width': "2",
+                        'stroke-linecap': "round",
+                        'stroke-linejoin': "round" do
+                      tag(:path, d: "M20 6 9 17l-5-5")
                     end
+                  else
+                    svg xmlns: "http://www.w3.org/2000/svg",
+                        width: "20",
+                        height: "20",
+                        class: "lucide lucide-x",
+                        viewBox: "0 0 24 24",
+                        fill: "none",
+                        stroke: "currentColor",
+                        'stroke-width': "2",
+                        'stroke-linecap': "round",
+                        'stroke-linejoin': "round" do
+                      tag(:path, d: "M18 6 6 18")
+                      tag(:path, d: "M6 6l12 12")
+                    end
+                  end
+                end
               end
             end
           end
@@ -187,6 +187,10 @@ ActiveAdmin.register Product do
         end
       end
     end
+
+    # script do
+    #   raw "alert('Hello')"
+    # end
   end
 
   # Add or remove fields to toggle their visibility in the form
