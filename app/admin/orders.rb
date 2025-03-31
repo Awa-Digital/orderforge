@@ -56,6 +56,19 @@ ActiveAdmin.register Order do
   filter :reference
   filter :franchise, if: proc { current_admin_user.super_user? }
 
+  action_item :download_receipt, only: :show do
+    link_to 'Download Receipt 🧾',
+            download_receipt_admin_order_path(resource),
+            method: :post,
+            class: 'action-item-button'
+  end
+
+  # Define the custom member action
+  member_action :download_receipt, method: :post do
+    pdf = resource.generate_pdf_receipt
+    send_data File.read(pdf), filename: "#{resource.reference}.pdf", type: 'application/pdf', disposition: 'attachment'
+  end
+
   # Add or remove columns to toggle their visibility in the index action
   index do
     selectable_column

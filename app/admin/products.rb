@@ -123,6 +123,29 @@ ActiveAdmin.register Product do
         end
       end
     end
+
+    if product.ingredients.any?
+      panel "Ingredients" do
+        table_for product.ingredients do
+          column :id
+          column :name
+          column :icon
+        end
+      end
+    end
+
+    if product.inventories.any?
+      panel "Inventories" do
+        table_for product.inventories do
+          column :id
+          column :name
+          column :description
+          column :expires
+          column :state
+          column :status
+        end
+      end
+    end
   end
 
   # Add or remove fields to toggle their visibility in the form
