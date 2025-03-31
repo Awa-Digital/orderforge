@@ -171,4 +171,21 @@ class Order < ApplicationRecord
       priority += 1
     end
   end
+
+  def self.todays_delivery_revenue
+    joins(:payment)
+      .where(paid: true)
+      .where(payments: { paid_at: Time.zone.now.all_day })
+      .map(&:delivery_charge)
+      .sum
+  end
+
+  def self.todays_franchise_delivery_revenue(franchise_id)
+    joins(:payment)
+      .where(paid: true)
+      .where(payments: { paid_at: Time.zone.now.all_day })
+      .where(franchise_id:)
+      .map(&:delivery_charge)
+      .sum
+  end
 end

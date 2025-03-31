@@ -49,6 +49,36 @@ class Product < ApplicationRecord
     %w[category ingredients product_ingredients subcategory franchise_product_prices]
   end
 
+  def self.today_products
+    items = []
+    orders = Order.today.where(paid: true)
+    products_from_orders(items, orders)
+  end
+
+  def self.franchise_today_products(franchise_id)
+    items = []
+    orders = Order.today.where(paid: true, franchise_id:)
+    products_from_orders(items, orders)
+  end
+
+  def self.products_from_orders(items, orders)
+    orders.map do |order|
+      order.order_items.each do |item|
+        product_exists = items.find { |p| p[:product_id] == item.product_id }
+        if product_exists
+          product_exists[:quantity] += item.quantity
+        else
+          items << {
+            product_id: item.product_id,
+            product_name: item.product.title,
+            quantity: item.quantity
+          }
+        end
+      end
+    end
+    items.sort_by { |item| item[:quantity] }.reverse
+  end
+
   def generate_franchise_product_prices
     Franchise.all.each do |franchise|
       franchise_product_prices.find_or_create_by(franchise_id: franchise.id)
