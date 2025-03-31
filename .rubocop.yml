@@ -20,6 +20,7 @@ Style/Documentation:
 
 Metrics/BlockLength:
   Exclude:
+    - config/environments/*.rb
     - config/routes/**/*
     - config/routes.rb
     - app/admin/*.rb
