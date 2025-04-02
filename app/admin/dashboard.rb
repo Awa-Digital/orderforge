@@ -17,7 +17,7 @@ ActiveAdmin.register_page "Dashboard" do
     # Metrics panels using divs for layout
     div class: "grid grid-cols-12 justify-between mb-8 gap-6" do
       div class: "col-span-12" do
-        h3 "Today's Summary", class: "text-black font-bold text-xl"
+        h3 "Today's Summary", class: "text-black dark:text-white font-bold text-xl"
       end
 
       div class: "col-span-6 md:col-span-3 w-full p-4 bg-slate-50 dark:bg-slate-800 rounded-lg" do

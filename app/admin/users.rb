@@ -2,15 +2,6 @@ ActiveAdmin.register User do
   # Specify parameters which should be permitted for assignment
   permit_params :first_name, :last_name, :email, :phone_number, :password_digest, :phone_otp, :active, :avatar, :spend_score, :slug, :status
 
-  # or consider:
-  #
-  # permit_params do
-  #   permitted = [:first_name, :last_name, :email, :phone_number, :password_digest, :phone_otp, :active, :avatar, :spend_score, :slug, :status]
-  #   permitted << :other if params[:action] == 'create' && current_user.admin?
-  #   permitted
-  # end
-
-  # For security, limit the actions that should be available
   actions :all, except: []
 
   scope :all, if: proc { current_admin_user.super_user }
@@ -21,7 +12,6 @@ ActiveAdmin.register User do
     users.associated_with_franchise(current_admin_user.franchise_id)
   end
 
-  # Add or remove filters to toggle their visibility
   filter :id
   filter :first_name
   filter :last_name
@@ -33,7 +23,6 @@ ActiveAdmin.register User do
   filter :spend_score
   filter :status
 
-  # Add or remove columns to toggle their visibility in the index action
   index do
     selectable_column
     id_column
@@ -51,7 +40,6 @@ ActiveAdmin.register User do
     actions
   end
 
-  # Add or remove rows to toggle their visibility in the show action
   show do
     attributes_table_for(resource) do
       row :id
