@@ -89,7 +89,9 @@ ActiveAdmin.register_page "Dashboard" do
           h3 "Revenue Stream", class: "text-[24px] font-medium text-slate-900 dark:text-white mb-4"
           table_for(
             Franchise.all,
-            class: "border-[1px] border-slate-200 dark:border-slate-700 rounded w-full"
+            id: "franchises-table",
+            class: "border-[1px] border-slate-200 dark:border-slate-700 rounded w-full",
+            row_html: ->(resource) { { class: "cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800", data: { url: admin_franchise_path(resource) } } }
           ) do
             column :title do |resource|
               status_tag resource.title, class: "bg-blue-500 dark:bg-blue-600 text-white"

@@ -41,4 +41,12 @@ document.addEventListener("DOMContentLoaded", function () {
         .catch((error) => console.error("Error:", error));
     });
   });
+
+  document
+    .querySelectorAll("#franchises-table tbody tr[data-url]")
+    .forEach((row) => {
+      row.addEventListener("click", () => {
+        window.location = row.dataset.url;
+      });
+    });
 });
