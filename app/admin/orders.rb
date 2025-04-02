@@ -50,11 +50,19 @@ ActiveAdmin.register Order do
     end
   end
 
-  filter :id
-  filter :status
-  filter :updated_at
-  filter :reference
+  filter :reference_eq, label: "Order Reference"
   filter :franchise, if: proc { current_admin_user.super_user? }
+  filter :updated_at, label: "Dates"
+  filter :status, as: :select, collection: {
+    'Initiated' => 'initiated',
+    'Paid' => 'paid',
+    'Awaiting Processing' => 'awaiting_processing',
+    'Processing' => 'processing',
+    'Awaiting Packaging' => 'awaiting_packaging',
+    'Packaged' => 'packaged',
+    'Delivering' => 'delivering',
+    'Completed' => 'completed'
+  }
 
   action_item :download_receipt, only: :show do
     link_to 'Download Receipt 🧾',
