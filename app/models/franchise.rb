@@ -14,7 +14,7 @@ class Franchise < ApplicationRecord
     super
   end
 
-  def self.ransackable_attributes(auth_object = nil)
+  def self.ransackable_attributes(_auth_object = nil)
     %w[created_at description email id status title updated_at]
   end
 

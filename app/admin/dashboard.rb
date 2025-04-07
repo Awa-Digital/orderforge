@@ -51,12 +51,9 @@ ActiveAdmin.register_page "Dashboard" do
         h3 "Revenue", class: "text-slate-600 dark:text-slate-300"
         h2 number_to_currency(
           if current_admin_user.super_user?
-            Payment.paid_at_today.reduce(0) { |sum, i| sum + i.total }
+            Order.todays_revenue
           else
-            Payment.paid_at_today
-                  .joins(:order)
-                  .where(orders: { franchise_id: current_admin_user.franchise_id })
-                  .reduce(0) { |sum, i| sum + i.total }
+            Order.todays_franchise_revenue(current_admin_user.franchise_id)
           end,
           unit: '₦',
           separator: '.',
@@ -159,7 +156,7 @@ ActiveAdmin.register_page "Dashboard" do
             end
           end
           column :total do |resource|
-            span number_to_currency(resource.total, unit: '₦', separator: '.', delimiter: ',', precision: 2),
+            span number_to_currency(resource.order_total, unit: '₦', separator: '.', delimiter: ',', precision: 2),
                  class: "text-slate-900 dark:text-white"
           end
           # # column :updated_at, class: "text-slate-900 dark:text-white"

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-Rack::Attack.throttle('ip limit', limit: 10, period: 5.seconds, &:ip)
+# Rack::Attack.throttle('ip limit', limit: 50, period: 5.seconds, &:ip)
 
 bad_ips = ENV.fetch("BLOCKED_IPS", "0.0.0.1").split(',')
 

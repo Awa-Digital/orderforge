@@ -188,4 +188,12 @@ class Order < ApplicationRecord
       .map(&:delivery_charge)
       .sum
   end
+
+  def self.todays_revenue
+    today.sum(&:order_total)
+  end
+
+  def self.todays_franchise_revenue(franchise_id)
+    today.where(franchise_id:).sum(&:order_total)
+  end
 end

@@ -51,7 +51,7 @@ gem 'carrierwave'
 gem 'cloudinary'
 gem 'cssbundling-rails'
 gem 'devise'
-gem 'dotenv-rails', groups: %i[development test]
+gem 'dotenv-rails' # , groups: %i[development test]
 gem "faker"
 gem 'faraday-detailed_logger'
 gem 'fcm'

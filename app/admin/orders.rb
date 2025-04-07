@@ -9,9 +9,9 @@ ActiveAdmin.register Order do
   controller do
     def scoped_collection
       if current_admin_user.super_user?
-        super
+        super.includes(:franchise, :payment, :order_items)
       else
-        super.where(franchise_id: current_admin_user.franchise_id)
+        super.where(franchise_id: current_admin_user.franchise_id).includes(:franchise, :payment, :order_items)
       end
     end
   end
@@ -99,6 +99,12 @@ ActiveAdmin.register Order do
     column :franchise
     column :total do |resource|
       number_to_currency(resource.total, unit: '₦', separator: '.', delimiter: ',', precision: 2)
+    end
+    column :discount_amount do |resource|
+      number_to_currency(-1 * resource.discount_amount, unit: '₦', separator: '.', delimiter: ',', precision: 2)
+    end
+    column :order_total do |resource|
+      number_to_currency(resource.order_total, unit: '₦', separator: '.', delimiter: ',', precision: 2)
     end
     column :updated_at
     actions
@@ -203,5 +209,46 @@ ActiveAdmin.register Order do
       f.input :franchise
     end
     f.actions
+  end
+
+  csv do
+    column :id
+    column :recipient_name
+    column :status
+    column :reference
+    column :order_no
+    column :franchise do |resource|
+      resource.franchise.title
+    end
+    column :total, sum: true
+    column :delivery_charge, sum: true
+    column :discount_amount, sum: true
+    column :order_total, sum: true
+    column "Gateway" do |resource|
+      resource.payment.gateway
+    end
+    column :paid_at do |resource|
+      resource.payment.paid_at
+    end
+    column "Affliate Order" do |resource|
+      resource.influencer_id ? "Yes" : "No"
+    end
+
+    order_ids = collection.pluck(:id)
+
+    puts "ORDERS IN THIS SCOPE: #{order_ids.count}"
+
+    products = OrderItem.joins(:product)
+                        .where(order_id: order_ids)
+                        .group('order_items.product_id', 'products.title')
+                        .select('order_items.product_id, products.title AS product_name, SUM(order_items.quantity) AS total_quantity')
+                        .order('total_quantity DESC')
+
+    row [""]
+    row [""]
+    row { ["Products Bought in this period"] }
+    products.each do |product|
+      row { [product.product_name, product.total_quantity] }
+    end
   end
 end
