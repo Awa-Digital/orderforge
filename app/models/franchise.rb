@@ -22,9 +22,9 @@ class Franchise < ApplicationRecord
     franchise_address
   end
 
-  def public_name
-    franchise_address.region.name
-  end
+  # def public_name
+  #   franchise_address.region.name
+  # end
 
   def franchise_owner_staffs
     franchise_owner_department = Department.find_by(name: 'Franchise Owner')

@@ -29,6 +29,7 @@ ActiveAdmin.register Franchise do
     selectable_column
     id_column
     column :title
+    column :public_name
     column :description
     column :created_at
     column :updated_at
@@ -114,6 +115,10 @@ ActiveAdmin.register Franchise do
           row :updated_at
           row :status
           row :email
+          row :public_name
+          row :address do |resource|
+            resource.address.street
+          end
         end
       end
     end
@@ -127,6 +132,7 @@ ActiveAdmin.register Franchise do
       f.input :description
       f.input :status
       f.input :email
+      f.input :public_name
     end
     f.actions
   end

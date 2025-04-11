@@ -17,6 +17,8 @@ module Calculations
     if @addr.present?
       return 0.00 unless @addr.delivery_area_id.present?
 
+      byebug unless @addr.delivery_area
+
       if @addr.delivery_area.price.nil?
         0.00
       else
