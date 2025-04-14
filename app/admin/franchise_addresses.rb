@@ -60,7 +60,7 @@ ActiveAdmin.register FranchiseAddress do
     f.inputs do
       f.input :franchise
       f.input :region
-      f.input :location
+      # f.input :location
       f.input :street
       f.input :longitude
       f.input :latitude

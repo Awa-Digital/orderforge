@@ -1,6 +1,6 @@
 ActiveAdmin.register Franchise do
   # Specify parameters which should be permitted for assignment
-  permit_params :title, :description, :status, :email
+  permit_params :title, :public_name, :description, :status, :email
 
   # or consider:
   #

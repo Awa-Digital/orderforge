@@ -2,6 +2,8 @@
 class Region < ApplicationRecord
   belongs_to :location
   has_many :delivery_areas
+  has_many :franchise_addresses
+  has_many :franchises, through: :franchise_addresses
   include StateManagement
 
   validates_uniqueness_of :name, presence: true
