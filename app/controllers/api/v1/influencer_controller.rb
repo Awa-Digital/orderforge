@@ -147,7 +147,7 @@ class Api::V1::InfluencerController < Api::V1::BaseController
         :verification_document,
         :verification_type,
         :verification_video_url,
-        :type,
+        :affiliate_type,
         :business_name
       )
   end

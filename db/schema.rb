@@ -250,9 +250,9 @@ ActiveRecord::Schema[7.0].define(version: 2025_04_16_085835) do
     t.string "verification_document"
     t.string "verification_video_url"
     t.string "verification_video_link"
-    t.string "type", default: "individual", null: false
+    t.string "affiliate_type", default: "individual", null: false
     t.string "business_name"
-    t.index ["type"], name: "index_influencers_on_type"
+    t.index ["affiliate_type"], name: "index_influencers_on_affiliate_type"
   end
 
   create_table "ingredients", force: :cascade do |t|
