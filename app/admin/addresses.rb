@@ -11,7 +11,7 @@ ActiveAdmin.register Address do
   # end
 
   # For security, limit the actions that should be available
-  actions :all, except: []
+  actions :all, except: [:destroy]
   menu false
 
   # Add or remove filters to toggle their visibility

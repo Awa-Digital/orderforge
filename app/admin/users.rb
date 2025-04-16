@@ -2,7 +2,7 @@ ActiveAdmin.register User do
   # Specify parameters which should be permitted for assignment
   permit_params :first_name, :last_name, :email, :phone_number, :password_digest, :phone_otp, :active, :avatar, :spend_score, :slug, :status
 
-  actions :all, except: []
+  actions :all, except: [:destroy]
 
   scope :all, if: proc { current_admin_user.super_user }
   scope :spenders, if: proc { current_admin_user.super_user }

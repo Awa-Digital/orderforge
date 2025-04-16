@@ -3,7 +3,7 @@ ActiveAdmin.register Order do
   permit_params :address_id, :user_id, :status, :completed, :paid, :reference, :recipient_name, :recipient_phone, :total, :recipient_email, :processing_date, :priority, :sent_receipt_notification,
                 :sent_processing_notification, :sent_delivering_notification, :sent_completed_notification, :sent_guest_receipt_notification, :order_no, :franchise_id
 
-  actions :all, except: []
+  actions :all, except: [:destroy]
 
   # Add controller customization to scope orders by franchise
   controller do

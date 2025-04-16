@@ -1,7 +1,7 @@
 ActiveAdmin.register Product do
   permit_params :title, :description, :image, :category_id, :amount, :liked, :subcategory_id, :start_time, :end_time, :status
 
-  actions :all, except: []
+  actions :all, except: [:destroy]
 
   filter :id
   filter :title

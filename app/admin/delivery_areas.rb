@@ -11,7 +11,7 @@ ActiveAdmin.register DeliveryArea do
   # end
 
   # For security, limit the actions that should be available
-  actions :all, except: []
+  actions :all, except: [:destroy]
   belongs_to :region
   navigation_menu :region
 

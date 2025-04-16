@@ -11,7 +11,7 @@ ActiveAdmin.register OrderItem do
   # end
 
   # For security, limit the actions that should be available
-  actions :all, except: []
+  actions :all, except: [:destroy]
   belongs_to :order
   navigation_menu :order
 

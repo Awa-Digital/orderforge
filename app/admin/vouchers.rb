@@ -14,7 +14,7 @@ ActiveAdmin.register Voucher do
   # end
 
   # For security, limit the actions that should be available
-  actions :all, except: []
+  actions :all, except: [:destroy]
   scope "Active Discounts", :all, default: true
   scope "Previous Discounts", :unscoped
 

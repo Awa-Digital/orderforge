@@ -13,7 +13,7 @@ ActiveAdmin.register Location do
   # end
 
   # For security, limit the actions that should be available
-  actions :all, except: []
+  actions :all, except: [:destroy]
 
   # Add or remove filters to toggle their visibility
   filter :id

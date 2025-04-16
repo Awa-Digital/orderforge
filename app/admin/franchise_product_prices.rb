@@ -3,7 +3,7 @@ ActiveAdmin.register FranchiseProductPrice do
   permit_params :id, :franchise_id, :product_id, :amount
 
   # For security, limit the actions that should be available
-  actions :all, except: []
+  actions :all, except: [:destroy]
   belongs_to :product
   navigation_menu :product
 

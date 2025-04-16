@@ -69,6 +69,7 @@ ActiveAdmin.register Influencer do
     column :email
     column :updated_at
     column :verified
+    column :affiliate_type
     column "Views", :generated_views
     actions
   end
@@ -97,6 +98,8 @@ ActiveAdmin.register Influencer do
       end
       row :verification_video_link
       row :verification_type
+      row :affiliate_type
+      row :business_name
       row :verification_document do |resource|
         image_tag(resource.verification_document.url) if resource.verification_document.present?
       end
@@ -111,6 +114,8 @@ ActiveAdmin.register Influencer do
     f.semantic_errors(*f.object.errors.attribute_names)
     f.inputs do
       f.input :name
+      f.input :affiliate_type, as: :select, collection: %w[influencer business], include_blank: false
+      f.input :business_name
       f.input :instagram_handle
       f.input :twitter_handle
       f.input :email

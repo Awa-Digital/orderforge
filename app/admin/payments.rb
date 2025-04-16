@@ -12,7 +12,7 @@ ActiveAdmin.register Payment do
   # end
 
   # For security, limit the actions that should be available
-  actions :all, except: []
+  actions :all, except: [:destroy]
 
   # Add controller customization to scope payments by franchise
   controller do
