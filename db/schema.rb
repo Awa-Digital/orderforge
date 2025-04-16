@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_04_11_223332) do
+ActiveRecord::Schema[7.0].define(version: 2025_04_16_085835) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -250,6 +250,9 @@ ActiveRecord::Schema[7.0].define(version: 2025_04_11_223332) do
     t.string "verification_document"
     t.string "verification_video_url"
     t.string "verification_video_link"
+    t.string "type", default: "individual", null: false
+    t.string "business_name"
+    t.index ["type"], name: "index_influencers_on_type"
   end
 
   create_table "ingredients", force: :cascade do |t|

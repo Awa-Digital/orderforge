@@ -146,7 +146,9 @@ class Api::V1::InfluencerController < Api::V1::BaseController
         :followers_count,
         :verification_document,
         :verification_type,
-        :verification_video_url
+        :verification_video_url,
+        :type,
+        :business_name
       )
   end
 end
