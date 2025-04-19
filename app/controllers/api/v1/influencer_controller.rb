@@ -11,6 +11,10 @@ class Api::V1::InfluencerController < Api::V1::BaseController
 
     unprocessable({ message: 'Add a valid verification document' }) unless (@user.verification_document = make_image(influencer_params[:verification_document]))
 
+    if @user.affiliate_type == 'business' && !(@user.business_storefront_image = make_image(influencer_params[:business_storefront_image]))
+      unprocessable({ message: 'Add a valid business storefront image' })
+    end
+
     begin
       @user.save!
     rescue StandardError
@@ -148,7 +152,8 @@ class Api::V1::InfluencerController < Api::V1::BaseController
         :verification_type,
         :verification_video_url,
         :affiliate_type,
-        :business_name
+        :business_name,
+        :business_storefront_image
       )
   end
 end

@@ -1,6 +1,7 @@
 class Influencer < ApplicationRecord
   include StateManagement
   mount_uploader :verification_document, VerificationUploader
+  mount_uploader :business_storefront_image, AffiliateStoreFrontUploader
 
   has_many :vouchers
   has_many :orders
