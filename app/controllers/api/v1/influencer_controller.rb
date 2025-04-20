@@ -153,7 +153,8 @@ class Api::V1::InfluencerController < Api::V1::BaseController
         :verification_video_url,
         :affiliate_type,
         :business_name,
-        :business_storefront_image
+        :business_storefront_image,
+        :business_address
       )
   end
 end

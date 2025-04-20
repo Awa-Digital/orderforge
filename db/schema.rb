@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_04_19_102313) do
+ActiveRecord::Schema[7.0].define(version: 2025_04_20_110129) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -253,6 +253,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_04_19_102313) do
     t.string "affiliate_type", default: "individual", null: false
     t.string "business_name"
     t.string "business_storefront_image"
+    t.string "business_address"
     t.index ["affiliate_type"], name: "index_influencers_on_affiliate_type"
   end
 
