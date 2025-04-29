@@ -152,6 +152,7 @@ ActiveAdmin.register_page "Dashboard" do
           end
           if current_admin_user.super_user?
             column :franchise do |resource|
+              puts "THIS IS THE RESOURCE MISSING FRANCHISE #{resource.id}" if resource.franchise.nil?
               status_tag resource.franchise.title, class: "bg-blue-500 dark:bg-blue-600 text-white"
             end
           end
