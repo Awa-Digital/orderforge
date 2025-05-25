@@ -1,9 +1,10 @@
 class Reports
   attr_accessor :orders, :requester, :csv_url
 
-  def initialize(orders, requester)
+  def initialize(orders, requester, filters)
     @orders = orders
     @requester = requester
+    @filters = filters
     @file_name = nil
     @csv_url = nil
     @file = nil
@@ -29,7 +30,12 @@ class Reports
   end
 
   def deliver_report
-    report = Report.create(admin_user_id: @requester.id, csv_url: @csv_url, file_name: @file_name)
+    report = Report.create(
+      admin_user_id: @requester.id,
+      csv_url: @csv_url,
+      file_name: @file_name,
+      filters: @filters
+    )
     ReportMailer.report_email(report: report).deliver_later
   end
 

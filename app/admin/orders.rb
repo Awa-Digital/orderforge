@@ -77,17 +77,18 @@ ActiveAdmin.register Order do
   end
 
   action_item :generate_report, only: :index do
-    button_to 'Generate Report 📊',
-              generate_report_admin_orders_path,
-              method: :post,
+    link_to 'Generate Report 📊',
+              "#",
+              id: 'generate-report-btn',
               class: 'action-item-button'
   end
 
   collection_action :generate_report, method: :post do
+    filters = params.slice(:q, :status, :franchise_id, :order_no, :reference_eq)
     orders = collection.except(:limit, :offset)
-    # ReportTaskJob.perform_async(orders.pluck(:id), current_admin_user.id)
-    report = Reports.new(orders, current_admin_user)
-    report.process
+    ReportTaskJob.perform_async(orders.pluck(:id), current_admin_user.id, filters)
+    # report = Reports.new(orders, current_admin_user, filters)
+    # report.process
     redirect_to admin_orders_path, notice: 'Report generation started. You will receive an email when it is ready.'
   end
 

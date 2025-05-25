@@ -6,7 +6,7 @@ class ReportMailer < ApplicationMailer
     @requester = @report.admin_user
     @preheader = 'Your report is ready'
 
-    mail(to: params[:receipient], subject: "#{@requester.first_name} - Your report is ready", delivery_method_options: @delivery_options)
+    mail(to: @requester.email, subject: "#{@requester.first_name} - Your report is ready", delivery_method_options: @delivery_options)
   rescue Net::SMTPAuthenticationError => e
     Sentry.capture_exception(Net::SMTPAuthenticationError.new(e))
     Sentry.capture_message(e)

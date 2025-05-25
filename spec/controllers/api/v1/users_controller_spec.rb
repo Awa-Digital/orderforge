@@ -23,7 +23,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
       it 'does not create a user and returns an error message' do
         @otp = create(:account_verification, email: "#{Time.now.to_i + 2}@example.com", phone: @phone).otp
         post :signup, params: { user: @user_attributes.merge(phone_number: @phone) }
-        byebug
+        # byebug
 
         expect(response).to have_http_status(:unprocessable_entity)
         expect(JSON.parse(response.body)['status']).to eq('unprocessable')
