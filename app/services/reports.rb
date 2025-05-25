@@ -36,7 +36,7 @@ class Reports
       file_name: @file_name,
       filters: @filters
     )
-    ReportMailer.report_email(report: report).deliver_later
+    ReportMailer.with(report: report).report_email.deliver
   end
 
   HEADERS = [

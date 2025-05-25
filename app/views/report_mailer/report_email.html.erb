@@ -1,0 +1,9 @@
+<div id="receipt-body">
+  <h3>Your report is ready</h3>
+  <p class="user-greeting">Hello <%= @requester.first_name %>,</p>
+  <p class="user-greeting-info">Your report is ready to download.</p>
+  <br />
+  <p class="user-greeting-info">
+    You can download the report <a href="<%= @report.csv_url %>">here</a>.
+  </p>
+</div>

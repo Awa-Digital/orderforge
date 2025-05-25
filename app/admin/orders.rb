@@ -77,14 +77,20 @@ ActiveAdmin.register Order do
   end
 
   action_item :generate_report, only: :index do
-    link_to 'Generate Report 📊',
-              "#",
-              id: 'generate-report-btn',
-              class: 'action-item-button'
+    form_with url: generate_report_admin_orders_path, method: :post, local: true do |f|
+      # Preserve current filters as hidden inputs
+      if params[:q].present?
+        params[:q].each do |key, value|
+          concat hidden_field_tag "q[#{key}]", value
+        end
+      end
+
+      concat f.submit 'Generate Report 📊', class: 'action-item-button'
+    end
   end
 
   collection_action :generate_report, method: :post do
-    filters = params.slice(:q, :status, :franchise_id, :order_no, :reference_eq)
+    filters = params[:q]
     orders = collection.except(:limit, :offset)
     ReportTaskJob.perform_async(orders.pluck(:id), current_admin_user.id, filters)
     # report = Reports.new(orders, current_admin_user, filters)
