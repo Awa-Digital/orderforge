@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_04_20_110129) do
+ActiveRecord::Schema[7.0].define(version: 2025_05_25_171806) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -120,6 +120,14 @@ ActiveRecord::Schema[7.0].define(version: 2025_04_20_110129) do
     t.datetime "updated_at", null: false
     t.string "image"
     t.string "status", default: "active"
+  end
+
+  create_table "combo_products", force: :cascade do |t|
+    t.integer "combo_id"
+    t.integer "product_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "quantity"
   end
 
   create_table "delivery_areas", force: :cascade do |t|
@@ -429,6 +437,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_04_20_110129) do
     t.integer "start_time", default: 0
     t.integer "end_time", default: 23
     t.string "status", default: "active"
+    t.boolean "combo"
     t.index ["subcategory_id"], name: "index_products_on_subcategory_id"
   end
 
@@ -457,6 +466,15 @@ ActiveRecord::Schema[7.0].define(version: 2025_04_20_110129) do
     t.datetime "updated_at", null: false
     t.index ["ingredient_id"], name: "index_removables_on_ingredient_id"
     t.index ["order_item_id"], name: "index_removables_on_order_item_id"
+  end
+
+  create_table "reports", force: :cascade do |t|
+    t.integer "admin_user_id"
+    t.string "file_name"
+    t.string "csv_url"
+    t.jsonb "filters"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "roles", force: :cascade do |t|

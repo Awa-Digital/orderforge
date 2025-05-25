@@ -14,6 +14,8 @@ class Product < ApplicationRecord
   has_many :product_inventory_items
   has_many :inventories, through: :product_inventory_items
   has_many :franchise_product_prices
+  has_many :combo_products, foreign_key: "combo_id"
+  has_many :products, through: :combo_products, source: :product
 
   accepts_nested_attributes_for :product_inventory_items
 
@@ -42,6 +44,7 @@ class Product < ApplicationRecord
       updated_at
       start_time
       end_time
+      combo
     ]
   end
 

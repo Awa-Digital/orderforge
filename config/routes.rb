@@ -22,7 +22,6 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 
   # sidekiq routes
-  mount Sidekiq::Web => '/sidekiq'
   # end sidekiq routes
   # admin routes
   if ENV['ADMIN_APP'] == 'true'
@@ -30,6 +29,7 @@ Rails.application.routes.draw do
     devise_for :admin_users, ActiveAdmin::Devise.config
 
     root to: 'admin/dashboard#index'
+    mount Sidekiq::Web => '/sidekiq'
   end
   # end admin routes
 

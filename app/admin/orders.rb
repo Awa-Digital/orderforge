@@ -1,7 +1,11 @@
 ActiveAdmin.register Order do
   # Specify parameters which should be permitted for assignment
-  permit_params :address_id, :user_id, :status, :completed, :paid, :reference, :recipient_name, :recipient_phone, :total, :recipient_email, :processing_date, :priority, :sent_receipt_notification,
-                :sent_processing_notification, :sent_delivering_notification, :sent_completed_notification, :sent_guest_receipt_notification, :order_no, :franchise_id
+
+  permit_params :address_id, :user_id, :status, :completed, :paid,
+                :reference, :recipient_name, :recipient_phone, :total,
+                :recipient_email, :processing_date, :priority, :sent_receipt_notification,
+                :sent_processing_notification, :sent_delivering_notification,
+                :sent_completed_notification, :sent_guest_receipt_notification, :order_no, :franchise_id
 
   actions :all, except: [:destroy]
 
@@ -70,6 +74,21 @@ ActiveAdmin.register Order do
             download_receipt_admin_order_path(resource),
             method: :post,
             class: 'action-item-button'
+  end
+
+  action_item :generate_report, only: :index do
+    button_to 'Generate Report 📊',
+              generate_report_admin_orders_path,
+              method: :post,
+              class: 'action-item-button'
+  end
+
+  collection_action :generate_report, method: :post do
+    orders = collection.except(:limit, :offset)
+    # ReportTaskJob.perform_async(orders.pluck(:id), current_admin_user.id)
+    report = Reports.new(orders, current_admin_user)
+    report.process
+    redirect_to admin_orders_path, notice: 'Report generation started. You will receive an email when it is ready.'
   end
 
   # Define the custom member action

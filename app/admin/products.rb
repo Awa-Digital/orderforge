@@ -1,5 +1,5 @@
 ActiveAdmin.register Product do
-  permit_params :title, :description, :image, :category_id, :amount, :liked, :subcategory_id, :start_time, :end_time, :status
+  permit_params :title, :description, :image, :category_id, :amount, :liked, :subcategory_id, :start_time, :end_time, :status, :combo
 
   actions :all, except: [:destroy]
 
@@ -12,6 +12,7 @@ ActiveAdmin.register Product do
   filter :start_time
   filter :end_time
   filter :status
+  filter :combo
 
   index do
     selectable_column
@@ -36,8 +37,7 @@ ActiveAdmin.register Product do
     end
     column :category
     column :subcategory
-    column :start_time
-    column :end_time
+    column :combo
     column :status
     actions
   end
@@ -188,9 +188,15 @@ ActiveAdmin.register Product do
       end
     end
 
-    # script do
-    #   raw "alert('Hello')"
-    # end
+    if product.combo_products.any?
+      panel "Sub Products" do
+        table_for product.combo_products do
+          column :id
+          column :product
+          column :quantity
+        end
+      end
+    end
   end
 
   # Add or remove fields to toggle their visibility in the form
@@ -206,6 +212,7 @@ ActiveAdmin.register Product do
       f.input :subcategory
       f.input :start_time
       f.input :end_time
+      f.input :combo
       f.input :status
     end
     f.actions

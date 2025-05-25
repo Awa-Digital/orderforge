@@ -7,6 +7,7 @@ class AdminUser < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   belongs_to :franchise, optional: true
+  has_many :reports
 
   # has_secure_password
   validates :email,
