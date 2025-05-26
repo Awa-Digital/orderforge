@@ -1,5 +1,5 @@
 class ReportMailer < ApplicationMailer
-  before_action :set_receipt_email
+  before_action :noreply_email
 
   layout 'receipt_template'
 
