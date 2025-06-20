@@ -176,35 +176,45 @@ ActiveAdmin.register Product do
     end
 
     panel "Inventories" do
-      if product.inventories.any?
-        table_for product.inventories do
-          column :id
-          column :name
-          column :description
-          column :expires
-          column :state
-          column :status
+      div class: "panel-body" do
+        if product.inventories.any?
+          table_for product.inventories do
+            column :id
+            column :name
+            column :description
+            column :expires
+            column :state
+            column :status
+          end
+        else
+          p "No inventories added to this product"
         end
-      else
-        p "No inventories added to this product"
       end
-      link_to "+ Add Inventory", new_admin_product_inventory_item_path(product_id: product.id), class: "action-item-button"
+
+      div class: "panel-footer p-4" do
+        link_to "+ Add Inventory", new_admin_product_inventory_item_path(product_id: product.id), class: "action-item-button"
+      end
     end
 
     panel "Stocks" do
-      if product.stocks.any?
-        table_for product.stocks do
-          column :id
-          column :name
-          column :description
-          column :expires
-          column :state
-          column :status
+      div class: "panel-body" do
+        if product.stocks.any?
+          table_for product.stocks do
+            column :id
+            column :name
+            column :description
+            column :expires
+            column :state
+            column :status
+          end
+        else
+          p "No stocks added to this product"
         end
-      else
-        p "No stocks added to this product"
       end
-      link_to "+ Add Stock", new_admin_product_stock_item_path(product_id: product.id), class: "action-item-button"
+
+      div class: "panel-footer p-4" do
+        link_to "+ Add Stock", new_admin_product_stock_item_path(product_id: product.id), class: "action-item-button"
+      end
     end
 
     if product.combo_products.any?
