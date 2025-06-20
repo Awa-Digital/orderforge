@@ -4,12 +4,13 @@ ActiveAdmin.register User do
 
   actions :all, except: [:destroy]
 
-  scope :all, if: proc { current_admin_user.super_user }
-  scope :spenders, if: proc { current_admin_user.super_user }
+  scope :all, if: proc { current_admin_user.super_user? }
+  scope :spenders, if: proc { current_admin_user.super_user? }
+
   scope :my_franchise_customers,
-        default: -> { !current_admin_user.super_user },
-        if: proc { !current_admin_user.super_user } do |users|
-    users.associated_with_franchise(current_admin_user.franchise_id)
+        default: -> { !current_admin_user.super_user? },
+        if: proc { !current_admin_user.super_user? } do |users|
+    users.associated_with_franchise(current_admin_user.franchise.id)
   end
 
   filter :id

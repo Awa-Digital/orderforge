@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_05_25_171806) do
+ActiveRecord::Schema[7.0].define(version: 2025_06_20_140615) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -57,7 +57,6 @@ ActiveRecord::Schema[7.0].define(version: 2025_05_25_171806) do
     t.string "phone"
     t.string "first_name"
     t.string "last_name"
-    t.boolean "super_user"
     t.string "avatar"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -66,7 +65,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_05_25_171806) do
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer "franchise_id"
+    t.integer "department_id"
     t.index ["email"], name: "index_admin_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
   end
@@ -155,6 +154,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_05_25_171806) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "status", default: "active"
+    t.integer "franchise_id"
   end
 
   create_table "devices", force: :cascade do |t|
@@ -482,6 +482,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_05_25_171806) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "status", default: "active"
+    t.string "model"
   end
 
   create_table "staff_departments", force: :cascade do |t|

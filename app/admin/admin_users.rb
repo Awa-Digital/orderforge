@@ -1,6 +1,6 @@
 ActiveAdmin.register AdminUser do
   menu if: proc { current_admin_user.super_user? }
-  permit_params :email, :password, :password_confirmation, :phone, :first_name, :last_name, :franchise_id, :super_user
+  permit_params :email, :password, :password_confirmation, :phone, :first_name, :last_name, :franchise_id, :super_user, :department_id
 
   controller do
     def update
@@ -17,16 +17,21 @@ ActiveAdmin.register AdminUser do
     id_column
     column :email
     column :franchise
-    column :super_user
+    column :type do |admin_user|
+      if admin_user.department.franchise.present?
+        "#{admin_user.department.franchise.title} - #{admin_user.department.name}"
+      else
+        admin_user.department.name
+      end
+    end
     column :current_sign_in_at
-    column :sign_in_count
+    # column :sign_in_count
     column :created_at
     actions
   end
 
   filter :email
   filter :franchise
-  filter :super_user
   filter :current_sign_in_at
   filter :sign_in_count
   filter :created_at
@@ -37,8 +42,12 @@ ActiveAdmin.register AdminUser do
       f.input :phone
       f.input :first_name
       f.input :last_name
-      f.input :franchise
-      f.input :super_user
+      panel 'Authorization' do
+        f.input :department_id, as: :select, collection: Department.all.map { |department|
+          [department.franchise.present? ? "#{department.franchise.title} - #{department.name}" : department.name, department.id]
+        }, include_blank: false, label: "Admin Type", selected: f.object.department_id
+      end
+
       if f.object.new_record?
         f.input :password, required: true
         f.input :password_confirmation, required: true

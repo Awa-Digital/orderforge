@@ -27,7 +27,7 @@ ActiveAdmin.register Product do
       end
     else
       column "Price" do |resource|
-        franchise_price = resource.franchise_product_prices.find_by(franchise_id: current_admin_user.franchise_id)
+        franchise_price = resource.franchise_product_prices.find_by(franchise_id: current_admin_user.franchise.id)
         if franchise_price&.amount.present?
           number_to_currency(franchise_price.amount, unit: '₦', separator: '.', delimiter: ',', precision: 2)
         else
@@ -67,7 +67,7 @@ ActiveAdmin.register Product do
         end
       else
         row "Price" do |resource|
-          franchise_price = resource.franchise_product_prices.find_by(franchise_id: current_admin_user.franchise_id)
+          franchise_price = resource.franchise_product_prices.find_by(franchise_id: current_admin_user.franchise.id)
           if franchise_price&.amount.present?
             number_to_currency(franchise_price.amount, unit: '₦', separator: '.', delimiter: ',', precision: 2)
           else

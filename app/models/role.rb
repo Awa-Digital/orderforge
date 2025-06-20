@@ -8,4 +8,8 @@ class Role < ApplicationRecord
     options[:except] = [:created_at, :updated_at, :status]
     super
   end
+
+  def self.ransackable_attributes(_auth_object = nil)
+    %w[created_at id model name status updated_at]
+  end
 end

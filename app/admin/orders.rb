@@ -15,7 +15,7 @@ ActiveAdmin.register Order do
       if current_admin_user.super_user?
         super.includes(:franchise, :payment, :order_items)
       else
-        super.where(franchise_id: current_admin_user.franchise_id).includes(:franchise, :payment, :order_items)
+        super.where(franchise_id: current_admin_user.franchise.id).includes(:franchise, :payment, :order_items)
       end
     end
   end
@@ -24,7 +24,7 @@ ActiveAdmin.register Order do
     if current_admin_user.super_user?
       orders.today
     else
-      orders.today.where(franchise_id: current_admin_user.franchise_id)
+      orders.today.where(franchise_id: current_admin_user.franchise.id)
     end
   end
 
@@ -32,7 +32,7 @@ ActiveAdmin.register Order do
     if current_admin_user.super_user?
       orders.paid
     else
-      orders.paid.where(franchise_id: current_admin_user.franchise_id)
+      orders.paid.where(franchise_id: current_admin_user.franchise.id)
     end
   end
 
@@ -40,7 +40,7 @@ ActiveAdmin.register Order do
     if current_admin_user.super_user?
       orders.all
     else
-      orders.where(franchise_id: current_admin_user.franchise_id)
+      orders.where(franchise_id: current_admin_user.franchise.id)
     end
   end
 
@@ -127,9 +127,9 @@ ActiveAdmin.register Order do
     column :total do |resource|
       number_to_currency(resource.total, unit: '₦', separator: '.', delimiter: ',', precision: 2)
     end
-    column :discount_amount do |resource|
-      number_to_currency(-1 * resource.discount_amount, unit: '₦', separator: '.', delimiter: ',', precision: 2)
-    end
+    # column :discount_amount do |resource|
+    #   number_to_currency(-1 * resource.discount_amount, unit: '₦', separator: '.', delimiter: ',', precision: 2)
+    # end
     column :order_total do |resource|
       number_to_currency(resource.order_total, unit: '₦', separator: '.', delimiter: ',', precision: 2)
     end

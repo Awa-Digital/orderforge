@@ -20,7 +20,7 @@ ActiveAdmin.register Payment do
       if current_admin_user.super_user?
         super
       else
-        super.joins(:order).where(orders: { franchise_id: current_admin_user.franchise_id })
+        super.joins(:order).where(orders: { franchise_id: current_admin_user.franchise.id })
       end
     end
   end
@@ -29,7 +29,7 @@ ActiveAdmin.register Payment do
     if current_admin_user.super_user?
       payments.paid_at_today
     else
-      payments.paid_at_today.joins(:order).where(orders: { franchise_id: current_admin_user.franchise_id })
+      payments.paid_at_today.joins(:order).where(orders: { franchise_id: current_admin_user.franchise.id })
     end
   end
 
@@ -37,7 +37,7 @@ ActiveAdmin.register Payment do
     if current_admin_user.super_user?
       payments.all
     else
-      payments.joins(:order).where(orders: { franchise_id: current_admin_user.franchise_id })
+      payments.joins(:order).where(orders: { franchise_id: current_admin_user.franchise.id })
     end
   end
 

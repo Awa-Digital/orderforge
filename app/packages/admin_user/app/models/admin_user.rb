@@ -1,4 +1,5 @@
 class AdminUser < ApplicationRecord
+  delegate :can?, :cannot?, to: :ability
   include AASM
 
   # Include default devise modules. Others available are:
@@ -6,7 +7,8 @@ class AdminUser < ApplicationRecord
   devise :database_authenticatable,
          :recoverable, :rememberable, :validatable
 
-  belongs_to :franchise, optional: true
+  belongs_to :department
+  # belongs_to :franchise, through: :department
   has_many :reports
 
   # has_secure_password
@@ -14,8 +16,6 @@ class AdminUser < ApplicationRecord
             :phone,
             :first_name,
             :last_name, presence: true
-
-  validate :must_be_super_user_or_have_franchise
 
   aasm column: 'status' do
     state :active, initial: true
@@ -48,7 +48,6 @@ class AdminUser < ApplicationRecord
       reset_password_sent_at
       reset_password_token
       status
-      super_user
       updated_at
     ]
   end
@@ -57,11 +56,11 @@ class AdminUser < ApplicationRecord
     ["franchise"]
   end
 
-  private
+  def super_user?
+    department == Department.find_by(name: "Super Admin")
+  end
 
-  def must_be_super_user_or_have_franchise
-    return unless !super_user && franchise_id.blank?
-
-    errors.add(:base, "Admin user must either be a super user or belong to a franchise")
+  def franchise
+    department&.franchise
   end
 end

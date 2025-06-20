@@ -4,6 +4,7 @@
 class DeliveryArea < ApplicationRecord
   has_many :addresses
   has_many :order_addresses
+  has_many :franchises, through: :region
   belongs_to :region
 
   include StateManagement

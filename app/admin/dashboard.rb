@@ -26,7 +26,7 @@ ActiveAdmin.register_page "Dashboard" do
           if current_admin_user.super_user?
             Order.today.count
           else
-            Order.today.where(franchise_id: current_admin_user.franchise_id).count
+            Order.today.where(franchise_id: current_admin_user.franchise.id).count
           end,
           class: "text-[18px] md:text-[24px] font-bold text-slate-900 dark:text-white"
         )
@@ -38,7 +38,7 @@ ActiveAdmin.register_page "Dashboard" do
           if current_admin_user.super_user?
             User.count
           else
-            User.where("associated_franchises @> ARRAY[?]::integer[]", current_admin_user.franchise_id).count
+            User.where("associated_franchises @> ARRAY[?]::integer[]", current_admin_user.franchise.id).count
           end,
           unit: '',
           separator: '.',
@@ -53,7 +53,7 @@ ActiveAdmin.register_page "Dashboard" do
           if current_admin_user.super_user?
             Order.todays_revenue
           else
-            Order.todays_franchise_revenue(current_admin_user.franchise_id)
+            Order.todays_franchise_revenue(current_admin_user.franchise.id)
           end,
           unit: '₦',
           separator: '.',
@@ -68,7 +68,7 @@ ActiveAdmin.register_page "Dashboard" do
           if current_admin_user.super_user?
             Order.todays_delivery_revenue
           else
-            Order.todays_franchise_delivery_revenue(current_admin_user.franchise_id)
+            Order.todays_franchise_delivery_revenue(current_admin_user.franchise.id)
           end,
           unit: '₦',
           separator: '.',
@@ -111,7 +111,7 @@ ActiveAdmin.register_page "Dashboard" do
           if current_admin_user.super_user?
             Product.today_products[0..Franchise.count - 1]
           else
-            Product.franchise_today_products(current_admin_user.franchise_id)[0..Franchise.count - 1]
+            Product.franchise_today_products(current_admin_user.franchise.id)[0..Franchise.count - 1]
           end,
           class: "border-[1px] border-slate-200 dark:border-slate-700 rounded w-full"
         ) do
@@ -128,7 +128,7 @@ ActiveAdmin.register_page "Dashboard" do
           if current_admin_user.super_user?
             Order.today.limit(10)
           else
-            Order.today.where(franchise_id: current_admin_user.franchise_id).limit(10)
+            Order.today.where(franchise_id: current_admin_user.franchise.id).limit(10)
           end,
           class: "border-[1px] border-slate-200 dark:border-slate-700 rounded w-full"
         ) do
