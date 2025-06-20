@@ -1,5 +1,9 @@
 class Stock < ApplicationRecord
   include StateManagement
+  has_many :stock_inventory_items, dependent: :destroy
+  has_many :inventories, through: :stock_inventory_items
+  has_many :product_stock_items, dependent: :destroy
+  has_many :products, through: :product_stock_items
 
   validates_uniqueness_of :code
 

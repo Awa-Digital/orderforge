@@ -1,7 +1,10 @@
 class Inventory < ApplicationRecord
   include StateManagement
 
-  has_many :product_inventory_item
+  has_many :product_inventory_items
+  has_many :stock_inventory_items, dependent: :destroy
+  has_many :stocks, through: :stock_inventory_items
+  has_many :products, through: :product_inventory_items
 
   validates_uniqueness_of :code
 

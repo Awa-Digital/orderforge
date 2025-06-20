@@ -11,6 +11,7 @@ ActiveAdmin.register Stock do
   # end
 
   # For security, limit the actions that should be available
+
   actions :all, except: [:destroy]
 
   # Add or remove filters to toggle their visibility
@@ -48,6 +49,21 @@ ActiveAdmin.register Stock do
       row :created_at
       row :updated_at
       row :status
+    end
+
+    panel "Inventory Items" do
+      table_for resource.inventories do
+        column :id
+        column :code
+        column :name
+        column :description
+        column :state
+        column :expires
+        column :status
+        column :quantity do |inventory|
+          inventory.stock_inventory_items.find_by(stock_id: resource.id).quantity
+        end
+      end
     end
   end
 

@@ -16,6 +16,8 @@ class Product < ApplicationRecord
   has_many :franchise_product_prices
   has_many :combo_products, foreign_key: "combo_id"
   has_many :products, through: :combo_products, source: :product
+  has_many :product_stock_items
+  has_many :stocks, through: :product_stock_items
 
   accepts_nested_attributes_for :product_inventory_items
 

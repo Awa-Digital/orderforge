@@ -175,8 +175,8 @@ ActiveAdmin.register Product do
       end
     end
 
-    if product.inventories.any?
-      panel "Inventories" do
+    panel "Inventories" do
+      if product.inventories.any?
         table_for product.inventories do
           column :id
           column :name
@@ -185,7 +185,26 @@ ActiveAdmin.register Product do
           column :state
           column :status
         end
+      else
+        p "No inventories added to this product"
       end
+      link_to "+ Add Inventory", new_admin_product_inventory_item_path(product_id: product.id), class: "action-item-button"
+    end
+
+    panel "Stocks" do
+      if product.stocks.any?
+        table_for product.stocks do
+          column :id
+          column :name
+          column :description
+          column :expires
+          column :state
+          column :status
+        end
+      else
+        p "No stocks added to this product"
+      end
+      link_to "+ Add Stock", new_admin_product_stock_item_path(product_id: product.id), class: "action-item-button"
     end
 
     if product.combo_products.any?
