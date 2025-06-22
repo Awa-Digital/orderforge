@@ -10,6 +10,7 @@ ActiveAdmin.register ProductStockItem do
       @product_stock_item = ProductStockItem.new
       return unless params[:product_id].present?
 
+      @product_stock_item.product = Product.find(params[:product_id])
       @product_stock_item.product_id = params[:product_id]
     end
   end
@@ -53,7 +54,15 @@ ActiveAdmin.register ProductStockItem do
   form do |f|
     f.semantic_errors(*f.object.errors.attribute_names)
     f.inputs do
-      f.input :product, input_html: { disabled: params[:product_id].present? }
+      if f.object.product_id.present?
+        # Add hidden field to preserve product_id when field is disabled
+        f.input :product_id, as: :hidden
+        f.input :product,
+                selected: f.object.product_id,
+                input_html: { disabled: true }
+      else
+        f.input :product
+      end
       f.input :stock
       f.input :quantity
     end

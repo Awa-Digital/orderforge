@@ -179,12 +179,15 @@ ActiveAdmin.register Product do
       div class: "panel-body" do
         if product.inventories.any?
           table_for product.inventories do
-            column :id
+            column :code
             column :name
             column :description
             column :expires
             column :state
             column :status
+            column :quantity do |resource|
+              resource.product_inventory_items.find_by(product_id: product.id).quantity
+            end
           end
         else
           p "No inventories added to this product"
@@ -200,12 +203,15 @@ ActiveAdmin.register Product do
       div class: "panel-body" do
         if product.stocks.any?
           table_for product.stocks do
-            column :id
+            column :code
             column :name
             column :description
             column :expires
             column :state
             column :status
+            column :quantity do |resource|
+              resource.product_stock_items.find_by(product_id: product.id).quantity
+            end
           end
         else
           p "No stocks added to this product"
