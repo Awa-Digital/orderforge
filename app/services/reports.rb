@@ -52,6 +52,8 @@ class Reports
     "Order Total",
     "Payment Gateway",
     "Paid At",
+    "Updated At",
+    "Created At",
     "Affiliate Order"
   ].freeze
 
@@ -61,6 +63,7 @@ class Reports
     @file_data = CSV.generate(headers: true) do |csv|
       csv << HEADERS
       insert_orders(csv)
+      insert_sums(csv)
 
       csv << [""]
       csv << ["Products Bought in this period"]
@@ -85,9 +88,31 @@ class Reports
         order.order_total,
         order.payment&.gateway,
         order.payment&.paid_at,
+        order.updated_at,
+        order.created_at,
         order.influencer_id.present? ? "Yes" : "No"
       ]
     end
+  end
+
+  def insert_sums(csv)
+    csv << [
+      "Total Orders: #{@orders.count}",
+      "",
+      "",
+      "",
+      "",
+      "",
+      @orders.map { |o| o.total.to_d }.sum,
+      @orders.map { |o| o.delivery_charge.to_d }.sum,
+      @orders.map { |o| o.discount_amount.to_d }.sum,
+      @orders.map { |o| o.order_total.to_d }.sum,
+      "",
+      "",
+      "",
+      "",
+      ""
+    ]
   end
 
   def products_sold

@@ -9,6 +9,8 @@ ActiveAdmin.register Order do
 
   actions :all, except: [:destroy]
 
+  belongs_to :influencer, optional: true
+
   # Add controller customization to scope orders by franchise
   controller do
     def scoped_collection
@@ -20,7 +22,7 @@ ActiveAdmin.register Order do
     end
   end
 
-  scope "Today's Orders", :today, default: true do |orders|
+  scope "Today's Orders", :today, default: false do |orders|
     if current_admin_user.super_user?
       orders.today
     else
@@ -28,7 +30,7 @@ ActiveAdmin.register Order do
     end
   end
 
-  scope "All Paid Orders", :paid do |orders|
+  scope "All Paid Orders", :paid, default: true do |orders|
     if current_admin_user.super_user?
       orders.paid
     else
@@ -46,8 +48,6 @@ ActiveAdmin.register Order do
 
   config.sort_order = 'updated_at_desc'
 
-  belongs_to :influencer, optional: true
-
   sidebar 'Business Management', only: %i[show edit] do
     ul class: 'flex flex-col gap-4' do
       li link_to '🛒 Order Address', admin_order_order_address_path(order_id: resource.id, id: resource.order_address.id), class: 'action-item-button'
@@ -57,7 +57,7 @@ ActiveAdmin.register Order do
   filter :order_no
   filter :reference_eq, label: "Order Reference"
   filter :franchise, if: proc { current_admin_user.super_user? }
-  filter :updated_at, label: "Dates"
+  filter :payment_paid_at, label: "Dates", as: :date_range
   filter :status, as: :select, collection: {
     'Initiated' => 'initiated',
     'Paid' => 'paid',
@@ -92,7 +92,8 @@ ActiveAdmin.register Order do
   collection_action :generate_report, method: :post do
     filters = params[:q]
     orders = collection.except(:limit, :offset)
-    ReportTaskJob.perform_async(orders.pluck(:id), current_admin_user.id, filters)
+    params = { order_ids: orders.pluck(:id), user_id: current_admin_user.id, filters: filters }
+    ReportTaskJob.perform_async(params.to_json)
     # report = Reports.new(orders, current_admin_user, filters)
     # report.process
     redirect_to admin_orders_path, notice: 'Report generation started. You will receive an email when it is ready.'
