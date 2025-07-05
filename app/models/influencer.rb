@@ -66,7 +66,10 @@ class Influencer < ApplicationRecord
   end
 
   def credit_wallet(order)
+    return if order.paid_influencer == true
+
     amount = order.total * 0.2
+    Rails.logger.info("Credit wallet for influencer #{id} with amount #{amount}")
     update(balance: balance + amount)
     transactions.create(
       transaction_type: "credit",

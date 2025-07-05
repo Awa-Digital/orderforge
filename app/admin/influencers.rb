@@ -70,6 +70,9 @@ ActiveAdmin.register Influencer do
     column :updated_at
     column :verified
     column :affiliate_type
+    column :balance do |resource|
+      number_to_currency(resource.balance, unit: '₦', separator: '.', delimiter: ',', precision: 2)
+    end
     column "Views", :generated_views
     actions
   end
@@ -105,6 +108,16 @@ ActiveAdmin.register Influencer do
       end
       row :affiliate_link do |resource|
         link_to "Open Link", "https://jazzysburger.com?ref=#{resource.slug}"
+      end
+    end
+
+    panel "Transactions" do
+      table_for resource.transactions do
+        column :reference
+        column :amount do |resource|
+          number_to_currency(resource.amount, unit: '₦', separator: '.', delimiter: ',', precision: 2)
+        end
+        column :created_at
       end
     end
   end
