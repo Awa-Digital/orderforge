@@ -19,7 +19,9 @@ class Api::V1::UsersController < Api::V1::BaseController
   def verify_account
     account = AccountVerification.find_or_initialize_by(email: params[:email], phone: params[:phone_number])
     if account.valid_account?
-      if account.save
+      existing_user = account.user
+
+      if existing_user.present? || account.save
         account.deliver_otp
         success({ message: "OTP has been sent to the phone number '+#{params[:phone_number]}'" })
       else

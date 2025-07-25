@@ -114,6 +114,13 @@ ActiveAdmin.register Influencer do
     panel "Transactions" do
       table_for resource.transactions do
         column :reference
+        column :transaction_type do |resource|
+          status_tag resource.transaction_type, class: resource.transaction_type == 'credit' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
+        end
+        column :order_amount do |resource|
+          order = Order.find_by(reference: resource.reference.split('-')[0])
+          number_to_currency(order.total, unit: '₦', separator: '.', delimiter: ',', precision: 2) if order.present?
+        end
         column :amount do |resource|
           number_to_currency(resource.amount, unit: '₦', separator: '.', delimiter: ',', precision: 2)
         end
