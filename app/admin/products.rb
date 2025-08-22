@@ -18,7 +18,7 @@ ActiveAdmin.register Product do
     selectable_column
     id_column
     column :image do |resource|
-      image_tag(resource.image.url) if resource.image.present?
+      image_tag(resource.image.url, class: "w-10 h-10 rounded-md") if resource.image.present?
     end
     column :title
     if current_admin_user.super_user?
@@ -39,6 +39,8 @@ ActiveAdmin.register Product do
     column :subcategory
     column :combo
     column :status
+    column :start_time
+    column :end_time
     actions
   end
 
