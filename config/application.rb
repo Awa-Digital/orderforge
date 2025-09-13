@@ -14,7 +14,7 @@ module JazzyBackend
     config.autoload_paths += Dir["#{config.root}/app/lib/**"]
     # Configuration for the application, engines, and railties goes here.
     #
-    # config.assets.initialize_on_precompile = false
+    config.assets.initialize_on_precompile = false
 
     # These settings can be overridden in specific environments using the files
     # in config/environments, which are processed later.
