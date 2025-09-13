@@ -1,4 +1,6 @@
 class FranchiseAddress < ApplicationRecord
+  include Whodunit::Stampable
+
   belongs_to :franchise
   belongs_to :region
 
@@ -8,11 +10,11 @@ class FranchiseAddress < ApplicationRecord
     super
   end
 
-  def self.ransackable_attributes(auth_object = nil)
+  def self.ransackable_attributes(_auth_object = nil)
     %w[created_at franchise_id id latitude location_id longitude region_id street updated_at]
   end
 
-  def self.ransackable_associations(auth_object = nil)
+  def self.ransackable_associations(_auth_object = nil)
     %w[franchise region]
   end
 end

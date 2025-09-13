@@ -9,13 +9,9 @@ module Api
       skip_before_action :authenticate_user, only: %i[index categories hot_deals grouped show search]
       before_action :authenticate_guest, only: %i[index hot_deals categories grouped show search]
 
-      def index
-        render "products"
-      end
+      def index = render "products"
 
-      def categories
-        success({ message: 'categories fetched successfully', data: Category.all })
-      end
+      def categories = success({ message: 'categories fetched successfully', data: Category.all })
 
       def grouped
         @products = if @mobile_user.present?
@@ -34,9 +30,7 @@ module Api
         render "products"
       end
 
-      def show
-        render 'show'
-      end
+      def show = render 'show'
 
       def like
         @product.like(@mobile_user)

@@ -1,4 +1,6 @@
 class Address < ApplicationRecord
+  include Whodunit::Stampable
+
   belongs_to :user
   belongs_to :delivery_area
   # has_many :orders

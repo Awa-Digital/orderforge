@@ -1,4 +1,6 @@
 class AccountVerification < ApplicationRecord
+  include Whodunit::Stampable
+
   validates :phone, :email, presence: true
   validates :phone, :email, uniqueness: true
 

@@ -1,5 +1,6 @@
 class Category < ApplicationRecord
   include StateManagement
+  include Whodunit::Stampable
 
   mount_uploader :image, CatUploader
 

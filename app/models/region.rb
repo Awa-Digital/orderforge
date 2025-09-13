@@ -1,5 +1,7 @@
 # state
 class Region < ApplicationRecord
+  include Whodunit::Stampable
+
   belongs_to :location
   has_many :delivery_areas
   has_many :franchise_addresses

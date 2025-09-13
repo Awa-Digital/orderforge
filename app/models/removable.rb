@@ -1,4 +1,6 @@
 class Removable < ApplicationRecord
+  include Whodunit::Stampable
+
   belongs_to :order_item
   belongs_to :ingredient
 

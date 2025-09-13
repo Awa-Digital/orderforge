@@ -1,4 +1,6 @@
 class Ingredient < ApplicationRecord
+  include Whodunit::Stampable
+
   mount_uploader :icon, IconUploader
 
   has_many :product_ingredients

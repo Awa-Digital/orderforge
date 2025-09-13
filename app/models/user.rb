@@ -3,6 +3,7 @@
 # user model
 class User < ApplicationRecord
   include StateManagement
+  include Whodunit::Stampable
   mount_uploader :avatar, AvatarUploader
 
   extend FriendlyId

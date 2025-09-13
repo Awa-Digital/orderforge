@@ -1,4 +1,6 @@
 class Subcategory < ApplicationRecord
+  include Whodunit::Stampable
+
   has_many :products
   belongs_to :category
 

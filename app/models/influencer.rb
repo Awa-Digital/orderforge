@@ -1,5 +1,6 @@
 class Influencer < ApplicationRecord
   include StateManagement
+  include Whodunit::Stampable
   mount_uploader :verification_document, VerificationUploader
   mount_uploader :business_storefront_image, AffiliateStoreFrontUploader
 

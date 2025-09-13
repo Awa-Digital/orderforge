@@ -1,3 +1,75 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@config "../../../config/tailwind.config.js";
+
+@layer base {
+  * {
+    @apply border-gray-300;
+  }
+}
+
+@layer utilities {
+  /* Currency tags */
+  .status-tag[data-status="gbp"] {
+    @apply bg-blue-500 text-white uppercase;
+  }
+
+  .status-tag[data-status="usd"] {
+    @apply bg-yellow-500 text-white uppercase;
+  }
+
+  .status-tag[data-status="eur"] {
+    @apply bg-green-500 text-white uppercase;
+  }
+
+  .status-tag[data-status="cad"] {
+    @apply bg-red-500 text-white uppercase;
+  }
+
+  /* Payment status tags */
+  .status-tag[data-status="paid"] {
+    @apply bg-green-500 text-white uppercase;
+  }
+
+  .status-tag[data-status="pending"] {
+    @apply bg-yellow-500 text-white uppercase;
+  }
+
+  .status-tag[data-status="failed"] {
+    @apply bg-red-500 text-white uppercase;
+  }
+
+  .status-tag[data-status="initiated"] {
+    @apply bg-blue-500 text-white uppercase;
+  }
+
+  /* Delivery Type tags */
+  .status-tag[data-status="express"] {
+    @apply bg-blue-500 text-white uppercase;
+  }
+
+  .status-tag[data-status="next_day"] {
+    @apply bg-yellow-500 text-white uppercase;
+  }
+
+  .status-tag[data-status="max_three_days"] {
+    @apply bg-red-500 text-white uppercase;
+  }
+
+  .status-tag[data-status="custom"] {
+    @apply bg-gray-500 text-white uppercase;
+  }
+
+  /* Status tag styling based on data-status attribute */
+  .status-tag[data-status="read"] {
+    @apply bg-green-500 text-white uppercase;
+  }
+
+  .status-tag[data-status="manage"] {
+    @apply bg-yellow-500 text-white uppercase;
+  }
+
+  .status-tag[data-status="none"] {
+    @apply bg-gray-500 text-white uppercase;
+  }
+}

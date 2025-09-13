@@ -1,6 +1,6 @@
 ActiveAdmin.register FranchiseProductPrice do
   # Specify parameters which should be permitted for assignment
-  permit_params :id, :franchise_id, :product_id, :amount
+  permit_params :id, :franchise_id, :product_id, :amount, :available
 
   # For security, limit the actions that should be available
   actions :all, except: [:destroy]
@@ -38,6 +38,9 @@ ActiveAdmin.register FranchiseProductPrice do
       row :amount
       row :created_at
       row :updated_at
+      row :updated_by do |resource|
+        AdminUser.find_by(id: resource.updater_id)&.email
+      end
     end
   end
 
@@ -47,6 +50,7 @@ ActiveAdmin.register FranchiseProductPrice do
     f.inputs do
       f.input :product
       f.input :amount
+      f.input :available
     end
     f.actions
   end

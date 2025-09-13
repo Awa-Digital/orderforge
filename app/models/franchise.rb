@@ -1,5 +1,6 @@
 class Franchise < ApplicationRecord
   include StateManagement
+  include Whodunit::Stampable
   has_many :franchise_product_prices
   has_one :franchise_address
   has_many :staffs

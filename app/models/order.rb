@@ -2,6 +2,8 @@
 
 # Model for User Cart
 class Order < ApplicationRecord
+  include Whodunit::Stampable
+
   has_many :order_items, dependent: :destroy
   has_many :products, through: :order_items
   has_many :order_status_stamps, dependent: :destroy

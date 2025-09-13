@@ -2,6 +2,8 @@
 
 # auth controller
 class Auth < ApplicationRecord
+  include Whodunit::Stampable
+
   has_secure_password
 
   has_many :order_status_stamps, dependent: :destroy

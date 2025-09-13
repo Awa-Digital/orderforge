@@ -1,4 +1,6 @@
 class AffiliateView < ApplicationRecord
+  include Whodunit::Stampable
+
   belongs_to :influencer
 
   after_create :increment_generated_views_counter

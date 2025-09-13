@@ -36,10 +36,10 @@ gem 'pg'
 gem 'phone'
 gem 'prawn'
 gem 'prawn-table', '~> 0.1.0'
-gem 'puma', '~> 5.0'
+gem 'puma', '~> 6.0'
 gem 'rack-attack'
 gem 'rack-cors'
-gem 'rails', '~> 7.0.4', '>= 7.0.5.1'
+gem 'rails', '>= 8.0'
 gem 'ransack', github: 'activerecord-hackery/ransack'
 gem "redis"
 gem 'rmagick'
@@ -55,6 +55,7 @@ gem 'tailwindcss-rails'
 gem 'turbolinks', '~> 5'
 gem 'typhoeus'
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
+gem 'whodunit'
 
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]

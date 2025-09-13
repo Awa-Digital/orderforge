@@ -1,5 +1,7 @@
 # country
 class Location < ApplicationRecord
+  include Whodunit::Stampable
+
   has_many :regions
   validates_uniqueness_of :name, presence: true
 

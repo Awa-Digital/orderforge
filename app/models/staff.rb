@@ -1,4 +1,6 @@
 class Staff < ApplicationRecord
+  include Whodunit::Stampable
+
   belongs_to :franchise
   has_many :staff_departments
   has_many :departments, through: :staff_departments

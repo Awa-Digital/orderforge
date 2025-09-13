@@ -1,4 +1,6 @@
 class PasswordResetToken < ApplicationRecord
+  include Whodunit::Stampable
+
   belongs_to :user
 
   before_save :generate_token

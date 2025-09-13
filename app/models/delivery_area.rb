@@ -2,6 +2,8 @@
 
 # delivery calculations and timing
 class DeliveryArea < ApplicationRecord
+  include Whodunit::Stampable
+
   has_many :addresses
   has_many :order_addresses
   has_many :franchises, through: :region

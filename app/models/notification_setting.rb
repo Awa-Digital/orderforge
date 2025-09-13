@@ -1,4 +1,6 @@
 class NotificationSetting < ApplicationRecord
+  include Whodunit::Stampable
+
   belongs_to :user
 
   def as_json(options = {})

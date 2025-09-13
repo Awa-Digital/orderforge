@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Notification < ApplicationRecord
+  include Whodunit::Stampable
+
   belongs_to :user
 
   after_create :run_deliveries

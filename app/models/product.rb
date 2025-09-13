@@ -1,5 +1,6 @@
 class Product < ApplicationRecord
   include StateManagement
+  include Whodunit::Stampable
 
   mount_uploader :image, ProductUploader
 

@@ -1,4 +1,6 @@
 class Ad < ApplicationRecord
+  include Whodunit::Stampable
+
   mount_uploader :image, AdUploader
 
   belongs_to :product, optional: true

@@ -1,4 +1,6 @@
 class Role < ApplicationRecord
+  include Whodunit::Stampable
+
   has_many :department_roles
   has_many :departments, through: :department_roles
 

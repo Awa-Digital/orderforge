@@ -1,4 +1,6 @@
 class OrderItem < ApplicationRecord
+  include Whodunit::Stampable
+
   belongs_to :order
   belongs_to :product
   has_many :removables, dependent: :destroy

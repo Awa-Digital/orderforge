@@ -1,4 +1,6 @@
 class BankDetail < ApplicationRecord
+  include Whodunit::Stampable
+
   belongs_to :bankable, polymorphic: true
 
   after_create :save_to_paystack

@@ -1,5 +1,6 @@
 class Inventory < ApplicationRecord
   include StateManagement
+  include Whodunit::Stampable
 
   has_many :product_inventory_items
   has_many :stock_inventory_items, dependent: :destroy

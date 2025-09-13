@@ -1,4 +1,6 @@
 class FranchiseProductPrice < ApplicationRecord
+  include Whodunit::Stampable
+
   belongs_to :franchise
   belongs_to :product
 

@@ -1,4 +1,6 @@
 class OrderStatusStamp < ApplicationRecord
+  include Whodunit::Stampable
+
   belongs_to :auth
   belongs_to :order
 

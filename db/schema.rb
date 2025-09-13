@@ -10,9 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_06_20_161822) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_13_100324) do
   # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
+  enable_extension "pg_catalog.plpgsql"
 
   create_table "account_verifications", force: :cascade do |t|
     t.string "phone"
@@ -49,6 +49,10 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_20_161822) do
     t.datetime "updated_at", null: false
     t.string "house_number"
     t.integer "delivery_area_id"
+    t.bigint "creator_id"
+    t.bigint "updater_id"
+    t.index ["creator_id"], name: "index_addresses_on_creator"
+    t.index ["updater_id"], name: "index_addresses_on_updater"
     t.index ["user_id"], name: "index_addresses_on_user_id"
   end
 
@@ -66,8 +70,12 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_20_161822) do
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
     t.integer "department_id"
+    t.bigint "creator_id"
+    t.bigint "updater_id"
+    t.index ["creator_id"], name: "index_admin_users_on_creator"
     t.index ["email"], name: "index_admin_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
+    t.index ["updater_id"], name: "index_admin_users_on_updater"
   end
 
   create_table "ads", force: :cascade do |t|
@@ -78,6 +86,10 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_20_161822) do
     t.datetime "updated_at", null: false
     t.integer "product_id"
     t.string "url"
+    t.bigint "creator_id"
+    t.bigint "updater_id"
+    t.index ["creator_id"], name: "index_ads_on_creator"
+    t.index ["updater_id"], name: "index_ads_on_updater"
   end
 
   create_table "affiliate_views", force: :cascade do |t|
@@ -86,6 +98,10 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_20_161822) do
     t.string "influencer_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "creator_id"
+    t.bigint "updater_id"
+    t.index ["creator_id"], name: "index_affiliate_views_on_creator"
+    t.index ["updater_id"], name: "index_affiliate_views_on_updater"
   end
 
   create_table "auths", force: :cascade do |t|
@@ -95,6 +111,10 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_20_161822) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "account_type"
+    t.bigint "creator_id"
+    t.bigint "updater_id"
+    t.index ["creator_id"], name: "index_auths_on_creator"
+    t.index ["updater_id"], name: "index_auths_on_updater"
   end
 
   create_table "bank_details", force: :cascade do |t|
@@ -110,6 +130,10 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_20_161822) do
     t.string "country"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "creator_id"
+    t.bigint "updater_id"
+    t.index ["creator_id"], name: "index_bank_details_on_creator"
+    t.index ["updater_id"], name: "index_bank_details_on_updater"
   end
 
   create_table "categories", force: :cascade do |t|
@@ -119,6 +143,10 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_20_161822) do
     t.datetime "updated_at", null: false
     t.string "image"
     t.string "status", default: "active"
+    t.bigint "creator_id"
+    t.bigint "updater_id"
+    t.index ["creator_id"], name: "index_categories_on_creator"
+    t.index ["updater_id"], name: "index_categories_on_updater"
   end
 
   create_table "combo_products", force: :cascade do |t|
@@ -127,6 +155,10 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_20_161822) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "quantity"
+    t.bigint "creator_id"
+    t.bigint "updater_id"
+    t.index ["creator_id"], name: "index_combo_products_on_creator"
+    t.index ["updater_id"], name: "index_combo_products_on_updater"
   end
 
   create_table "delivery_areas", force: :cascade do |t|
@@ -139,6 +171,10 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_20_161822) do
     t.decimal "dawn_rate", precision: 8, scale: 2
     t.integer "region_id", default: 1
     t.string "status", default: "active"
+    t.bigint "creator_id"
+    t.bigint "updater_id"
+    t.index ["creator_id"], name: "index_delivery_areas_on_creator"
+    t.index ["updater_id"], name: "index_delivery_areas_on_updater"
   end
 
   create_table "department_roles", force: :cascade do |t|
@@ -147,6 +183,10 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_20_161822) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "status", default: "active"
+    t.bigint "creator_id"
+    t.bigint "updater_id"
+    t.index ["creator_id"], name: "index_department_roles_on_creator"
+    t.index ["updater_id"], name: "index_department_roles_on_updater"
   end
 
   create_table "departments", force: :cascade do |t|
@@ -155,6 +195,10 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_20_161822) do
     t.datetime "updated_at", null: false
     t.string "status", default: "active"
     t.integer "franchise_id"
+    t.bigint "creator_id"
+    t.bigint "updater_id"
+    t.index ["creator_id"], name: "index_departments_on_creator"
+    t.index ["updater_id"], name: "index_departments_on_updater"
   end
 
   create_table "devices", force: :cascade do |t|
@@ -165,6 +209,10 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_20_161822) do
     t.string "serial_number"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "creator_id"
+    t.bigint "updater_id"
+    t.index ["creator_id"], name: "index_devices_on_creator"
+    t.index ["updater_id"], name: "index_devices_on_updater"
   end
 
   create_table "favourite_items", force: :cascade do |t|
@@ -172,6 +220,10 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_20_161822) do
     t.integer "product_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "creator_id"
+    t.bigint "updater_id"
+    t.index ["creator_id"], name: "index_favourite_items_on_creator"
+    t.index ["updater_id"], name: "index_favourite_items_on_updater"
   end
 
   create_table "favourites", force: :cascade do |t|
@@ -189,6 +241,10 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_20_161822) do
     t.string "latitude"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "creator_id"
+    t.bigint "updater_id"
+    t.index ["creator_id"], name: "index_franchise_addresses_on_creator"
+    t.index ["updater_id"], name: "index_franchise_addresses_on_updater"
   end
 
   create_table "franchise_inventory_quantities", force: :cascade do |t|
@@ -197,6 +253,10 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_20_161822) do
     t.decimal "quantity"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "creator_id"
+    t.bigint "updater_id"
+    t.index ["creator_id"], name: "index_franchise_inventory_quantities_on_creator"
+    t.index ["updater_id"], name: "index_franchise_inventory_quantities_on_updater"
   end
 
   create_table "franchise_product_prices", force: :cascade do |t|
@@ -206,6 +266,10 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_20_161822) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "available", default: true
+    t.bigint "creator_id"
+    t.bigint "updater_id"
+    t.index ["creator_id"], name: "index_franchise_product_prices_on_creator"
+    t.index ["updater_id"], name: "index_franchise_product_prices_on_updater"
   end
 
   create_table "franchise_stock_quantities", force: :cascade do |t|
@@ -214,6 +278,10 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_20_161822) do
     t.decimal "quantity"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "creator_id"
+    t.bigint "updater_id"
+    t.index ["creator_id"], name: "index_franchise_stock_quantities_on_creator"
+    t.index ["updater_id"], name: "index_franchise_stock_quantities_on_updater"
   end
 
   create_table "franchises", force: :cascade do |t|
@@ -224,6 +292,10 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_20_161822) do
     t.string "status", default: "active"
     t.string "email"
     t.string "public_name"
+    t.bigint "creator_id"
+    t.bigint "updater_id"
+    t.index ["creator_id"], name: "index_franchises_on_creator"
+    t.index ["updater_id"], name: "index_franchises_on_updater"
   end
 
   create_table "friendly_id_slugs", force: :cascade do |t|
@@ -262,7 +334,11 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_20_161822) do
     t.string "business_name"
     t.string "business_storefront_image"
     t.string "business_address"
+    t.bigint "creator_id"
+    t.bigint "updater_id"
     t.index ["affiliate_type"], name: "index_influencers_on_affiliate_type"
+    t.index ["creator_id"], name: "index_influencers_on_creator"
+    t.index ["updater_id"], name: "index_influencers_on_updater"
   end
 
   create_table "ingredients", force: :cascade do |t|
@@ -270,6 +346,10 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_20_161822) do
     t.string "icon"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "creator_id"
+    t.bigint "updater_id"
+    t.index ["creator_id"], name: "index_ingredients_on_creator"
+    t.index ["updater_id"], name: "index_ingredients_on_updater"
   end
 
   create_table "inventories", force: :cascade do |t|
@@ -281,6 +361,10 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_20_161822) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "status", default: "active"
+    t.bigint "creator_id"
+    t.bigint "updater_id"
+    t.index ["creator_id"], name: "index_inventories_on_creator"
+    t.index ["updater_id"], name: "index_inventories_on_updater"
   end
 
   create_table "locations", force: :cascade do |t|
@@ -288,6 +372,10 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_20_161822) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "status", default: "active"
+    t.bigint "creator_id"
+    t.bigint "updater_id"
+    t.index ["creator_id"], name: "index_locations_on_creator"
+    t.index ["updater_id"], name: "index_locations_on_updater"
   end
 
   create_table "notification_settings", force: :cascade do |t|
@@ -299,6 +387,10 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_20_161822) do
     t.boolean "newsletter", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "creator_id"
+    t.bigint "updater_id"
+    t.index ["creator_id"], name: "index_notification_settings_on_creator"
+    t.index ["updater_id"], name: "index_notification_settings_on_updater"
     t.index ["user_id"], name: "index_notification_settings_on_user_id"
   end
 
@@ -313,6 +405,10 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_20_161822) do
     t.datetime "updated_at", null: false
     t.integer "order_reference"
     t.string "notification_type"
+    t.bigint "creator_id"
+    t.bigint "updater_id"
+    t.index ["creator_id"], name: "index_notifications_on_creator"
+    t.index ["updater_id"], name: "index_notifications_on_updater"
   end
 
   create_table "order_addresses", force: :cascade do |t|
@@ -327,7 +423,11 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_20_161822) do
     t.integer "delivery_area_id"
     t.integer "region_id"
     t.integer "location_id"
+    t.bigint "creator_id"
+    t.bigint "updater_id"
+    t.index ["creator_id"], name: "index_order_addresses_on_creator"
     t.index ["order_id"], name: "index_order_addresses_on_order_id"
+    t.index ["updater_id"], name: "index_order_addresses_on_updater"
   end
 
   create_table "order_items", force: :cascade do |t|
@@ -337,6 +437,10 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_20_161822) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.decimal "subtotal", precision: 8, scale: 2, default: "0.0"
+    t.bigint "creator_id"
+    t.bigint "updater_id"
+    t.index ["creator_id"], name: "index_order_items_on_creator"
+    t.index ["updater_id"], name: "index_order_items_on_updater"
   end
 
   create_table "order_status_stamps", force: :cascade do |t|
@@ -347,6 +451,10 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_20_161822) do
     t.string "action_name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "creator_id"
+    t.bigint "updater_id"
+    t.index ["creator_id"], name: "index_order_status_stamps_on_creator"
+    t.index ["updater_id"], name: "index_order_status_stamps_on_updater"
   end
 
   create_table "orders", force: :cascade do |t|
@@ -373,6 +481,10 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_20_161822) do
     t.integer "franchise_id"
     t.string "influencer_id"
     t.boolean "paid_influencer"
+    t.bigint "creator_id"
+    t.bigint "updater_id"
+    t.index ["creator_id"], name: "index_orders_on_creator"
+    t.index ["updater_id"], name: "index_orders_on_updater"
   end
 
   create_table "password_reset_tokens", force: :cascade do |t|
@@ -380,6 +492,10 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_20_161822) do
     t.string "token"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "creator_id"
+    t.bigint "updater_id"
+    t.index ["creator_id"], name: "index_password_reset_tokens_on_creator"
+    t.index ["updater_id"], name: "index_password_reset_tokens_on_updater"
   end
 
   create_table "payments", force: :cascade do |t|
@@ -398,6 +514,10 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_20_161822) do
     t.string "payment_id"
     t.integer "voucher_id"
     t.datetime "paid_at", precision: nil
+    t.bigint "creator_id"
+    t.bigint "updater_id"
+    t.index ["creator_id"], name: "index_payments_on_creator"
+    t.index ["updater_id"], name: "index_payments_on_updater"
   end
 
   create_table "product_ingredients", force: :cascade do |t|
@@ -405,8 +525,12 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_20_161822) do
     t.bigint "ingredient_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "creator_id"
+    t.bigint "updater_id"
+    t.index ["creator_id"], name: "index_product_ingredients_on_creator"
     t.index ["ingredient_id"], name: "index_product_ingredients_on_ingredient_id"
     t.index ["product_id"], name: "index_product_ingredients_on_product_id"
+    t.index ["updater_id"], name: "index_product_ingredients_on_updater"
   end
 
   create_table "product_inventory_items", force: :cascade do |t|
@@ -415,6 +539,10 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_20_161822) do
     t.decimal "quantity"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "creator_id"
+    t.bigint "updater_id"
+    t.index ["creator_id"], name: "index_product_inventory_items_on_creator"
+    t.index ["updater_id"], name: "index_product_inventory_items_on_updater"
   end
 
   create_table "product_purchase_counters", force: :cascade do |t|
@@ -422,6 +550,10 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_20_161822) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "order_item_id"
+    t.bigint "creator_id"
+    t.bigint "updater_id"
+    t.index ["creator_id"], name: "index_product_purchase_counters_on_creator"
+    t.index ["updater_id"], name: "index_product_purchase_counters_on_updater"
   end
 
   create_table "product_stock_items", force: :cascade do |t|
@@ -430,8 +562,12 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_20_161822) do
     t.integer "quantity"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "creator_id"
+    t.bigint "updater_id"
+    t.index ["creator_id"], name: "index_product_stock_items_on_creator"
     t.index ["product_id"], name: "index_product_stock_items_on_product_id"
     t.index ["stock_id"], name: "index_product_stock_items_on_stock_id"
+    t.index ["updater_id"], name: "index_product_stock_items_on_updater"
   end
 
   create_table "products", force: :cascade do |t|
@@ -448,7 +584,11 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_20_161822) do
     t.integer "end_time", default: 23
     t.string "status", default: "active"
     t.boolean "combo"
+    t.bigint "creator_id"
+    t.bigint "updater_id"
+    t.index ["creator_id"], name: "index_products_on_creator"
     t.index ["subcategory_id"], name: "index_products_on_subcategory_id"
+    t.index ["updater_id"], name: "index_products_on_updater"
   end
 
   create_table "ratings", force: :cascade do |t|
@@ -457,7 +597,11 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_20_161822) do
     t.decimal "rating", default: "0.0"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "creator_id"
+    t.bigint "updater_id"
+    t.index ["creator_id"], name: "index_ratings_on_creator"
     t.index ["product_id"], name: "index_ratings_on_product_id"
+    t.index ["updater_id"], name: "index_ratings_on_updater"
     t.index ["user_id"], name: "index_ratings_on_user_id"
   end
 
@@ -467,6 +611,10 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_20_161822) do
     t.datetime "updated_at", null: false
     t.string "name"
     t.string "status", default: "active"
+    t.bigint "creator_id"
+    t.bigint "updater_id"
+    t.index ["creator_id"], name: "index_regions_on_creator"
+    t.index ["updater_id"], name: "index_regions_on_updater"
   end
 
   create_table "removables", force: :cascade do |t|
@@ -474,8 +622,12 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_20_161822) do
     t.bigint "ingredient_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "creator_id"
+    t.bigint "updater_id"
+    t.index ["creator_id"], name: "index_removables_on_creator"
     t.index ["ingredient_id"], name: "index_removables_on_ingredient_id"
     t.index ["order_item_id"], name: "index_removables_on_order_item_id"
+    t.index ["updater_id"], name: "index_removables_on_updater"
   end
 
   create_table "reports", force: :cascade do |t|
@@ -485,6 +637,10 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_20_161822) do
     t.jsonb "filters"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "creator_id"
+    t.bigint "updater_id"
+    t.index ["creator_id"], name: "index_reports_on_creator"
+    t.index ["updater_id"], name: "index_reports_on_updater"
   end
 
   create_table "roles", force: :cascade do |t|
@@ -493,6 +649,10 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_20_161822) do
     t.datetime "updated_at", null: false
     t.string "status", default: "active"
     t.string "model"
+    t.bigint "creator_id"
+    t.bigint "updater_id"
+    t.index ["creator_id"], name: "index_roles_on_creator"
+    t.index ["updater_id"], name: "index_roles_on_updater"
   end
 
   create_table "staff_departments", force: :cascade do |t|
@@ -501,6 +661,10 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_20_161822) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "status", default: "active"
+    t.bigint "creator_id"
+    t.bigint "updater_id"
+    t.index ["creator_id"], name: "index_staff_departments_on_creator"
+    t.index ["updater_id"], name: "index_staff_departments_on_updater"
   end
 
   create_table "staffs", force: :cascade do |t|
@@ -514,6 +678,10 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_20_161822) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "status", default: "active"
+    t.bigint "creator_id"
+    t.bigint "updater_id"
+    t.index ["creator_id"], name: "index_staffs_on_creator"
+    t.index ["updater_id"], name: "index_staffs_on_updater"
   end
 
   create_table "stock_inventory_items", force: :cascade do |t|
@@ -522,6 +690,10 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_20_161822) do
     t.decimal "quantity"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "creator_id"
+    t.bigint "updater_id"
+    t.index ["creator_id"], name: "index_stock_inventory_items_on_creator"
+    t.index ["updater_id"], name: "index_stock_inventory_items_on_updater"
   end
 
   create_table "stocks", force: :cascade do |t|
@@ -533,6 +705,10 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_20_161822) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "status", default: "active"
+    t.bigint "creator_id"
+    t.bigint "updater_id"
+    t.index ["creator_id"], name: "index_stocks_on_creator"
+    t.index ["updater_id"], name: "index_stocks_on_updater"
   end
 
   create_table "subcategories", force: :cascade do |t|
@@ -540,7 +716,11 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_20_161822) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "category_id"
+    t.bigint "creator_id"
+    t.bigint "updater_id"
     t.index ["category_id"], name: "index_subcategories_on_category_id"
+    t.index ["creator_id"], name: "index_subcategories_on_creator"
+    t.index ["updater_id"], name: "index_subcategories_on_updater"
   end
 
   create_table "transactions", force: :cascade do |t|
@@ -554,6 +734,10 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_20_161822) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "transactionable_id"
+    t.bigint "creator_id"
+    t.bigint "updater_id"
+    t.index ["creator_id"], name: "index_transactions_on_creator"
+    t.index ["updater_id"], name: "index_transactions_on_updater"
   end
 
   create_table "users", force: :cascade do |t|
@@ -571,7 +755,11 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_20_161822) do
     t.string "slug"
     t.string "status", default: "active"
     t.integer "associated_franchises", default: [], array: true
+    t.bigint "creator_id"
+    t.bigint "updater_id"
+    t.index ["creator_id"], name: "index_users_on_creator"
     t.index ["slug"], name: "index_users_on_slug", unique: true
+    t.index ["updater_id"], name: "index_users_on_updater"
   end
 
   create_table "vouchers", force: :cascade do |t|
@@ -583,6 +771,10 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_20_161822) do
     t.datetime "updated_at", null: false
     t.datetime "expiration_date"
     t.string "status", default: "active"
+    t.bigint "creator_id"
+    t.bigint "updater_id"
+    t.index ["creator_id"], name: "index_vouchers_on_creator"
+    t.index ["updater_id"], name: "index_vouchers_on_updater"
   end
 
   add_foreign_key "addresses", "users"

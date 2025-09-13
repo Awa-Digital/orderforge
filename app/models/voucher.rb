@@ -1,4 +1,6 @@
 class Voucher < ApplicationRecord
+  include Whodunit::Stampable
+
   belongs_to :influencer
   has_many :payments
 
