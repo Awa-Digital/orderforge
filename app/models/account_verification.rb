@@ -13,6 +13,7 @@ class AccountVerification < ApplicationRecord
 
   def deliver_otp
     TermiiSms.new.send_otp(phone, otp)
+    OtpMailer.with(account: self).otp.deliver_later
   end
 
   def generate_email_token
