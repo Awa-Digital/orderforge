@@ -1,5 +1,5 @@
 class Voucher < ApplicationRecord
-  include Whodunit::Stampable
+  include Whodunit::Stampable if defined?(Rails::Server)
 
   belongs_to :influencer
   has_many :payments

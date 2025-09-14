@@ -1,5 +1,5 @@
 class OrderStatusStamp < ApplicationRecord
-  include Whodunit::Stampable
+  include Whodunit::Stampable if defined?(Rails::Server)
 
   belongs_to :auth
   belongs_to :order

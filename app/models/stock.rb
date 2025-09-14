@@ -1,6 +1,7 @@
 class Stock < ApplicationRecord
   include StateManagement
-  include Whodunit::Stampable
+  include Whodunit::Stampable if defined?(Rails::Server)
+
   has_many :stock_inventory_items, dependent: :destroy
   has_many :inventories, through: :stock_inventory_items
   has_many :product_stock_items, dependent: :destroy

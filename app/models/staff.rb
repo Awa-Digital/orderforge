@@ -1,5 +1,5 @@
 class Staff < ApplicationRecord
-  include Whodunit::Stampable
+  include Whodunit::Stampable if defined?(Rails::Server)
 
   belongs_to :franchise
   has_many :staff_departments

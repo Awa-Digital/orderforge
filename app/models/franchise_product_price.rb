@@ -1,5 +1,5 @@
 class FranchiseProductPrice < ApplicationRecord
-  include Whodunit::Stampable
+  include Whodunit::Stampable if defined?(Rails::Server)
 
   belongs_to :franchise
   belongs_to :product

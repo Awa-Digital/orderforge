@@ -1,5 +1,5 @@
 class Transaction < ApplicationRecord
-  include Whodunit::Stampable
+  include Whodunit::Stampable if defined?(Rails::Server)
 
   belongs_to :transactionable, polymorphic: true
 

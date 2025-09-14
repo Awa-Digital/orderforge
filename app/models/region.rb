@@ -1,6 +1,6 @@
 # state
 class Region < ApplicationRecord
-  include Whodunit::Stampable
+  include Whodunit::Stampable if defined?(Rails::Server)
 
   belongs_to :location
   has_many :delivery_areas

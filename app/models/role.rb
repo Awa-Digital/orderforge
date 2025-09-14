@@ -1,5 +1,5 @@
 class Role < ApplicationRecord
-  include Whodunit::Stampable
+  include Whodunit::Stampable if defined?(Rails::Server)
 
   has_many :department_roles
   has_many :departments, through: :department_roles

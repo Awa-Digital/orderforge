@@ -3,7 +3,8 @@
 # user model
 class User < ApplicationRecord
   include StateManagement
-  include Whodunit::Stampable
+  include Whodunit::Stampable if defined?(Rails::Server)
+
   mount_uploader :avatar, AvatarUploader
 
   extend FriendlyId

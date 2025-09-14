@@ -1,5 +1,5 @@
 class Ingredient < ApplicationRecord
-  include Whodunit::Stampable
+  include Whodunit::Stampable if defined?(Rails::Server)
 
   mount_uploader :icon, IconUploader
 

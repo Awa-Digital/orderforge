@@ -1,5 +1,5 @@
 class Subcategory < ApplicationRecord
-  include Whodunit::Stampable
+  include Whodunit::Stampable if defined?(Rails::Server)
 
   has_many :products
   belongs_to :category

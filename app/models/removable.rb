@@ -1,5 +1,5 @@
 class Removable < ApplicationRecord
-  include Whodunit::Stampable
+  include Whodunit::Stampable if defined?(Rails::Server)
 
   belongs_to :order_item
   belongs_to :ingredient

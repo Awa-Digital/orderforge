@@ -1,5 +1,5 @@
 class ProductInventoryItem < ApplicationRecord
-  include Whodunit::Stampable
+  include Whodunit::Stampable if defined?(Rails::Server)
 
   belongs_to :product
   belongs_to :inventory

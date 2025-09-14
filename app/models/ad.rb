@@ -1,5 +1,5 @@
 class Ad < ApplicationRecord
-  include Whodunit::Stampable
+  include Whodunit::Stampable if defined?(Rails::Server)
 
   mount_uploader :image, AdUploader
 

@@ -1,6 +1,6 @@
 class Product < ApplicationRecord
+  include Whodunit::Stampable if defined?(Rails::Server)
   include StateManagement
-  include Whodunit::Stampable
 
   mount_uploader :image, ProductUploader
 

@@ -2,7 +2,7 @@
 
 # delivery calculations and timing
 class DeliveryArea < ApplicationRecord
-  include Whodunit::Stampable
+  include Whodunit::Stampable if defined?(Rails::Server)
 
   has_many :addresses
   has_many :order_addresses

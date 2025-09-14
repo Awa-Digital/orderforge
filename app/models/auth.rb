@@ -2,7 +2,7 @@
 
 # auth controller
 class Auth < ApplicationRecord
-  include Whodunit::Stampable
+  include Whodunit::Stampable if defined?(Rails::Server)
 
   has_secure_password
 

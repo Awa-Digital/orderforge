@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 class Payment < ApplicationRecord
-  include Whodunit::Stampable
+  include Whodunit::Stampable if defined?(Rails::Server)
+
   belongs_to :order
   belongs_to :user, optional: true
   belongs_to :voucher, optional: true

@@ -1,5 +1,5 @@
 class Address < ApplicationRecord
-  include Whodunit::Stampable
+  include Whodunit::Stampable if defined?(Rails::Server)
 
   belongs_to :user
   belongs_to :delivery_area
@@ -14,16 +14,21 @@ class Address < ApplicationRecord
     super
   end
 
-  def city
-    delivery_area.name
-  end
-
-  def as_string
-    "#{house_number} #{street}, #{city}, #{state}"
-  end
+  def city = delivery_area.name
+  def as_string = "#{house_number} #{street}, #{city}, #{state}"
 
   def self.ransackable_attributes(_auth_object = nil)
-    %w[country created_at delivery_area_id house_number id state street updated_at user_id]
+    %w[
+      country
+      created_at
+      delivery_area_id
+      house_number
+      id
+      state
+      street
+      updated_at
+      user_id
+    ]
   end
 
   def self.ransackable_associations(_auth_object = nil)

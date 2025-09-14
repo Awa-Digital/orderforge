@@ -1,6 +1,7 @@
 class Influencer < ApplicationRecord
   include StateManagement
-  include Whodunit::Stampable
+  include Whodunit::Stampable if defined?(Rails::Server)
+
   mount_uploader :verification_document, VerificationUploader
   mount_uploader :business_storefront_image, AffiliateStoreFrontUploader
 

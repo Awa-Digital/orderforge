@@ -1,6 +1,6 @@
 class Category < ApplicationRecord
   include StateManagement
-  include Whodunit::Stampable
+  include Whodunit::Stampable if defined?(Rails::Server)
 
   mount_uploader :image, CatUploader
 

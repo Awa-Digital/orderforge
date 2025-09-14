@@ -2,7 +2,7 @@
 
 # Model for User Cart
 class Order < ApplicationRecord
-  include Whodunit::Stampable
+  include Whodunit::Stampable if defined?(Rails::Server)
 
   has_many :order_items, dependent: :destroy
   has_many :products, through: :order_items

@@ -1,3 +1,3 @@
 class FranchiseInventoryQuantity < ApplicationRecord
-  include Whodunit::Stampable
+  include Whodunit::Stampable if defined?(Rails::Server)
 end
