@@ -16,7 +16,14 @@ class Voucher < ApplicationRecord
   end
 
   def self.ransackable_attributes(_auth_object = nil)
-    %w[id influencer_id discount_rate title discount_code status]
+    %w[
+      id
+      influencer_id
+      discount_rate
+      title
+      discount_code
+      status
+    ]
   end
 
   def self.ransackable_associations(_auth_object = nil)
