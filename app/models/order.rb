@@ -50,26 +50,28 @@ class Order < ApplicationRecord
     super
   end
 
+  RANSACKABLE_ATTRIBUTES = %w[
+    id
+    user
+    address
+    status
+    paid
+    created_at
+    updated_at
+    reference
+    recipient_name
+    recipient_phone
+    total
+    recipient_email
+    processing_date
+    priority
+    order_no
+    franchise
+    franchise_id
+  ].freeze
+
   def self.ransackable_attributes(_auth_object = nil)
-    %w[
-      id
-      user
-      address
-      status
-      paid
-      created_at
-      updated_at
-      reference
-      recipient_name
-      recipient_phone
-      total
-      recipient_email
-      processing_date
-      priority
-      order_no
-      franchise
-      franchise_id
-    ]
+    RANSACKABLE_ATTRIBUTES
   end
 
   def self.ransackable_associations(_auth_object = nil)

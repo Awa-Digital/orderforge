@@ -54,6 +54,7 @@ ActiveAdmin.register Order do
     end
   end
 
+  filter :id
   filter :order_no
   filter :reference_eq, label: "Order Reference"
   filter :franchise, if: proc { current_admin_user.super_user? }
