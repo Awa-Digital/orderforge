@@ -9,43 +9,50 @@ Maintained by [Awa Digital](https://awadigital.co).
 ## Architecture
 
 ```
+packs/
+├── shared/          # OAuth identities, shared services
+├── catalog/         # Franchise page visits, catalogue extensions
+├── ordering/        # Order state machines, snapshots
+├── payments/        # Payment AASM, Stripe processing
+├── notifications/   # Unified multi-channel notification pipeline
+└── wallets/         # Franchise wallet & payout automation
+
 app/
-├── controllers/
-│   ├── api/v1/          # Customer & mobile API
-│   └── api/v2/be/       # Business admin & franchise APIs
-├── graphql/             # GraphQL API (admin & integrations)
-├── admin/               # ActiveAdmin operational console
-├── models/              # Domain models
-├── services/            # Integration services
-├── packages/            # Feature packages (Firebase, SendGrid, Slack, Receipt)
-├── mailers/             # Transactional email workflows
-└── sidekiq/             # Background jobs
+├── controllers/api/v1/          # Customer & mobile API
+├── controllers/api/v2/be/       # Business admin & franchise APIs
+├── graphql/                     # GraphQL API
+├── admin/                       # ActiveAdmin operational console
+├── services/franchise_analytics # Vendor analytics API
+└── services/stripe/             # Stripe HTTP client
 ```
 
 ### Platform domains
 
 | Domain | Capabilities |
 |--------|-------------|
-| **Customer onboarding** | Signup, email/phone OTP verification, password reset, JWT auth, user profiles & addresses |
-| **Catalogue & products** | Categories, subcategories, ingredients, combos, favourites, hot deals, franchise-specific pricing |
+| **Customer onboarding** | Signup, email/phone OTP, password reset, JWT auth, **OAuth (Google, Apple)** |
+| **Catalogue & products** | Categories, subcategories, ingredients, combos, favourites, franchise pricing |
 | **Inventory management** | Inventories, stock levels, product BOM, per-franchise quantity tracking |
-| **Order lifecycle** | Cart → payment → fulfillment pipeline with status notifications and PDF receipts |
-| **Email workflows** | SendGrid + SMTP mailers for orders, OTP, affiliates, reports; configurable sender personas |
-| **Vendor operations** | Multi-franchise model, staff & departments, franchise inventory APIs |
-| **Admin tooling** | ActiveAdmin resources, Sidekiq dashboard, GraphQL + GraphiQL (dev) |
-| **Payments** | Paystack, Flutterwave, vouchers/discounts, webhooks, payment verification |
-| **Affiliates** | Influencer program, commission tracking, affiliate links, withdrawals |
+| **Order lifecycle** | **AASM state machine**, **order snapshots** (price freeze), fulfillment pipeline |
+| **Email workflows** | SendGrid + SMTP mailers; **unified notification pipeline** (in-app, push, email) |
+| **Vendor operations** | Multi-franchise model, **franchise wallets**, payout automation, staff APIs |
+| **Admin tooling** | ActiveAdmin resources, Sidekiq dashboard, GraphQL |
+| **Payments** | Paystack, Flutterwave, **Stripe**, vouchers, webhooks |
+| **Analytics** | **Franchise analytics API** (summary, timeseries, top products, visit tracking) |
+| **Affiliates** | Influencer program, commission tracking, withdrawals |
 
 ### API surfaces
 
 | Surface | Path | Purpose |
 |---------|------|---------|
 | Customer API | `/api/v1/` | Mobile/web customer app |
+| OAuth | `POST /api/v1/auth/oauth/token_sign_in` | Google / Apple sign-in |
+| Notifications | `/api/v1/notifications` | In-app notification inbox |
+| Stripe webhooks | `POST /api/v1/payment/stripe/webhook` | Stripe payment events |
 | Business Admin API | `/api/v2/be/admin/` | Back-office operations |
-| Franchise API | `/api/v2/be/franchise/` | Location-level operations |
+| Franchise API | `/api/v2/be/franchise/:id/` | Wallet, analytics, ops |
 | GraphQL | `/graphql` | Flexible admin & integration queries |
 | ActiveAdmin | `/admin` | Internal ops console (when `ADMIN_APP=true`) |
-| Sidekiq | `/sidekiq` | Job queue monitoring |
 
 ## Quick start
 
@@ -59,29 +66,25 @@ app/
 ### Installation
 
 ```bash
-git clone https://github.com/Awa-Digital/orderforge.git
-cd orderforge
+git clone https://github.com/Awa-Digital/orderforge-engine.git
+cd orderforge-engine
 
 bundle install
 yarn install
 
 cp .env.example .env
-# Edit .env with your credentials and branding
-
 rails db:create db:migrate db:seed
-bin/dev   # or: rails server
+bin/dev
 ```
 
 ### Branding configuration
-
-All tenant-specific branding is driven by environment variables (see `.env.example`):
 
 ```bash
 APP_NAME="Your Brand"
 APP_URL="https://yourbrand.com"
 API_HOST="api.yourbrand.com"
 MEDIA_PREFIX="yourbrand"
-CORS_ORIGINS="https://app.yourbrand.com,https://admin.yourbrand.com"
+CORS_ORIGINS="https://app.yourbrand.com"
 ```
 
 ## Tech stack
@@ -89,55 +92,21 @@ CORS_ORIGINS="https://app.yourbrand.com,https://admin.yourbrand.com"
 | Layer | Technology |
 |-------|------------|
 | Framework | Rails 8, Ruby 3.2 |
-| Database | PostgreSQL |
-| API | JSON REST + GraphQL |
-| Auth | Devise (admin), JWT, BCrypt |
-| Jobs | Sidekiq + sidekiq-scheduler |
-| Payments | Paystack, Flutterwave |
-| Email | SendGrid, SMTP |
-| SMS | Termii |
-| Push | Firebase FCM |
-| Storage | CarrierWave + S3-compatible (DigitalOcean Spaces) |
-| Admin | ActiveAdmin 4, CanCanCan |
-| PDF | Prawn (receipts) |
+| Modularity | Packwerk feature packs |
+| State machines | AASM (orders & payments) |
+| Payments | Paystack, Flutterwave, Stripe |
+| Auth | JWT, OAuth (Google, Apple) |
+| Jobs | Sidekiq |
 | Monitoring | Sentry (optional) |
 
-## Secrets & security
-
-**Never commit credentials.** This repository uses environment variables for all secrets.
-
-1. Copy `.env.example` → `.env` for local development
-2. Copy `config/cloudinary.yml.example` → `config/cloudinary.yml` if using Cloudinary
-3. Copy `config/firebase-credentials.json.example` and set `FIREBASE_CREDENTIALS` path
-4. Use `RAILS_MASTER_KEY` + `config/credentials.yml.enc` for production
-
-Files gitignored by default: `.env`, `config/master.key`, `config/cloudinary.yml`, `config/firebase-credentials.json`.
-
-## Background jobs
-
-| Job | Schedule | Purpose |
-|-----|----------|---------|
-| `ClearAbandonedCartTaskJob` | Daily | Remove stale cart orders |
-| `ReportTaskJob` | Configurable | Generate operational reports |
-| `SendMarketingSmsJob` | On demand | Marketing SMS campaigns |
-
-## Development
+## Testing
 
 ```bash
-# Run tests
 bundle exec rspec
-
-# Start with CSS watchers
-bin/dev
-
-# Enable admin panel + Sidekiq UI
-ADMIN_APP=true rails server
+bundle exec rspec spec/models/payment_state_machine_spec.rb
+bundle exec rspec spec/services/
 ```
 
 ## License
 
 Proprietary — © Awa Digital. Contact [hey@awadigital.co](mailto:hey@awadigital.co) for licensing.
-
-## Contributing
-
-This is the core engine repository. Brand-specific deployments should fork or deploy OrderForge with environment configuration rather than modifying core domain logic.

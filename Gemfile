@@ -22,7 +22,7 @@ gem 'fog-aws'
 gem "formtastic", ">= 5.0.0"
 gem 'friendly_id', '~> 5.5.0'
 gem 'graphiql-rails'
-gem 'graphql'
+gem 'googleauth'
 gem 'httparty'
 gem 'importmap-rails'
 gem 'inherited_resources'

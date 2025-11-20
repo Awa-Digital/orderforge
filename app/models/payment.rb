@@ -2,6 +2,8 @@
 
 class Payment < ApplicationRecord
   include Whodunit::Stampable if defined?(Rails::Server)
+  include PaymentStateMachine
+  include PaymentStripeProcess
 
   belongs_to :order
   belongs_to :user, optional: true
@@ -70,18 +72,12 @@ class Payment < ApplicationRecord
   end
 
   def complete
-    update(paid: true)
-
-    begin
-      SlackApi.send_order_message(order) # announce the order
-    rescue StandardError => e
-      puts e
+    if may_complete?
+      complete!
+    else
+      update(paid: true, status: 'completed')
+      order.generate_completion_notification if order.present? && !order.paid?
     end
-
-    shout("Updating Involved Parties")
-
-    order.generate_completion_notification
-    shout("Done Updating Involved Parties")
   end
 
   def verify

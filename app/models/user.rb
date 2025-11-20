@@ -20,6 +20,7 @@ class User < ApplicationRecord
   has_many :popup_notifications, through: :user_popup_notification_views
   has_many :addresses, dependent: :destroy
   has_many :devices, dependent: :destroy
+  has_many :auth_identities, dependent: :destroy
   has_many :ratings, dependent: :destroy
   has_one :password_reset_token, dependent: :destroy
 

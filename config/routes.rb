@@ -53,6 +53,7 @@ Rails.application.routes.draw do
         post 'reset/update', to: 'users#reset_password'
         delete 'disable', to: 'users#disable'
         put 'avatar/update', to: 'users#update_avatar'
+        post 'oauth/token_sign_in', to: 'oauth_tokens#token_sign_in'
       end
 
       scope 'influencer' do
@@ -107,6 +108,12 @@ Rails.application.routes.draw do
         post 'add/discount', to: 'payment#attach_discount'
         post 'verify', to: 'payment#confirm'
         post 'pay/verify', to: 'payment#verify_with_webhook'
+        post 'stripe/webhook', to: 'stripe_webhooks#create'
+      end
+
+      scope 'notifications' do
+        get '', to: 'notifications#index'
+        post ':id/seen', to: 'notifications#mark_seen'
       end
 
       namespace :profile do

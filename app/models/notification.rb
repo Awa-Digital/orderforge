@@ -4,8 +4,15 @@ class Notification < ApplicationRecord
   include Whodunit::Stampable if defined?(Rails::Server)
 
   belongs_to :user
+  belongs_to :notifiable, polymorphic: true, optional: true
+  belongs_to :franchise, optional: true
+  has_many :notification_deliveries, dependent: :destroy
 
-  after_create :run_deliveries
+  after_create :run_deliveries, unless: :pipeline_notification?
+
+  def pipeline_notification?
+    kind.present?
+  end
 
   def see
     update(seen: true)

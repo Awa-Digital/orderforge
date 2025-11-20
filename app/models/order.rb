@@ -16,9 +16,7 @@ class Order < ApplicationRecord
   accepts_nested_attributes_for :order_items
   accepts_nested_attributes_for :order_address
 
-  validates :status,
-            inclusion: { in: %w[initiated paid awaiting_processing processing awaiting_packaging packaged delivering completed],
-                         message: "'%<value>s' is not a valid status" }
+  validates :status, presence: true
 
   after_create :generate_reference_id, :generate_payment, :generate_cart_address, :set_recipient
   after_update :send_update_notifications
@@ -43,6 +41,8 @@ class Order < ApplicationRecord
   include Emails
   include Notifications
   include Processing
+  include Order::StateMachine
+  include Order::Snapshot
 
   delegate :paid_at, to: :payment
 
@@ -153,7 +153,7 @@ class Order < ApplicationRecord
   def generate_completion_notification
     return if paid == true
 
-    stamp_order!
+    create_order_snapshot!
     next_order_no = Order.where(paid: true).all.count + 1
     update(status: 'paid', paid: true, order_no: next_order_no)
 

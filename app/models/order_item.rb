@@ -1,5 +1,6 @@
 class OrderItem < ApplicationRecord
   include Whodunit::Stampable if defined?(Rails::Server)
+  include OrderItemSnapshot
 
   belongs_to :order
   belongs_to :product

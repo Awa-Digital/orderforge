@@ -4,6 +4,10 @@ class Franchise < ApplicationRecord
 
   has_many :franchise_product_prices
   has_one :franchise_address
+  has_one :wallet, dependent: :destroy
+  has_many :bank_details, as: :bankable, dependent: :destroy
+  has_many :franchise_page_visits, dependent: :destroy
+  has_many :orders, dependent: :nullify
   has_many :staffs
 
   validates :title, uniqueness: true

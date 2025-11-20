@@ -26,6 +26,24 @@ module OrderForge
     config.autoload_paths += Dir[Rails.root / 'app/packages/*/spec/*']
     config.eager_load_paths << Rails.root.join('app', 'errors')
 
+    packs_path = Rails.root.join('packs')
+    Dir.glob(packs_path.join('*')).each do |pack_dir|
+      next unless File.directory?(pack_dir)
+
+      app_path = File.join(pack_dir, 'app')
+      next unless File.directory?(app_path)
+
+      Dir.glob(File.join(app_path, '*')).each do |component_path|
+        next unless File.directory?(component_path)
+
+        config.autoload_paths << component_path
+        config.eager_load_paths << component_path
+
+        concerns_path = File.join(component_path, 'concerns')
+        Rails.autoloaders.main.collapse(concerns_path) if File.directory?(concerns_path)
+      end
+    end
+
     config.middleware.use Rack::Attack
 
     config.middleware.use ActionDispatch::Flash

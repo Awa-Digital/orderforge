@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_04_30_195614) do
+ActiveRecord::Schema[8.0].define(version: 2026_07_01_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -102,6 +102,18 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_30_195614) do
     t.bigint "updater_id"
     t.index ["creator_id"], name: "index_affiliate_views_on_creator"
     t.index ["updater_id"], name: "index_affiliate_views_on_updater"
+  end
+
+  create_table "auth_identities", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "provider", null: false
+    t.string "uid", null: false
+    t.jsonb "info", default: {}, null: false
+    t.jsonb "credentials", default: {}, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["provider", "uid"], name: "index_auth_identities_on_provider_and_uid", unique: true
+    t.index ["user_id"], name: "index_auth_identities_on_user_id"
   end
 
   create_table "auths", force: :cascade do |t|
@@ -259,6 +271,18 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_30_195614) do
     t.index ["updater_id"], name: "index_franchise_inventory_quantities_on_updater"
   end
 
+  create_table "franchise_page_visits", force: :cascade do |t|
+    t.bigint "franchise_id", null: false
+    t.string "visitor_uuid", null: false
+    t.bigint "user_id"
+    t.string "path"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["franchise_id", "created_at"], name: "index_franchise_page_visits_on_franchise_id_and_created_at"
+    t.index ["franchise_id", "visitor_uuid"], name: "index_franchise_page_visits_on_franchise_id_and_visitor_uuid"
+    t.index ["franchise_id"], name: "index_franchise_page_visits_on_franchise_id"
+  end
+
   create_table "franchise_product_prices", force: :cascade do |t|
     t.integer "franchise_id"
     t.integer "product_id"
@@ -294,6 +318,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_30_195614) do
     t.string "public_name"
     t.bigint "creator_id"
     t.bigint "updater_id"
+    t.decimal "service_charge_percent", precision: 5, scale: 2, default: "20.0"
     t.index ["creator_id"], name: "index_franchises_on_creator"
     t.index ["updater_id"], name: "index_franchises_on_updater"
   end
@@ -379,6 +404,18 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_30_195614) do
     t.index ["updater_id"], name: "index_locations_on_updater"
   end
 
+  create_table "notification_deliveries", force: :cascade do |t|
+    t.bigint "notification_id", null: false
+    t.string "channel", null: false
+    t.string "status", default: "pending", null: false
+    t.text "error_message"
+    t.datetime "delivered_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["notification_id", "channel"], name: "index_notification_deliveries_on_notification_id_and_channel", unique: true
+    t.index ["notification_id"], name: "index_notification_deliveries_on_notification_id"
+  end
+
   create_table "notification_settings", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.boolean "push_notifications", default: true
@@ -408,7 +445,17 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_30_195614) do
     t.string "notification_type"
     t.bigint "creator_id"
     t.bigint "updater_id"
+    t.string "kind"
+    t.string "category"
+    t.string "channels", default: [], array: true
+    t.jsonb "channel_payloads", default: {}, null: false
+    t.string "notifiable_type"
+    t.bigint "notifiable_id"
+    t.bigint "franchise_id"
+    t.boolean "bypass_preferences", default: false, null: false
     t.index ["creator_id"], name: "index_notifications_on_creator"
+    t.index ["kind"], name: "index_notifications_on_kind"
+    t.index ["notifiable_type", "notifiable_id"], name: "index_notifications_on_notifiable_type_and_notifiable_id"
     t.index ["updater_id"], name: "index_notifications_on_updater"
   end
 
@@ -440,6 +487,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_30_195614) do
     t.decimal "subtotal", precision: 8, scale: 2, default: "0.0"
     t.bigint "creator_id"
     t.bigint "updater_id"
+    t.jsonb "snapshot", default: {}, null: false
     t.index ["creator_id"], name: "index_order_items_on_creator"
     t.index ["updater_id"], name: "index_order_items_on_updater"
   end
@@ -521,7 +569,13 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_30_195614) do
     t.datetime "paid_at", precision: nil
     t.bigint "creator_id"
     t.bigint "updater_id"
+    t.string "status", default: "pending", null: false
+    t.string "provider"
+    t.string "failure_reason"
+    t.string "sc_payment_intent_id"
+    t.string "sc_payment_secret"
     t.index ["creator_id"], name: "index_payments_on_creator"
+    t.index ["status"], name: "index_payments_on_status"
     t.index ["updater_id"], name: "index_payments_on_updater"
   end
 
@@ -780,8 +834,10 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_30_195614) do
     t.integer "associated_franchises", default: [], array: true
     t.bigint "creator_id"
     t.bigint "updater_id"
+    t.string "stripe_customer_id"
     t.index ["creator_id"], name: "index_users_on_creator"
     t.index ["slug"], name: "index_users_on_slug", unique: true
+    t.index ["stripe_customer_id"], name: "index_users_on_stripe_customer_id"
     t.index ["updater_id"], name: "index_users_on_updater"
   end
 
@@ -801,7 +857,36 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_30_195614) do
     t.index ["updater_id"], name: "index_vouchers_on_updater"
   end
 
+  create_table "wallet_transactions", force: :cascade do |t|
+    t.bigint "wallet_id", null: false
+    t.bigint "amount_cents", null: false
+    t.string "kind", null: false
+    t.string "reference", null: false
+    t.string "source_type"
+    t.bigint "source_id"
+    t.jsonb "metadata", default: {}, null: false
+    t.datetime "released_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["kind"], name: "index_wallet_transactions_on_kind"
+    t.index ["reference"], name: "index_wallet_transactions_on_reference", unique: true
+    t.index ["source_type", "source_id"], name: "index_wallet_transactions_on_source"
+    t.index ["wallet_id"], name: "index_wallet_transactions_on_wallet_id"
+  end
+
+  create_table "wallets", force: :cascade do |t|
+    t.bigint "franchise_id", null: false
+    t.bigint "available_balance_cents", default: 0, null: false
+    t.bigint "pending_balance_cents", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["franchise_id"], name: "index_wallets_on_franchise_id", unique: true
+  end
+
   add_foreign_key "addresses", "users"
+  add_foreign_key "auth_identities", "users"
+  add_foreign_key "franchise_page_visits", "franchises"
+  add_foreign_key "notification_deliveries", "notifications"
   add_foreign_key "notification_settings", "users"
   add_foreign_key "order_addresses", "orders"
   add_foreign_key "product_ingredients", "ingredients"
@@ -816,4 +901,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_30_195614) do
   add_foreign_key "subcategories", "categories"
   add_foreign_key "user_popup_notification_views", "popup_notifications"
   add_foreign_key "user_popup_notification_views", "users"
+  add_foreign_key "wallet_transactions", "wallets"
+  add_foreign_key "wallets", "franchises"
 end

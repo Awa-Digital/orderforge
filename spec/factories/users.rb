@@ -7,6 +7,13 @@ FactoryBot.define do
     password { "SamplePassword@1" }
     password_confirmation { "SamplePassword@1" }
     phone_otp { "2225" }
+
+    after(:build) do |user|
+      account = AccountVerification.find_or_initialize_by(phone: user.phone_number)
+      account.email = user.email
+      account.save!(validate: false) if account.new_record?
+      account.update_columns(otp: user.phone_otp)
+    end
   end
 end
 

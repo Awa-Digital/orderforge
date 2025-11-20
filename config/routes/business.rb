@@ -85,5 +85,16 @@ namespace :v2, path: 'v2' do
         end
       end
     end
+
+    namespace :franchise do
+      scope ":franchise_id" do
+        get "analytics/summary", to: "analytics#summary"
+        get "analytics/timeseries", to: "analytics#timeseries"
+        get "analytics/top_products", to: "analytics#top_products"
+        post "analytics/record_visit", to: "analytics#record_visit"
+        get "wallet", to: "wallet#show"
+        post "wallet/withdraw", to: "wallet#withdraw"
+      end
+    end
   end
 end
