@@ -8,6 +8,8 @@ class Franchise < ApplicationRecord
 
   validates :title, uniqueness: true
 
+  after_create :create_product_prices
+
   accepts_nested_attributes_for :franchise_address
 
   def as_json(options = {})
@@ -62,5 +64,12 @@ class Franchise < ApplicationRecord
       end
     end
     items.sort_by { |item| item[:quantity] }.reverse
+  end
+
+  def create_product_prices
+    Product.all.each do |product|
+      fp = FranchiseProductPrice.find_or_create_by(product: product, franchise: self)
+      fp.update!(amount: product.amount)
+    end
   end
 end
