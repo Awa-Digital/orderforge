@@ -15,6 +15,11 @@ ActiveAdmin.register Region do
   # For security, limit the actions that should be available
   actions :all, except: [:destroy]
 
+  # Add action item to create new delivery area
+  action_item :add_delivery_area, only: :show do
+    link_to "Add New Delivery Area", new_admin_region_delivery_area_path(region_id: resource.id), class: "action-item-button"
+  end
+
   # Add or remove filters to toggle their visibility
   filter :id
   filter :name
@@ -42,6 +47,10 @@ ActiveAdmin.register Region do
     end
 
     panel "Delivery Areas" do
+      div do
+        link_to "Add New Delivery Area", new_admin_region_delivery_area_path(region_id: region.id), class: "action-item-button"
+      end
+      br
       table_for region.delivery_areas do
         column :name
         column :day_rate

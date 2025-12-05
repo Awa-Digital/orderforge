@@ -7,8 +7,10 @@ class GraphqlController < ApplicationController
   # protect_from_forgery with: :null_session
   skip_before_action :authenticate_user
   before_action :authenticate_admin
+  skip_before_action :verify_authenticity_token
 
   include AdminAuthentication
+
   def execute
     variables = prepare_variables(params[:variables])
     query = params[:query]
