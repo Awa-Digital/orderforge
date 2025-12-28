@@ -3,7 +3,7 @@ ActiveAdmin.register_page "Dashboard" do
     if current_admin_user.super_user?
       I18n.t("active_admin.dashboard")
     else
-      "#{current_admin_user.franchise.title} Dashboard"
+      "#{current_admin_user.franchise&.title} Dashboard"
     end
   }
 
@@ -11,7 +11,7 @@ ActiveAdmin.register_page "Dashboard" do
     if current_admin_user.super_user?
       "Super Admin Dashboard"
     else
-      "#{current_admin_user.franchise.title} Dashboard"
+      "#{current_admin_user.franchise&.title} Dashboard"
     end
   } do
     # Metrics panels using divs for layout
@@ -105,7 +105,7 @@ ActiveAdmin.register_page "Dashboard" do
       end
 
       # Top Products
-      div class: "col-span-12  #{current_admin_user.super_user? ? 'md:col-span-6' : ''}" do
+      div class: "col-span-12  #{'md:col-span-6' if current_admin_user.super_user?}" do
         h3 "Today's Top Products", class: "text-[24px] font-medium text-slate-900 dark:text-white mb-4"
         table_for(
           if current_admin_user.super_user?
@@ -153,7 +153,7 @@ ActiveAdmin.register_page "Dashboard" do
           if current_admin_user.super_user?
             column :franchise do |resource|
               puts "THIS IS THE RESOURCE MISSING FRANCHISE #{resource.id}" if resource.franchise.nil?
-              status_tag resource.franchise.title, class: "bg-blue-500 dark:bg-blue-600 text-white"
+              status_tag resource.franchise&.title, class: "bg-blue-500 dark:bg-blue-600 text-white"
             end
           end
           column :total do |resource|
