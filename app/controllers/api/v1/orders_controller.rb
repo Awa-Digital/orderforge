@@ -9,6 +9,7 @@ class Api::V1::OrdersController < Api::V1::BaseController
   def cart
     @cart_render = @cart
     @message = 'Cart Fetched!'
+    Rails.logger.info("Cart from /cart: #{@cart.inspect}")
     render 'cart'
   end
 
@@ -47,6 +48,7 @@ class Api::V1::OrdersController < Api::V1::BaseController
     end
     @cart_render = Order.find(@cart.id)
     @message = 'Items have been added to cart'
+    Rails.logger.info("Cart from /add_multi: #{@cart.inspect}")
     render 'cart'
   end
 
