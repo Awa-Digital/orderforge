@@ -109,9 +109,9 @@ ActiveAdmin.register_page "Dashboard" do
         h3 "Today's Top Products", class: "text-[24px] font-medium text-slate-900 dark:text-white mb-4"
         table_for(
           if current_admin_user.super_user?
-            Product.today_products[0..Franchise.count - 1]
+            Product.today_products[0..(Franchise.count - 1)]
           else
-            Product.franchise_today_products(current_admin_user.franchise.id)[0..Franchise.count - 1]
+            Product.franchise_today_products(current_admin_user.franchise&.id)[0..(Franchise.count - 1)]
           end,
           class: "border-[1px] border-slate-200 dark:border-slate-700 rounded w-full"
         ) do
