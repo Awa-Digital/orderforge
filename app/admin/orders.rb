@@ -247,7 +247,7 @@ ActiveAdmin.register Order do
     column :reference
     column :order_no
     column :franchise do |resource|
-      resource.franchise.title
+      resource.franchise&.title
     end
     column :total, sum: true
     column :delivery_charge, sum: true
