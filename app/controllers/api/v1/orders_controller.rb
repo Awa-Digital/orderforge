@@ -1,8 +1,8 @@
 class Api::V1::OrdersController < Api::V1::BaseController
   skip_before_action :authenticate_user,
-                     only: %i[cart create_guest_cart add get_paid_cart update update_address update_franchise remove_ingredient remove attach_recipient address_areas address_regions franchises
+                     only: %i[cart create_guest_cart add_multi add get_paid_cart update update_address update_franchise remove_ingredient remove attach_recipient address_areas address_regions franchises
                               regions_areas]
-  before_action :authenticate_guest, only: %i[cart create_guest_cart get_paid_cart add update remove_ingredient update_address update_franchise franchises remove attach_recipient]
+  before_action :authenticate_guest, only: %i[cart create_guest_cart add_multi get_paid_cart add update remove_ingredient update_address update_franchise franchises remove attach_recipient]
   before_action :set_product, only: %i[add add_for_signed_in_user update remove]
   before_action :set_cart, except: [:address_areas, :get_paid_cart, :franchises]
 
