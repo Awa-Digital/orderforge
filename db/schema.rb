@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_13_100324) do
+ActiveRecord::Schema[8.0].define(version: 2025_12_28_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -483,7 +483,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_13_100324) do
     t.boolean "paid_influencer"
     t.bigint "creator_id"
     t.bigint "updater_id"
+    t.string "guest_token_hash"
     t.index ["creator_id"], name: "index_orders_on_creator"
+    t.index ["guest_token_hash"], name: "index_orders_on_guest_token_hash"
     t.index ["updater_id"], name: "index_orders_on_updater"
   end
 

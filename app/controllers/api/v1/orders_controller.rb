@@ -217,8 +217,7 @@ class Api::V1::OrdersController < Api::V1::BaseController
               puts @mobile_user.cart.id
               @mobile_user.cart
             else
-              @order = Order.find_by(id: params[:order_id])
-              create_or_find_order(@order)
+              find_or_create_guest_cart
             end
 
     # add influencer to cart if present
@@ -226,15 +225,64 @@ class Api::V1::OrdersController < Api::V1::BaseController
     @cart.update(influencer_id: affiliate.id) if affiliate
   end
 
+  def find_or_create_guest_cart
+    # First, try to find by order_id if provided (preferred method)
+    if params[:order_id].present?
+      @order = Order.find_by(id: params[:order_id])
+      return create_or_find_order(@order) if @order
+    end
+
+    # Use guest token hash to find the cart
+    guest_token_hash = extract_guest_token_hash
+    return create_new_guest_cart(guest_token_hash) unless guest_token_hash
+
+    # Find existing cart by guest_token_hash
+    existing_cart = Order.where(guest_token_hash: guest_token_hash, status: 'initiated')
+                         .where('created_at > ?', 24.hours.ago)
+                         .order(created_at: :desc)
+                         .first
+
+    return existing_cart if existing_cart
+
+    # Create new cart with guest token hash
+    create_new_guest_cart(guest_token_hash)
+  end
+
+  def extract_guest_token_hash
+    authorization_header = request.headers[:authorization]
+    return nil unless authorization_header
+
+    # Extract token from "Bearer <token>" format
+    parts = authorization_header.split
+    return nil unless parts.length >= 2
+
+    token = parts[1]
+    return nil unless token.present?
+
+    # Hash the token to create a unique identifier for this guest
+    Digest::SHA256.hexdigest(token)
+  end
+
+  def create_new_guest_cart(guest_token_hash = nil)
+    Order.create(
+      status: 'initiated',
+      franchise_id: Franchise.first.id,
+      guest_token_hash: guest_token_hash
+    )
+  end
+
   def create_or_find_order(order)
     if order.present?
       if order.status == 'initiated'
+        # Update guest_token_hash if it's missing and we have a token
+        guest_token_hash = extract_guest_token_hash
+        order.update(guest_token_hash: guest_token_hash) if guest_token_hash && order.guest_token_hash.nil?
         order
       else
-        Order.create(status: 'initiated', franchise_id: Franchise.first.id)
+        create_new_guest_cart(extract_guest_token_hash)
       end
     else
-      Order.create(status: 'initiated', franchise_id: Franchise.first.id)
+      create_new_guest_cart(extract_guest_token_hash)
     end
   end
 end
