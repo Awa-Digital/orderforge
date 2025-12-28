@@ -92,7 +92,7 @@ class Product < ApplicationRecord
   end
 
   def price(franchise_id = Franchise.first.id)
-    franchise_product_prices.find_by(franchise_id:).amount || 0.0
+    franchise_product_prices.find_by(franchise_id:)&.amount || 0.0
   end
 
   def available
@@ -103,7 +103,7 @@ class Product < ApplicationRecord
   end
 
   def available_for_franchise(franchise_id)
-    franchise_product_prices.find_by(franchise_id:).available
+    franchise_product_prices.find_by(franchise_id:)&.available || false
   end
 
   def like(user)
@@ -113,7 +113,7 @@ class Product < ApplicationRecord
   end
 
   def unlike(user)
-    user.favourite.favourite_items.find_by(product_id: id).destroy
+    user.favourite.favourite_items.find_by(product_id: id)&.destroy
   end
 
   def liked?(user)
