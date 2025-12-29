@@ -7,9 +7,7 @@ class Franchise < ApplicationRecord
   has_many :staffs
 
   validates :title, uniqueness: true
-
   after_create :create_product_prices
-
   accepts_nested_attributes_for :franchise_address
 
   def as_json(options = {})

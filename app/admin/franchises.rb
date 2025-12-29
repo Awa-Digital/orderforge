@@ -48,17 +48,22 @@ ActiveAdmin.register Franchise do
         end
 
         div class: "col-span-6 md:col-span-3 w-full p-4 bg-slate-50 dark:bg-slate-800 rounded-lg" do
-          h3 "Orders", class: "text-slate-600 dark:text-slate-300"
-          h1(
-            Order.today.where(franchise_id: resource.id).count,
-            class: "text-[18px] md:text-[24px] font-bold text-slate-900 dark:text-white"
-          )
+          h3 "Today's Orders", class: "text-slate-600 dark:text-slate-300"
+          div class: "flex justify-start items-end gap-1" do
+            h1 class: "text-[18px] md:text-[24px] font-bold text-slate-900 dark:text-white leading-none" do
+              Order.today.where(franchise_id: resource.id).count
+            end
+
+            span class: "text-slate-600 dark:text-slate-300 text-xs" do
+              "out of #{Order.today_unscoped.where(franchise_id: resource.id).count} initated orders"
+            end
+          end
         end
 
         div class: "col-span-6 md:col-span-3 w-full p-4 bg-slate-50 dark:bg-slate-800 rounded-lg" do
-          h3 "Spending Users", class: "text-slate-600 dark:text-slate-300"
+          h3 "All Time Orders", class: "text-slate-600 dark:text-slate-300"
           h2 number_to_currency(
-            User.where("associated_franchises @> ARRAY[?]::integer[]", resource.id).count,
+            Order.where(franchise_id: resource.id, paid: true).count,
             unit: '',
             separator: '.',
             delimiter: ',',

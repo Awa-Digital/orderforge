@@ -29,6 +29,7 @@ class Order < ApplicationRecord
       .where(paid: true)
       .where(payments: { paid_at: Time.zone.now.all_day }).order(updated_at: :desc)
   }
+  scope :today_unscoped, -> { where(updated_at: Time.zone.now.all_day) }
   scope :to_be_processed_today, -> { select(&:processed_today) }
   scope :stale_orders, lambda {
     where(status: ["initiated"])
