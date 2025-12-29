@@ -41,6 +41,8 @@ module Authentication
   end
 
   def authenticate_guest
+    puts '---- ----- ----- Header.'
+    puts request.headers.inspect
     authorization_header = request.headers[:authorization]
     if authorization_header
       begin
