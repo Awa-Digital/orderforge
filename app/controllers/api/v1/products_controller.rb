@@ -24,6 +24,9 @@ module Api
 
       def hot_deals
         @products = Product.hot_products(:all_time)
+        # Filter by category: only "Burgers" and "Combos"
+        allowed_categories = Category.where(title: %w[Burgers Combos]).pluck(:id)
+        @products = @products.select { |product| allowed_categories.include?(product.category_id) }
         @products = @products.select { |product| product.available_for_franchise(@cart.franchise_id) } if @cart.present? && @cart.franchise_id.present?
         @products = @products.first(8)
         @message = 'hot deals fetched successfully'
