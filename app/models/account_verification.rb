@@ -12,7 +12,12 @@ class AccountVerification < ApplicationRecord
   end
 
   def deliver_otp
-    TermiiSms.new.send_otp(phone, otp)
+    begin
+      TermiiSms.new.send_otp(phone, otp)
+    rescue StandardError => e
+      Rails.logger.error "Failed to send OTP SMS to #{phone}: #{e.message}"
+      # Continue execution - email will still be sent
+    end
     OtpMailer.with(account: self).otp.deliver_later
   end
 
