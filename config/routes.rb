@@ -80,6 +80,8 @@ Rails.application.routes.draw do
 
       scope 'cart' do
         get '', to: 'orders#cart'
+        patch '', to: 'orders#update_cart'
+        put '', to: 'orders#update_cart'
         post 'franchise', to: "orders#update_franchise"
         get 'track/:reference', to: "orders#get_paid_cart"
         post 'add', to: 'orders#add_for_signed_in_user'

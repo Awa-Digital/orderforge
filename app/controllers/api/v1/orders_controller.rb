@@ -1,8 +1,9 @@
 class Api::V1::OrdersController < Api::V1::BaseController
   skip_before_action :authenticate_user,
-                     only: %i[cart create_guest_cart add_multi add get_paid_cart update update_address update_franchise remove_ingredient remove attach_recipient address_areas address_regions franchises
+                     only: %i[cart create_guest_cart add_multi add get_paid_cart update update_cart update_address update_franchise remove_ingredient remove attach_recipient address_areas address_regions franchises
                               regions_areas]
-  before_action :authenticate_guest, only: %i[cart create_guest_cart add_multi get_paid_cart add update remove_ingredient update_address update_franchise franchises remove attach_recipient]
+  before_action :authenticate_guest,
+                only: %i[cart create_guest_cart add_multi get_paid_cart add update update_cart remove_ingredient update_address update_franchise franchises remove attach_recipient]
   before_action :set_product, only: %i[add add_for_signed_in_user update remove]
   before_action :set_cart, except: [:address_areas, :get_paid_cart, :franchises]
 
@@ -15,7 +16,9 @@ class Api::V1::OrdersController < Api::V1::BaseController
 
   def update_franchise
     @cart.update_attribute :franchise_id, params[:franchise_id]
-    @cart_render = @cart
+    clear_cart_address
+    @cart.recalculate
+    @cart_render = Order.find(@cart.id)
     @message = 'Cart Fetched!'
     render 'cart'
   end
@@ -70,7 +73,7 @@ class Api::V1::OrdersController < Api::V1::BaseController
     @item = @cart.items.find_by(product_id: @product.id)
     if @item.present?
       @item.update(quantity: params[:quantity].to_i)
-      @cart.sum_total
+      @cart.recalculate
 
       @cart_render = Order.find(@cart.id)
       @message = 'item has been updated on cart'
@@ -78,6 +81,36 @@ class Api::V1::OrdersController < Api::V1::BaseController
     else
       notfound({ message: 'No product found with this id' })
     end
+  end
+
+  # PATCH/PUT /cart — update cart (bulk items and/or recipient, franchise). Allowed for guests.
+  def update_cart
+    if params[:items].present?
+      params[:items].each do |item_params|
+        product = Product.find_by(id: item_params[:product_id])
+        next unless product
+
+        item = @cart.items.find_or_create_by(product_id: product.id)
+        item.quantity = item_params[:quantity].to_i
+        item.save!
+        add_removables(item, item_params[:removables]) if item_params[:removables].present?
+      end
+    end
+
+    if params[:recipient].present?
+      recipient = {}
+      recipient[:recipient_name] = params[:recipient][:name] if params[:recipient][:name].present?
+      recipient[:recipient_phone] = params[:recipient][:phone] if params[:recipient][:phone].present?
+      recipient[:recipient_email] = params[:recipient][:email].strip if params[:recipient][:email].present? && !@mobile_user.present?
+      @cart.update!(recipient) if recipient.any?
+    end
+
+    @cart.update_attribute(:franchise_id, params[:franchise_id]) if params[:franchise_id].present?
+
+    @cart.recalculate
+    @cart_render = Order.find(@cart.id)
+    @message = 'Cart has been updated'
+    render 'cart'
   end
 
   def add_to_cart(product_id, quantity, cart, removables)
@@ -202,6 +235,21 @@ class Api::V1::OrdersController < Api::V1::BaseController
   end
 
   private
+
+  def clear_cart_address
+    return unless @cart.order_address.present?
+
+    @cart.order_address.update!(
+      delivery_area_id: nil,
+      region_id: nil,
+      location_id: nil,
+      house_number: nil,
+      street: nil,
+      city: nil,
+      state: nil,
+      country: nil
+    )
+  end
 
   def set_product
     @product = Product.find_by(id: params[:product_id])
