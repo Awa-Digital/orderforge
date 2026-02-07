@@ -5,7 +5,7 @@ class Payment < ApplicationRecord
 
   belongs_to :order
   belongs_to :user, optional: true
-  belongs_to :voucher, optional: true
+  belongs_to :voucher, optional: true, counter_cache: :orders_count
 
   before_create :set_paid
 

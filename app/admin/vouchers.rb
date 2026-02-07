@@ -28,19 +28,26 @@ ActiveAdmin.register Voucher do
   filter :updated_at
   filter :expiration_date
   filter :status
+  filter :orders_count
 
   # Add or remove columns to toggle their visibility in the index action
   index do
     selectable_column
     id_column
-    column :title
-    column :discount_code
+    # column :title
+    column "Code", :discount_code
     column :influencer
-    column :discount_rate
-    column :created_at
-    column :updated_at
-    column :expiration_date
-    column :status
+    column "%", :discount_rate
+    column "Orders", :orders_count
+    # column :created_at
+    # column :updated_at
+    column "Expires", :expiration_date do |resource|
+      resource.expiration_date.strftime("%d %b %Y") if resource.expiration_date.present?
+      "N/A" if resource.expiration_date.blank?
+    end
+    column :status do |resource|
+      status_tag resource.status.titleize
+    end
     actions
   end
 
@@ -52,6 +59,7 @@ ActiveAdmin.register Voucher do
       row :discount_code
       row :influencer
       row :discount_rate
+      row :orders_count
       row :created_at
       row :updated_at
       row :expiration_date
@@ -67,6 +75,7 @@ ActiveAdmin.register Voucher do
       f.input :discount_code
       f.input :influencer
       f.input :discount_rate
+      f.input :orders_count, input_html: { readonly: true, disabled: true }, hint: "Number of orders using this discount (auto-updated)"
       f.input :expiration_date
       f.input :status
     end

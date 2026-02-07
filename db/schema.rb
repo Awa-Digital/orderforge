@@ -775,6 +775,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_28_120000) do
     t.string "status", default: "active"
     t.bigint "creator_id"
     t.bigint "updater_id"
+    t.integer "orders_count", default: 0, null: false
     t.index ["creator_id"], name: "index_vouchers_on_creator"
     t.index ["updater_id"], name: "index_vouchers_on_updater"
   end

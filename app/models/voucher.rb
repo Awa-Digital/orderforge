@@ -23,6 +23,7 @@ class Voucher < ApplicationRecord
       title
       discount_code
       status
+      orders_count
     ]
   end
 
