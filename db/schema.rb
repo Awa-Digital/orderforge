@@ -336,6 +336,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_28_120000) do
     t.string "business_address"
     t.bigint "creator_id"
     t.bigint "updater_id"
+    t.decimal "commission_rate", precision: 5, scale: 2, default: "20.0", null: false
     t.index ["affiliate_type"], name: "index_influencers_on_affiliate_type"
     t.index ["creator_id"], name: "index_influencers_on_creator"
     t.index ["updater_id"], name: "index_influencers_on_updater"

@@ -130,7 +130,11 @@ class Order < ApplicationRecord
     update(status: 'paid', paid: true, order_no: next_order_no)
 
     OrderMailer.with(reference:).coy_order_email.deliver
-    influencer&.credit_wallet(self)
+    if influencer.present?
+      influencer.credit_wallet(self)
+      purchase_email = InfluencerMailer.with(order_id: id).purchase_notification
+      purchase_email.deliver if purchase_email
+    end
     update(paid_influencer: true)
 
     return if user_id.nil?

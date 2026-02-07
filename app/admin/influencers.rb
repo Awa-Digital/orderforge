@@ -11,7 +11,9 @@ ActiveAdmin.register Influencer do
                 :verified,
                 :verification_video_url,
                 :verification_document,
-                :status
+                :status,
+                :commission_rate,
+                :slug
 
   actions :all, except: []
 
@@ -58,6 +60,7 @@ ActiveAdmin.register Influencer do
 
   filter :id
   filter :name
+  filter :slug
   filter :instagram_handle
   filter :twitter_handle
   filter :email
@@ -66,12 +69,16 @@ ActiveAdmin.register Influencer do
     selectable_column
     id_column
     column :name
+    column :slug
     column :email
     column :updated_at
     column :verified
     column :affiliate_type
     column :balance do |resource|
       number_to_currency(resource.balance, unit: '₦', separator: '.', delimiter: ',', precision: 2)
+    end
+    column :commission_rate do |resource|
+      "#{resource.commission_rate}%"
     end
     column "Views", :generated_views
     actions
@@ -102,10 +109,14 @@ ActiveAdmin.register Influencer do
       row :verification_video_link
       row :verification_type
       row :affiliate_type
+      row :commission_rate do |resource|
+        "#{resource.commission_rate}%"
+      end
       row :business_name
       row :verification_document do |resource|
         image_tag(resource.verification_document.url) if resource.verification_document.present?
       end
+      row :slug
       row :affiliate_link do |resource|
         link_to "Open Link", "https://jazzysburger.com?ref=#{resource.slug}"
       end
@@ -140,6 +151,8 @@ ActiveAdmin.register Influencer do
       f.input :twitter_handle
       f.input :email
       f.input :verified
+      f.input :commission_rate, hint: "Commission percentage (e.g. 20 for 20%). Default: 20%"
+      f.input :slug, hint: "Unique ref for affiliate link (e.g. jazzys → https://jazzysburger.com?ref=jazzys). Leave blank to generate from name (e.g. 'Jane Doe' → 'jane-doe')."
       f.input :password
       f.input :password_confirmation
       f.input :status, as: :select, collection: %w[active deactivated], include_blank: false

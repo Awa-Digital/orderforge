@@ -1,6 +1,9 @@
 class Influencer < ApplicationRecord
   include StateManagement
   include Whodunit::Stampable if defined?(Rails::Server)
+  extend FriendlyId
+
+  friendly_id :name, use: :slugged
 
   mount_uploader :verification_document, VerificationUploader
   mount_uploader :business_storefront_image, AffiliateStoreFrontUploader
@@ -14,6 +17,7 @@ class Influencer < ApplicationRecord
   has_secure_password validations: false
 
   validates :email, uniqueness: true
+  validates :slug, presence: true
 
   validates :name,
             :instagram_handle,
@@ -22,7 +26,6 @@ class Influencer < ApplicationRecord
             :verification_document,
             :phone_number, presence: true
 
-  before_create :generate_slug
   after_create :generate_bank_detail
 
   scope :verified, -> { where(verified: true) }
@@ -35,7 +38,7 @@ class Influencer < ApplicationRecord
   end
 
   def self.ransackable_attributes(_auth_object = nil)
-    %w[id name instagram_handle twitter_handle email]
+    %w[id name slug instagram_handle twitter_handle email]
   end
 
   def self.ransackable_associations(_auth_object = nil)
@@ -70,7 +73,8 @@ class Influencer < ApplicationRecord
   def credit_wallet(order)
     return if order.paid_influencer == true
 
-    amount = order.total * 0.2
+    rate = (commission_rate.presence || 20) / 100.0
+    amount = order.total * rate
     Rails.logger.info("Credit wallet for influencer #{id} with amount #{amount}")
     update(balance: balance + amount)
     transactions.create(
@@ -99,13 +103,6 @@ class Influencer < ApplicationRecord
   end
 
   private
-
-  def generate_slug
-    loop do
-      self.slug = SecureRandom.alphanumeric(6).downcase
-      break unless Influencer.exists?(slug: slug)
-    end
-  end
 
   def affiliate_link
     "https://jazzysburger.com?ref=#{slug}"
