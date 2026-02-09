@@ -13,6 +13,7 @@ json.data do
   json.discounted_price @cart.discounted_price
   json.vat_charge @cart.vat_charge.to_s
   json.delivery_charge @cart.delivery_charge.to_s
+  json.free_delivery @cart.free_delivery
   json.recipient do
     json.name @cart.recipient_name
     json.phone @cart.recipient_phone

@@ -69,6 +69,7 @@ class Order < ApplicationRecord
     order_no
     franchise
     franchise_id
+    free_delivery
   ].freeze
 
   def self.ransackable_attributes(_auth_object = nil)

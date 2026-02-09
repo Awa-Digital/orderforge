@@ -13,6 +13,8 @@ module Calculations
   end
 
   def delivery_charge
+    return 0.00 if free_delivery?
+
     @addr = order_address
     if @addr.present?
       return 0.00 unless @addr.delivery_area_id.present?
