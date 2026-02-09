@@ -107,9 +107,7 @@ class Api::V1::OrdersController < Api::V1::BaseController
 
     @cart.update_attribute(:franchise_id, params[:franchise_id]) if params[:franchise_id].present?
 
-    if params.key?(:free_delivery)
-      @cart.update!(free_delivery: ActiveModel::Type::Boolean.new.cast(params[:free_delivery]))
-    end
+    @cart.update!(free_delivery: ActiveModel::Type::Boolean.new.cast(params[:free_delivery])) if params.key?(:free_delivery)
 
     @cart.recalculate
     @cart_render = Order.find(@cart.id)

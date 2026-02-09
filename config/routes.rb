@@ -38,6 +38,8 @@ Rails.application.routes.draw do
     draw('business')
     # API for Mobile App
     namespace :v1, path: 'v1' do
+      get 'config', to: 'users#app_config'
+
       scope 'auth' do
         post "influencer/signup", to: "influencer#signup"
         post "influencer/login", to: "influencer#login"

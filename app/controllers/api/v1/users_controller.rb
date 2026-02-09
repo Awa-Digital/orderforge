@@ -2,6 +2,14 @@
 class Api::V1::UsersController < Api::V1::BaseController
   skip_before_action :authenticate_user, except: %i[show update disable update_avatar]
 
+  def app_config
+    render json: {
+      features: {
+        free_delivery: false
+      }
+    }
+  end
+
   def signup
     @user = User.new(user_params)
     @user.email = user_params[:email].downcase.gsub(' ', '')
