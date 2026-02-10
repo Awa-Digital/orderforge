@@ -123,6 +123,11 @@ Rails.application.routes.draw do
           post 'devices/new', to: 'notification#register_device'
         end
 
+        scope 'popup-notifications' do
+          get 'unseen', to: 'popup_notifications#unseen'
+          post 'views', to: 'popup_notifications#create_view'
+        end
+
         scope 'transactions' do
           get 'all', to: 'transactions#index'
           get 'show', to: 'transactions#show'

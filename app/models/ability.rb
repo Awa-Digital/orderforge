@@ -56,6 +56,9 @@ class Ability
   end
 
   def admin_user_abilities(admin_user)
+    # Super Admins get full control over popup notifications
+    can :manage, PopupNotification if admin_user.super_user?
+
     admin_user.department.abilities.each do |ability_hash|
       ability_hash.each do |model_name, action|
         model_klass = model_name.constantize

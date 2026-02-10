@@ -16,6 +16,8 @@ class User < ApplicationRecord
   has_one :favourite, dependent: :destroy
   has_one :notification_setting, dependent: :destroy
   has_many :notifications
+  has_many :user_popup_notification_views, dependent: :destroy
+  has_many :popup_notifications, through: :user_popup_notification_views
   has_many :addresses, dependent: :destroy
   has_many :devices, dependent: :destroy
   has_many :ratings, dependent: :destroy

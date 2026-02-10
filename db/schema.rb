@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_02_08_120000) do
+ActiveRecord::Schema[8.0].define(version: 2026_02_10_121100) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -524,6 +524,14 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_08_120000) do
     t.index ["updater_id"], name: "index_payments_on_updater"
   end
 
+  create_table "popup_notifications", force: :cascade do |t|
+    t.string "image"
+    t.string "url"
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "product_ingredients", force: :cascade do |t|
     t.bigint "product_id", null: false
     t.bigint "ingredient_id", null: false
@@ -744,6 +752,16 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_08_120000) do
     t.index ["updater_id"], name: "index_transactions_on_updater"
   end
 
+  create_table "user_popup_notification_views", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "popup_notification_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["popup_notification_id"], name: "index_user_popup_notification_views_on_popup_notification_id"
+    t.index ["user_id", "popup_notification_id"], name: "index_user_popup_notification_views_on_user_and_popup", unique: true
+    t.index ["user_id"], name: "index_user_popup_notification_views_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "first_name"
     t.string "last_name"
@@ -795,4 +813,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_08_120000) do
   add_foreign_key "removables", "ingredients"
   add_foreign_key "removables", "order_items"
   add_foreign_key "subcategories", "categories"
+  add_foreign_key "user_popup_notification_views", "popup_notifications"
+  add_foreign_key "user_popup_notification_views", "users"
 end
