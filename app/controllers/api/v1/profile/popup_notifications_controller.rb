@@ -1,5 +1,15 @@
 class Api::V1::Profile::PopupNotificationsController < Api::V1::Profile::BaseController
-  before_action :authenticate_user
+  before_action :authenticate_user, except: :index
+  before_action :authenticate_guest, only: :index
+
+  def index
+    notifications = PopupNotification.limit(10)
+    render json: {
+      success: true,
+      message: 'Popup notifications fetched',
+      data: notifications
+    }
+  end
 
   # GET /api/v1/profile/popup-notifications/unseen
   def unseen

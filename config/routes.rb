@@ -124,6 +124,7 @@ Rails.application.routes.draw do
         end
 
         scope 'popup-notifications' do
+          get '', to: 'popup_notifications#index'
           get 'unseen', to: 'popup_notifications#unseen'
           post 'views', to: 'popup_notifications#create_view'
         end
