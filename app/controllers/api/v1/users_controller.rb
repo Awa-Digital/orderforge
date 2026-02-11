@@ -3,11 +3,7 @@ class Api::V1::UsersController < Api::V1::BaseController
   skip_before_action :authenticate_user, except: %i[show update disable update_avatar]
 
   def app_config
-    render json: {
-      features: {
-        free_delivery: false
-      }
-    }
+    render json: { features: { free_delivery: true } }
   end
 
   def signup
