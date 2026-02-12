@@ -14,5 +14,5 @@ class PopupNotificationUploader < CarrierWave::Uploader::Base
   end
 
   # Adjust size as needed for popup images
-  process resize_to_fit: [736, 314]
+  process resize_to_fit: [880, 960]
 end
