@@ -16,7 +16,7 @@ ActiveAdmin.register Voucher do
   # For security, limit the actions that should be available
   actions :all, except: [:destroy]
   scope "Active Discounts", :all, default: true
-  scope "Previous Discounts", :unscoped
+  scope "Expired", :expired
 
   # Add or remove filters to toggle their visibility
   filter :id
@@ -42,8 +42,8 @@ ActiveAdmin.register Voucher do
     # column :created_at
     # column :updated_at
     column "Expires", :expiration_date do |resource|
-      resource.expiration_date.strftime("%d %b %Y") if resource.expiration_date.present?
-      "N/A" if resource.expiration_date.blank?
+      text_node resource.expiration_date.strftime("%d %b %Y at %I:%M %p") if resource.expiration_date.present?
+      text_node "N/A" if resource.expiration_date.blank?
     end
     column :status do |resource|
       status_tag resource.status.titleize
@@ -80,5 +80,11 @@ ActiveAdmin.register Voucher do
       f.input :status
     end
     f.actions
+  end
+
+  controller do
+    def find_resource
+      Voucher.unscoped.find(params[:id])
+    end
   end
 end

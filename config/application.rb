@@ -40,6 +40,8 @@ module JazzyBackend
     config.active_job.queue_adapter = :sidekiq
     config.api_only = true
 
+    Rack::Attack.enabled = false
+
     # config.eager_load_paths << Rails.root.join("extras")
   end
 end
