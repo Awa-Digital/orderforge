@@ -5,7 +5,7 @@
     A payment for an order has been received for <b><%=@order.recipient_name%></b>
   </p>
 <br>
-<h4 style="color: #FF2709">ORDER NUMBER: <%= @order.order_no %></h4>
+<h4 style="color: #FF2709">ORDER NUMBER: #<%= @order.id.to_s.rjust(8, '0') %></h4>
   <p class="user-greeting-info">
     Contact the customer to confirm the details of the order before proceeding with processing it.
   </p>
