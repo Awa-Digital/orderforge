@@ -1,3 +1,5 @@
+require "csv"
+
 class Reports
   attr_accessor :orders, :requester, :csv_url
 
@@ -75,6 +77,7 @@ class Reports
 
   def insert_orders(csv)
     @orders.each do |order|
+      stamp = order.order_stamp || {}
       csv << [
         order.id,
         order.recipient_name,
@@ -82,10 +85,10 @@ class Reports
         order.reference,
         order.order_no,
         order.franchise&.title,
-        order.total,
-        order.delivery_charge,
-        order.discount_amount,
-        order.order_total,
+        stamp["subtotal"],
+        stamp["delivery_charge"],
+        stamp["discount_amount"],
+        stamp["order_total"],
         order.payment&.gateway,
         order.payment&.paid_at,
         order.updated_at,
@@ -103,10 +106,10 @@ class Reports
       "",
       "",
       "",
-      @orders.map { |o| o.total.to_d }.sum,
-      @orders.map { |o| o.delivery_charge.to_d }.sum,
-      @orders.map { |o| o.discount_amount.to_d }.sum,
-      @orders.map { |o| o.order_total.to_d }.sum,
+      @orders.map { |o| o.order_stamp&.dig("subtotal").to_d }.sum,
+      @orders.map { |o| o.order_stamp&.dig("delivery_charge").to_d }.sum,
+      @orders.map { |o| o.order_stamp&.dig("discount_amount").to_d }.sum,
+      @orders.map { |o| o.order_stamp&.dig("order_total").to_d }.sum,
       "",
       "",
       "",
@@ -119,8 +122,10 @@ class Reports
     products = {}
 
     @orders.each do |order|
-      order.order_items.each do |item|
-        item.product.combo_products.any? ? products_in_combo(products, item) : direct_products_sold(products, item)
+      next unless order.order_stamp&.dig("items")
+
+      order.order_stamp["items"].each do |item|
+        item["combo_items"]&.any? ? products_in_combo(products, item) : direct_products_sold(products, item)
       end
     end
 
@@ -128,26 +133,20 @@ class Reports
   end
 
   def products_in_combo(products, item)
-    item.product.combo_products.each do |combo_product|
-      unless products[combo_product.product_id]
-        products[combo_product.product_id] = {
-          id: combo_product.product_id,
-          title: combo_product.product.title,
-          count: 0
-        }
+    item["combo_items"].each do |combo_item|
+      product_id = combo_item["product_id"]
+      unless products[product_id]
+        products[product_id] = { id: product_id, title: combo_item["product_name"], count: 0 }
       end
-      products[combo_product.product_id][:count] += item.quantity * combo_product.quantity
+      products[product_id][:count] += item["quantity"] * combo_item["quantity"]
     end
   end
 
   def direct_products_sold(products, item)
-    unless products[item.product.id]
-      products[item.product.id] = {
-        id: item.product.id,
-        title: item.product.title,
-        count: 0
-      }
+    product_id = item["product_id"]
+    unless products[product_id]
+      products[product_id] = { id: product_id, title: item["product_name"], count: 0 }
     end
-    products[item.product.id][:count] += item.quantity
+    products[product_id][:count] += item["quantity"]
   end
 end

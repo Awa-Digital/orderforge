@@ -44,6 +44,8 @@ class Order < ApplicationRecord
   include Notifications
   include Processing
 
+  delegate :paid_at, to: :payment
+
   def as_json(options = {})
     options[:methods] =
       %i[next_step next_action delivery_charge vat_charge delivery_address discount_amount discounted_price order_items payment]
@@ -124,9 +126,34 @@ class Order < ApplicationRecord
     !user.present?
   end
 
+  def stamp_order!
+    update(order_stamp: {
+             items: order_items.map do |item|
+               combo_items = item.product.combo_products.map do |cp|
+                 { product_id: cp.product_id, product_name: cp.product.title, quantity: cp.quantity }
+               end
+               {
+                 product_id: item.product_id,
+                 product_name: item.product.title,
+                 quantity: item.quantity,
+                 unit_price: item.product.price(franchise_id).to_s,
+                 subtotal: item.subtotal.to_s,
+                 combo_items: combo_items
+               }
+             end,
+             subtotal: total.to_s,
+             delivery_charge: delivery_charge.to_s,
+             vat_charge: vat_charge.to_s,
+             discount_amount: discount_amount.to_s,
+             order_total: order_total.to_s,
+             stamped_at: Time.current.iso8601
+           })
+  end
+
   def generate_completion_notification
     return if paid == true
 
+    stamp_order!
     next_order_no = Order.where(paid: true).all.count + 1
     update(status: 'paid', paid: true, order_no: next_order_no)
 

@@ -58,7 +58,8 @@ ActiveAdmin.register Order do
   filter :order_no
   filter :reference_eq, label: "Order Reference"
   filter :franchise, if: proc { current_admin_user.super_user? }
-  filter :payment_paid_at, label: "Dates", as: :date_range
+  filter :payment_paid_at_gteq, label: "Start Date", as: :date_picker
+  filter :payment_paid_at_lteq_end_of_day, label: "End Date", as: :date_picker
   filter :status, as: :select, collection: {
     'Initiated' => 'initiated',
     'Paid' => 'paid',
@@ -135,7 +136,7 @@ ActiveAdmin.register Order do
     column :order_total do |resource|
       number_to_currency(resource.order_total, unit: '₦', separator: '.', delimiter: ',', precision: 2)
     end
-    column :updated_at
+    column :paid_at, sortable: true
     actions
   end
 
