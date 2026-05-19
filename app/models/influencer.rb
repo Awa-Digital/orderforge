@@ -22,9 +22,10 @@ class Influencer < ApplicationRecord
   validates :name,
             :instagram_handle,
             :email,
-            :verification_type,
-            :verification_document,
             :phone_number, presence: true
+
+  validates :verification_document, presence: true, allow_blank: true
+  validates :verification_type, presence: true, allow_blank: true
 
   after_create :generate_bank_detail
 
