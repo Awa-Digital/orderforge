@@ -42,8 +42,15 @@ yarn-debug.log*
 .yarn-integrity
 
 .env
+.env.*
+!.env.example
 receipt.pdf
 .vscode/settings.json
+.idea/
+/config/cloudinary.yml
+/config/jazzy-burger-fcm-key.json
+/config/firebase-credentials.json
+/config/master.key
 
 /public/packs
 /public/packs-test

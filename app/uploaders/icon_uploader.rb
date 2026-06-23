@@ -3,11 +3,11 @@ class IconUploader < CarrierWave::Uploader::Base
   storage :fog
 
   def public_id
-    "JJB/#{ENV.fetch('MEDIA_SUBFOLDER', nil)}/ingredients/ing_#{model.id}"
+    "#{AppBranding::MEDIA_PREFIX}/#{ENV.fetch('MEDIA_SUBFOLDER', nil)}/ingredients/ing_#{model.id}"
   end
 
   def store_dir
-    "JJB/#{ENV.fetch('MEDIA_SUBFOLDER', nil)}/ingredients/ing_#{model.id}"
+    "#{AppBranding::MEDIA_PREFIX}/#{ENV.fetch('MEDIA_SUBFOLDER', nil)}/ingredients/ing_#{model.id}"
   end
 
   # Provide a default URL as a default if there hasn't been a file uploaded:

@@ -9,7 +9,7 @@ class TermiiSms
     datas = {
       'to' => recipient,
       'from' => 'N-Alert',
-      'sms' => "Your Jazzy Burger confirmation code is #{otp}. Valid for 10 minutes, one-time use only.",
+      'sms' => "Your #{AppBranding::NAME} confirmation code is #{otp}. Valid for 10 minutes, one-time use only.",
       'type' => 'plain',
       'channel' => 'dnd',
       'api_key' => ENV.fetch('TERMII_KEY', nil)

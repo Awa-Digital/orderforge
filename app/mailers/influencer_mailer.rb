@@ -8,7 +8,7 @@ class InfluencerMailer < ApplicationMailer
 
     mail(
       to: @user.email,
-      from: "Jazzy's Burger <#{@delivery_options[:user_name]}>",
+      from: "#{AppBranding::NAME} <#{@delivery_options[:user_name]}>",
       subject: "Next Steps to get your affiliate account approved",
       delivery_method_options: @delivery_options
     )
@@ -23,7 +23,7 @@ class InfluencerMailer < ApplicationMailer
 
     mail(
       to: @user.email,
-      from: "Jazzy's Burger <#{@delivery_options[:user_name]}>",
+      from: "#{AppBranding::NAME} <#{@delivery_options[:user_name]}>",
       subject: "Affiliate Account Approved",
       delivery_method_options: @delivery_options
     )
@@ -44,7 +44,7 @@ class InfluencerMailer < ApplicationMailer
 
     mail(
       to: @user.email,
-      from: "Jazzy's Burger <#{@delivery_options[:user_name]}>",
+      from: "#{AppBranding::NAME} <#{@delivery_options[:user_name]}>",
       subject: "#{@first_name}, You earned ₦#{ActiveSupport::NumberHelper.number_to_delimited(@commission_amount)}.",
       delivery_method_options: @delivery_options
     )

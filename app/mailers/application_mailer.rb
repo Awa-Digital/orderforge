@@ -1,5 +1,5 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: 'noreply@jazzysburger.com'
+  default from: AppBranding::NOREPLY_EMAIL
   layout 'mailer'
 
   EMAIL = {

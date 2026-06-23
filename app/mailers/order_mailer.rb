@@ -17,9 +17,9 @@ class OrderMailer < ApplicationMailer
     @order = Order.find_by(reference: params[:reference])
     @preheader = 'A user just paid for an order'
 
-    cc_emails = @order.franchise&.email ? ['dispatch@jazzysburger.com', @order.franchise.email] : 'dispatch@jazzysburger.com'
+    cc_emails = @order.franchise&.email ? [AppBranding::DISPATCH_EMAIL, @order.franchise.email] : AppBranding::DISPATCH_EMAIL
     mail(
-      to: 'orders@jazzysburger.com',
+      to: AppBranding::OPS_EMAIL,
       cc: cc_emails, subject: "An order has been placed  - #{@order.reference}",
       delivery_method_options: @delivery_options
     )

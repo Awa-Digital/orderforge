@@ -71,7 +71,7 @@ module SendgridApi
 
     def self_personalization(data)
       personalization = SendGrid::Personalization.new
-      personalization.add_to(SendGrid::Email.new(email: 'orders@jazzysburger.com', name: "Operations"))
+      personalization.add_to(SendGrid::Email.new(email: AppBranding::OPS_EMAIL, name: 'Operations'))
       personalization.add_dynamic_template_data(JSON.parse(data.to_json))
       personalization
     end
@@ -100,7 +100,7 @@ module SendgridApi
     end
 
     def init(reciever_email, subject_var, content, email_type)
-      from = SendGrid::Email.new(email: 'uchenna@callphoneng.com')
+      from = SendGrid::Email.new(email: AppBranding::SENDGRID_FROM_EMAIL)
       to = SendGrid::Email.new(email: reciever_email)
       subject = subject_var
       content = SendGrid::Content.new(type: email_type, value: content)
@@ -108,9 +108,9 @@ module SendgridApi
     end
 
     def set_senders
-      @noreply = 'noreply@jazzysjuicyburgers.com'
-      @status = 'status@jazzysburger.com'
-      @noreply_title = "Jazzy's Burger"
+      @noreply = AppBranding::SENDGRID_FROM_EMAIL
+      @status = AppBranding::STATUS_EMAIL
+      @noreply_title = AppBranding::NAME
       @status_title = 'Order Status'
     end
   end

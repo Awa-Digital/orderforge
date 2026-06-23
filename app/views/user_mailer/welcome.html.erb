@@ -1,18 +1,19 @@
 <div id="receipt-body">
-  <div class="ad">
-    <img src="https://awa-apps.fra1.cdn.digitaloceanspaces.com/JJB%2Fpublic-space%2Fwelcome.png" alt="welcome to jazzy burger email" />
-  </div>
-  <h3>Welcome to Jazzy Burger!</h3>
+  <% if AppBranding::MEDIA_CDN_URL.present? %>
+    <div class="ad">
+      <img src="<%= AppBranding::MEDIA_CDN_URL %>/welcome.png" alt="welcome email" />
+    </div>
+  <% end %>
+  <h3>Welcome to <%= AppBranding::NAME %>!</h3>
   <p class="user-greeting">Hello <%=@user.first_name%>,</p>
   <p class="user-greeting-info">
     We are happy you have signed up on our website or mobile application
   </p>
   <br>
   <p class="user-greeting-info">
-    To verify your email address on our application, click the button below to confirm your account. If you have not signed up on the jazzy burger website, please do not click this button, you can also reach out to us via our support channels and someone from our team will be able to assist you.
+    To verify your email address on our application, click the button below to confirm your account. If you have not signed up on the <%= AppBranding::NAME %> website, please do not click this button. You can also reach out to us via our support channels and someone from our team will be able to assist you.
   </p>
   <div class="reset-details">
-    <%# <h4 class="order-details-heading">Order Details</h4> %>
     <a class="action-button" href="<%= @user.verification_url %>">Verify your email</a>
 
     <p class="user-greeting-info">

@@ -31,7 +31,7 @@ module Emails
   def send_processing_email
     return unless paid == true
 
-    puts "SENDING Emails to orders@jazzysburger.com for ORDER: #{id}"
+    Rails.logger.info "SENDING emails to #{AppBranding::OPS_EMAIL} for ORDER: #{id}"
     OrderMailer.with(reference:).coy_order_email.deliver
   rescue Net::SMTPAuthenticationError => e
     Sentry.capture_exception(Net::SMTPAuthenticationError.new("Email Deliver Error"))

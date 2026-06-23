@@ -3,5 +3,5 @@ Slack.configure do |config|
 end
 
 Slack::Web::Client.configure do |config|
-  config.user_agent = "Jazzy's Burger App Backend/1.0"
+  config.user_agent = "#{AppBranding::NAME} Backend/1.0"
 end

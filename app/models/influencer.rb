@@ -106,6 +106,6 @@ class Influencer < ApplicationRecord
   private
 
   def affiliate_link
-    "https://jazzysburger.com?ref=#{slug}"
+    "#{AppBranding::URL}?ref=#{slug}"
   end
 end

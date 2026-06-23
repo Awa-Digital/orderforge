@@ -6,11 +6,11 @@ class PopupNotificationUploader < CarrierWave::Uploader::Base
   storage :fog
 
   def public_id
-    "JJB/#{ENV.fetch('MEDIA_SUBFOLDER', nil)}/popup_notifications/popup_notification_#{model.id}"
+    "#{AppBranding::MEDIA_PREFIX}/#{ENV.fetch('MEDIA_SUBFOLDER', nil)}/popup_notifications/popup_notification_#{model.id}"
   end
 
   def store_dir
-    "JJB/#{ENV.fetch('MEDIA_SUBFOLDER', nil)}/popup_notifications/popup_notification_#{model.id}"
+    "#{AppBranding::MEDIA_PREFIX}/#{ENV.fetch('MEDIA_SUBFOLDER', nil)}/popup_notifications/popup_notification_#{model.id}"
   end
 
   # Adjust size as needed for popup images

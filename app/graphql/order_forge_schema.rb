@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class JazzyBackendSchema < GraphQL::Schema
+class OrderForgeSchema < GraphQL::Schema
   mutation(Types::MutationType)
   query(Types::QueryType)
 

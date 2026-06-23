@@ -5,15 +5,15 @@ class AdUploader < CarrierWave::Uploader::Base
   storage :fog
 
   def public_id
-    "JJB/#{ENV.fetch('MEDIA_SUBFOLDER', nil)}/ads/ad_#{model.id}"
+    "#{AppBranding::MEDIA_PREFIX}/#{ENV.fetch('MEDIA_SUBFOLDER', nil)}/ads/ad_#{model.id}"
   end
 
   def store_dir
-    "JJB/#{ENV.fetch('MEDIA_SUBFOLDER', nil)}/ads/ad_#{model.id}"
+    "#{AppBranding::MEDIA_PREFIX}/#{ENV.fetch('MEDIA_SUBFOLDER', nil)}/ads/ad_#{model.id}"
   end
 
   def default_url(*_args)
-    "https://api.jazzysburger.com/sunday-ad.png"
+    ENV.fetch('DEFAULT_AD_IMAGE_URL', nil)
   end
 
   process resize_to_fit: [736, 314]

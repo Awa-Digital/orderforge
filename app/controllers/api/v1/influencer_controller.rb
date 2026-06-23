@@ -96,7 +96,7 @@ class Api::V1::InfluencerController < Api::V1::BaseController
   def influencer_token(user)
     @token = generate_influencer_token(user)
     success({
-              message: "#{user.name}, welcome to Jazzy's Juicy Burger!",
+              message: "#{user.name}, welcome to #{AppBranding::NAME}!",
               data: {
                 user:,
                 auth: {

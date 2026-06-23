@@ -118,7 +118,7 @@ ActiveAdmin.register Influencer do
       end
       row :slug
       row :affiliate_link do |resource|
-        link_to "Open Link", "https://jazzysburger.com?ref=#{resource.slug}"
+        link_to "Open Link", "#{AppBranding::URL}?ref=#{resource.slug}"
       end
     end
 
@@ -152,7 +152,7 @@ ActiveAdmin.register Influencer do
       f.input :email
       f.input :verified
       f.input :commission_rate, hint: "Commission percentage (e.g. 20 for 20%). Default: 20%"
-      f.input :slug, hint: "Unique ref for affiliate link (e.g. jazzys → https://jazzysburger.com?ref=jazzys). Leave blank to generate from name (e.g. 'Jane Doe' → 'jane-doe')."
+      f.input :slug, hint: "Unique ref for affiliate link (e.g. jane → #{AppBranding::URL}?ref=jane). Leave blank to generate from name."
       f.input :password
       f.input :password_confirmation
       f.input :status, as: :select, collection: %w[active deactivated], include_blank: false

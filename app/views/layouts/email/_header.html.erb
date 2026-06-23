@@ -1,9 +1,9 @@
 <div id="email-header">
   <div class="brand-logo">
-    <img
-      src="https://awa-apps.fra1.cdn.digitaloceanspaces.com/JJB/public-space/logo-for-email.png"
-      alt=""
-    />
+    <% if AppBranding::MEDIA_CDN_URL.present? %>
+      <img src="<%= AppBranding::MEDIA_CDN_URL %>/logo.png" alt="<%= AppBranding::NAME %>" />
+    <% else %>
+      <h2><%= AppBranding::NAME %></h2>
+    <% end %>
   </div>
-  <!-- This is the header! -->
 </div>

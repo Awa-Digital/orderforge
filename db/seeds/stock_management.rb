@@ -90,7 +90,7 @@ stocks = [
   },
   {
     code: "STK002",
-    name: "Jazzy Mayonnaise",
+    name: "Mayonnaise",
     description: "1.2 litres of delicious mayonnaise",
     state: "liquid",
     stock_inventory_items: [

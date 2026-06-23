@@ -3,7 +3,7 @@ class CsvUploader < CarrierWave::Uploader::Base
   storage :fog
 
   def store_dir
-    "JJB/#{ENV.fetch('MEDIA_SUBFOLDER', nil)}/csv/"
+    "#{AppBranding::MEDIA_PREFIX}/#{ENV.fetch('MEDIA_SUBFOLDER', nil)}/csv/"
   end
 
   def extension_allowlist

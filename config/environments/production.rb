@@ -63,19 +63,19 @@ Rails.application.configure do
 
   # Use a real queuing backend for Active Job (and separate queues per environment).
   # config.active_job.queue_adapter     = :resque
-  # config.active_job.queue_name_prefix = "jazzy_backend_production"
+  # config.active_job.queue_name_prefix = "order_forge_production"
 
   config.action_mailer.perform_caching = false
 
   config.action_mailer.delivery_method = :smtp
-  host = 'jazzysburger.com' # replace with your own url
+  host = ENV.fetch('MAILER_HOST', URI.parse(AppBranding::URL).host)
   config.action_mailer.default_url_options = { host:, protocol: 'https' }
 
   # SMTP settings for gmail
   config.action_mailer.smtp_settings = {
     address: 'smtp.gmail.com',
     port: 587,
-    domain: "jazzysburger.com",
+    domain: host,
     user_name: ENV.fetch('GMAIL_EMAIL', nil),
     password: ENV.fetch('GMAIL_PASSWORD', nil),
     authentication: 'plain',

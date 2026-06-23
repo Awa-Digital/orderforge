@@ -57,7 +57,7 @@ class Api::V1::UsersController < Api::V1::BaseController
 
   def assign_token_to_user(user)
     @token = generate_auth_token(user)
-    success({ message: "#{user.first_name}, welcome to Jazzy's Juicy Burger!",
+    success({ message: "#{user.first_name}, welcome to #{AppBranding::NAME}!",
               data: { user:, auth: { token: @token } } })
   end
 

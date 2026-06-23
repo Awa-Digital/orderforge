@@ -6,7 +6,7 @@ ActiveAdmin.setup do |config|
   # by extracting the _site_header partial into your project
   # to use your own logo, styles, etc.
   #
-  config.site_title = "Jazzy's Backend"
+  config.site_title = ENV.fetch('ADMIN_SITE_TITLE', 'OrderForge Admin')
 
   # == Load Paths
   #

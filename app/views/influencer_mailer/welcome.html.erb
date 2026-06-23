@@ -2,7 +2,7 @@
 <div style="max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif; color: #333333; line-height: 1.6;">
   <!-- Welcome Section -->
   <div style="padding: 20px;">
-    <h2 style="color: #1a1a1a; margin-bottom: 20px;">Welcome to Jazzy's Burger Affiliate Program!</h2>
+    <h2 style="color: #1a1a1a; margin-bottom: 20px;">Welcome to <%= AppBranding::NAME %> Affiliate Program!</h2>
     <p style="margin-bottom: 15px;">Hello <%= @user.name %>,</p>
     <p style="margin-bottom: 25px;">We're excited to have you join our affiliate program! This is the beginning of a great partnership. Below are the steps to get your account fully approved and start earning.</p>
   </div>
@@ -10,7 +10,7 @@
   <!-- Video Section -->
   <div style="margin-bottom: 30px; text-align: center;">
     <a href="https://www.youtube.com/watch?v=YW0EuZvFcMM" target="_blank" style="text-decoration: none;">
-      <img src="https://awa-apps.fra1.cdn.digitaloceanspaces.com/JJB/public-space/bg.png" alt="Jazzy's Burger Affiliate Approval Video" style="max-width: 100%; height: auto; border-radius: 8px;" />
+      <img src="https://#{AppBranding::MEDIA_CDN_URL}/bg.png" alt="<%= AppBranding::NAME %> Affiliate Approval Video" style="max-width: 100%; height: auto; border-radius: 8px;" />
       <p style="color: #666; margin-top: 10px;">👆 Click to watch our sample verification video on YouTube</p>
     </a>
   </div>
@@ -47,7 +47,7 @@
   <!-- Status Section -->
   <div style="padding: 20px; margin-top: 20px; background-color: #fff3cd; border-radius: 8px;">
     <p style="margin: 0; color: #856404;">
-      ⏳ Once you add your verification link on your <a href="https://jazzysburger.com/affiliate" style="color: #856404; font-weight: bold;">profile</a>, a member of our staff will review and approve your account.
+      ⏳ Once you add your verification link on your <a href="<%= AppBranding::URL %>/affiliate" style="color: #856404; font-weight: bold;">profile</a>, a member of our staff will review and approve your account.
     </p>
   </div>
 

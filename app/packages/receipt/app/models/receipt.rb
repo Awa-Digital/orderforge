@@ -107,6 +107,6 @@ class Receipt
     @pdf.move_down(4)
     @pdf.text 'For complains and feedback', size: 6, align: :center
     @pdf.text '+234 907 466 6655', size: 6, align: :center
-    @pdf.text 'jazzysburger.com', size: 6, align: :center
+    @pdf.text AppBranding::URL.gsub(%r{https?://}, ''), size: 6, align: :center
   end
 end

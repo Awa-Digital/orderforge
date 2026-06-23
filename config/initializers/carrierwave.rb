@@ -11,7 +11,7 @@ CarrierWave.configure do |config|
   config.asset_host = if Rails.env.development?
                         'localhost:3000'
                       elsif Rails.env.production?
-                        'https://api.jazzysburger.com'
+                        "https://#{AppBranding::API_HOST}"
                       end
   # config.fog_provider = 'fog/aws'
   config.fog_credentials = {

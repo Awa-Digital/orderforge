@@ -15,7 +15,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
 
         expect(response).to have_http_status(:success)
         expect(JSON.parse(response.body)['status']).to eq('success')
-        expect(JSON.parse(response.body)['message']).to eq("Uchenna, welcome to Jazzy's Juicy Burger!")
+        expect(JSON.parse(response.body)['message']).to eq("Uchenna, welcome to OrderForge!")
       end
     end
 

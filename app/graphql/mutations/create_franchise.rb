@@ -2,7 +2,7 @@
 
 module Mutations
   class CreateFranchise < BaseMutation
-    description "Create a franchise that can sell Jazzy's burger"
+    description "Create a franchise location for the platform"
 
     argument :title, String
     argument :description, String
