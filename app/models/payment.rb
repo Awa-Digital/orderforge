@@ -85,11 +85,22 @@ class Payment < ApplicationRecord
   end
 
   def verify
-    payment_status = Paystacky.new.verify(self)['data']['status']
+    data = Paystacky.new.verify(self)['data']
+    return false unless data['status'] == 'success'
+
+    expected_kobo = in_kobo.round(0).to_i
+    paid_kobo = data['amount'].to_i
+    return true if paid_kobo == expected_kobo
+
+    Sentry.capture_message(
+      "Payment amount mismatch for #{reference}",
+      level: :warning,
+      extra: { order_id:, expected_kobo:, paid_kobo:, paystack_id: data['id'] }
+    )
+    false
   rescue StandardError => e
     Sentry.capture_exception(e)
-  else
-    payment_status == 'success'
+    false
   end
 
   def paid_on_today
